@@ -1,0 +1,4 @@
+Все хтмл записываем в index.kit и делаем вывод в index.html
+
+Для добавления еще файлов например header.html  в общий индекс, нужно в index.kit 
+в <body> прописать 	<!-- @import "header.html" -->
