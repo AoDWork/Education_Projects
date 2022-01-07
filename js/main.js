@@ -83,11 +83,97 @@ let personalMovieDB = {
                            }
                         }
 };
+// personalMovieDB.start();
+// personalMovieDB.rememberMyFilms();
+// personalMovieDB.detectPersonalLevel();
+// personalMovieDB.toggleVisibleMyDB();
+// personalMovieDB.showMyDB(personalMovieDB.privat);
+// personalMovieDB.writeYourGenres();
+// console.log(personalMovieDB);
 
-personalMovieDB.start();
-personalMovieDB.rememberMyFilms();
-personalMovieDB.detectPersonalLevel();
-personalMovieDB.toggleVisibleMyDB();
-personalMovieDB.showMyDB(personalMovieDB.privat);
-personalMovieDB.writeYourGenres();
-console.log(personalMovieDB);
+{ //lesson025 Get elements from page
+// let box = document.getElementById("box");
+// console.log(box);
+// let btns = document.getElementsByTagName("button");
+// console.log(btns[1]);
+// let circles = document.getElementsByClassName("circle");
+// console.log(circles[1]);
+
+// let hearts = document.querySelectorAll('.heart'); 
+// //в середину круглых скобок можно помещать любой сss селектор или их вложенность
+// console.log(hearts);
+// hearts.forEach(item => {
+//     console.log(item);
+// });
+
+// let oneHeart = document.querySelector('.heart'); 
+// //Позволяет получить только первый подходящий элемент
+// console.log(oneHeart);
+};
+
+{//}lesson026 ={ interaction with elements 
+    // let box = document.getElementById("box"),
+    //     btns = document.getElementsByTagName("button"),
+    //     circles = document.getElementsByClassName("circle"),
+    //     wrapper = document.querySelector(".wrapper"),
+    //     hearts = document.querySelectorAll('.heart'),
+    //     oneHeart = document.querySelector('.heart'); 
+//также можно получить эти переменный внутри wrapper обращаясь сразу к нему
+    //hearts = wrapper.querySelectorAll('.heart'),
+   // oneHeart = wrapper.querySelector('.heart'); 
+    // квери селектор будет искать .heart внутри wrapper,  wrapper должен быть получен перед этими запросами
+
+//Свойства записываются в инлайн строку, прямо в хтмл, поэтому по приоритету 
+//они будут главнее чем сss свойства
+    // box.style.backgroundColor = "green";
+    // box.style.width = "500px";
+//Задаем множество свойств одной командой
+    // let num = 400;
+    // box.style.cssText = `background-color: blue; width: ${num}px`;
+
+    // btns[1].style.borderRadius = "100%";
+    // circles[0].style.backgroundColor = "red";
+
+    // for (let i = 0; i < hearts.length; i++){
+    //     hearts[i].style.backgroundColor = "blue";
+    // }
+
+//Вместо циклов в основном используем перебирающие методы
+    // hearts.forEach(item=>{
+    //     item.style.backgroundColor = "blue";
+    // });
+//Методы для создания элементов на лету
+    // let div = document.createElement("div"); //елементы
+    // let text = document.createTextNode("Новый текст");  // текст(ноды)
+//Обычно объекту назначают класс что бы применить сразу много аттрибутов
+    // div.classList.add("black");  
+    // document.body.append(div); // Современный способ Прикрепляем созданный див в КОНЕЦ тега body что бы он появился на странице
+
+// //Для присоединения к диву с классом wrapper
+//     document.querySelector(".wrapper").append(div);  // можно не создавать переменную если обращаться 1 раз  
+    //wrapper.append(div); // С переменной
+//wrapper.appendChild(div); // УСТАРЕВШИЙ метод (разницы нету)
+// // Для присоединения нужно сначала получить элемент к которому присоединять
+//     //     wrapper.prepend(div); //Прикрепляем в НАЧАЛО тега
+// //ПЕРЕД и ПОСЛЕ
+//     hearts[1].before(div);
+//     hearts[1].after(div);
+
+    //wrapper.insertBefore(div,  hearts[1]); //СТАРЫЙ метод для бефор
+
+
+// //Удаление со страницы
+//     circles[1].remove();
+       // wrapper.removeChild(circles[1]); //СТАРЫЙ метод
+// //Замена одного элемента другим
+//     hearts[2].replaceWith(circles[0]); // Сердце заменяем кругом
+   //  wrapper.replaceChild(circles[0], hearts[2] ); //Старый метод
+
+//Первый Метод Для вставки ТЕКСТА или ХМТЛ структуры
+    //div.innerHTML = "<h1>Hello World</h1>";
+//Второй Метод но только для текста(безопасность при вводе пользователем данных)
+   // div.textContent = "Hello";
+//Для вставки куска ХТМЛ кода перед или после определенных тегов
+    //div.insertAdjacentHTML("beforebegin", "<h2>Hello</h2>"); // вставляем второй аргумент бефорбегин(перед) див
+    // afterbegim - в начало(первый в середине) элемента. beforeend - в конец в середину, afterend - после элемента
+};
