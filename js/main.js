@@ -188,3 +188,39 @@ let personalMovieDB = {
     //div.insertAdjacentHTML("beforebegin", "<h2>Hello</h2>"); // вставляем второй аргумент бефорбегин(перед) див
     // afterbegim - в начало(первый в середине) элемента. beforeend - в конец в середину, afterend - после элемента
 };
+
+{//lesson027 Practise with elements
+    const movieDB = {
+    movies: [
+        "Логан",
+        "Лига справедливости",
+        "Ла-ла лэнд",
+        "Одержимость",
+        "Скотт Пилигрим против..."
+    ]
+};
+
+//1 Удалить все рекламные блоки со страницы (правая часть сайта)
+let reklama =  document.querySelectorAll('.promo__adv img');
+       reklama.forEach(item=>{
+           item.remove();
+         });
+//2 Изменить жанр фильма, поменять "комедия" на "драма"
+let genre = document.querySelector(".promo__genre");
+genre.textContent = "Драма";
+//3 Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
+//Реализовать только при помощи JS
+let bg = document.querySelector(".promo__bg");
+bg.style.backgroundImage =  "url('img/bg.jpg')";//Прописываем внутры другие кавычки что бы избежать конфликта
+//4  Список фильмов на странице сформировать на основании данных из этого JS файла.
+//Отсортировать их по алфавиту 
+let movieList =  document.querySelector(".promo__interactive-list"); // Селктор один что бы получить доступ к родителю списка и его методу
+movieList.innerHTML = ""; //Очистили список на странице
+movieDB.movies.sort(); // сортируем по алфавиту
+movieDB.movies.forEach((film, i) =>{    //a=a+1 или a+=1;
+        movieList.innerHTML += ` 
+                <li class="promo__interactive-item">№${i+1} ${film}
+                    <div class="delete"></div>
+                </li>
+        `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
+})};
