@@ -224,3 +224,76 @@ movieDB.movies.forEach((film, i) =>{    //a=a+1 или a+=1;
                 </li>
         `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
 })};
+
+{//lesson028 Event listener
+//1 способ записать прямо в хтмл свойстве, комбинируем кавычки
+//<button onclick = "alert('Click')" id="btn">Нажми меня</button>
+
+//2 способ при этом способе мы не сможем удалить этот обработчик событий и следующий онклик заменит предыдущий
+// let btn = document.querySelector("button"); // button - тег - выбирает только первый элемент с этим тегом
+// btn.onclick = function(){
+//     alert("Knock");
+// btn.onclick = function(){
+//     alert("Second cilck");
+// };
+
+//3 Способ первый аргумент click - вариант события, второй аргумент коллбек функция
+let btn = document.querySelector("button");
+// btn.addEventListener("click", ()=>{
+//     alert("click");
+// });
+
+// btn.addEventListener("mouseenter", ()=>{ // при наведении
+//     console.log("Hover");
+// });
+
+// //Для получения данных об элементе с которым взаимодействуем (координаты, событие)
+// // он передается первым аргументом в коллбек функцию (название е или event или другое?)
+// btn.addEventListener("mouseenter", (e)=>{ 
+//     console.log(e);// при наведении получаем объект в консоль
+// });
+
+// btn.addEventListener("mouseenter", (e)=>{ 
+//     console.log(e.target);// при наведении получаем на каком объекте сработало
+//     e.target.remove(); // получаем элемент и удаляем его после наведения
+// });
+
+//Для удаления обработчика его нужно присвоить переменной или мы не сможем к нему обратится
+let overlay = document.querySelector(".overlay");
+// let i = 0;
+// const targetElement = (e)=>{ 
+//     console.log(e.target);
+//     i++;
+//     if(i==2){
+//         btn.removeEventListener("click", targetElement);
+//     }
+// };
+// btn.addEventListener("click", targetElement);
+//     //Удаление btn.removeEventListener("click", targetElement);
+
+//Всплытие событий - когда событие срабатывает сначала на вложенном элементе, а потом на родителе
+const targetOverlay = (e)=>{ 
+    console.log(e.currentTarget); // Показывает на каком елементе произошло событие СЕЙЧАС
+    console.log(e.type);
+};
+// btn.addEventListener("click", targetOverlay);
+// overlay.addEventListener("click", targetOverlay);
+
+//Отмена стандартного поведения
+const link = document.querySelector("a"); // получение елемента ссылки <a href="https://www.youtube.com/">https://www.youtube.com/</a>
+link.addEventListener("click", function(event){
+    event.preventDefault();     // отмена перехода по ссылке, всегда прописываем вначале 
+    console.log(event.target);  // потом то что нужно сделать
+});
+
+// //Применение обработчика события к множеству элементов
+const btns = document.querySelectorAll("button");
+// btns.forEach(btn =>{
+//     btn.addEventListener("click", targetOverlay);
+// });
+
+//Опции события (третий аргумент EventListener (capture / once/ passive/ mozSystemGroup))
+btns.forEach(btn =>{
+    btn.addEventListener("click", targetOverlay, {once:true});
+});
+};
