@@ -1,5 +1,16 @@
 "use strict";
 
+{//Sort massive
+    const arr = [1, 14, 4, 30, 54];
+    sorted = arr.sort(CompareNum);
+    console.log(sorted);
+
+    function CompareNum(a, b){
+        return a-b;
+    };
+};
+
+
 let personalMovieDB = {
     count:  0,
     movies: {},
