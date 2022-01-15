@@ -8,7 +8,7 @@
     // function CompareNum(a, b){
     //     return a-b;
     // };
-};
+}
 
 
 let personalMovieDB = {
@@ -120,7 +120,7 @@ let personalMovieDB = {
 // let oneHeart = document.querySelector('.heart'); 
 // //Позволяет получить только первый подходящий элемент
 // console.log(oneHeart);
-};
+}
 
 {//}lesson026 ={ interaction with elements 
     // let box = document.getElementById("box"),
@@ -187,7 +187,7 @@ let personalMovieDB = {
 //Для вставки куска ХТМЛ кода перед или после определенных тегов
     //div.insertAdjacentHTML("beforebegin", "<h2>Hello</h2>"); // вставляем второй аргумент бефорбегин(перед) див
     // afterbegim - в начало(первый в середине) элемента. beforeend - в конец в середину, afterend - после элемента
-};
+}
 
 {//lesson027 Practise with elements
     const movieDB = {
@@ -224,7 +224,7 @@ let personalMovieDB = {
 //                 </li>
 //         `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
 //})
-};
+}
 
 {//lesson028 Event listener
 // //1 способ записать прямо в хтмл свойстве, комбинируем кавычки
@@ -297,7 +297,7 @@ let personalMovieDB = {
 // btns.forEach(btn =>{
 //     btn.addEventListener("click", targetOverlay, {once:true});
 // });
-};
+}
 
 {//029 Navigation in DOM, Data attributes, forof преимущества
 //console.log(document.body); //- получаем боди
@@ -467,4 +467,51 @@ deleteAdv(reklama);
 // }
 // loadScript("js/test.js"); //будут выполнятся последовательно
 // loadScript("js/some.js");
+}
+//---------------------------------------------------------------------------------------------
+{//002 Classlist м делегирование событий
+    const btns = document.querySelectorAll("button");
+//console.log(btns[0].classList.length); // консоль показала 2 класса <button class="blue some"></button>
+// console.log(btns[0].classList.item(0));   // обращаемся к первому классу 'blue', () - скобки нужны
+// console.log(btns[0].classList.item(1));     // "some" - второй класс
+// console.log(btns[0].classList.add("red", "green")); //<button class="blue some red"></button> добавление
+// console.log(btns[0].classList.remove("blue")); //удаление класса, можно добалять и удалять несколько сразу
+// console.log(btns[0].classList.toggle("blue")); // если класс есть на элем. его удалит, если нету добавит
+
+// //для использования класса в условии применяется
+// if (btns[0].classList.contains('red')){ //проверяем содержит ли элемент класс red 
+//     console.log("red");
+// }
+
+//
+// btns[0].addEventListener("click", ()=>{
+//     // if(!btns[1].classList.contains("red")){ //проверяем отсутствие у второй кнопки класса red
+//     //     btns[1].classList.add("red");       // добавим класс
+//     // } else{
+//     //     btns[1].classList.remove("red");    //если класс есть то удалим
+//     // }
+// //можно использовать toggle, но иногда нужно вручную проверить на класс
+// btns[1].classList.toggle("red");
+// });
+
+//устаревший метод className выводит классы одной строкой и потом нужно с этой строкой
+//взаимодействовать, classList выводит псевдомассивом
+//console.log(btns[0].className);
+
+// Делегирование событий - используется для назначения одного события на несколько элементов
+//даже если они созданы без нас(динамически). Назначаем обр. события на родителя элементов а потом
+//проверяем на что был клик и сравниваем с заданными параметрами
+const wrapper = document.querySelector(".btn-block"); //родитель кнопок <div id="first" class="btn-block">
+
+wrapper.addEventListener('click', function(event){
+    if(event.target && event.target.tagName == "BUTTON"){//проверяем на существование тега и на равенство его свойства строке "BUTTON"
+      //сравнивать можно с nodeName и classList        if(event.target && event.target.classList.contains("blue"))   
+      //продвинутое сравнение   if(event.target && event.target.matches("button.red"))     совпадение тега баттон у которого есть класс ред                               
+         console.log("Hello!");
+    }
+  });
+
+  const btn = document.createElement('button'); //создаем элемент
+  btn.classList.add('red'); // добавляем ей класс ред
+  wrapper.append(btn);      //прикрепляем в элемент wrapper
 }
