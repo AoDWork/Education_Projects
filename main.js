@@ -592,9 +592,9 @@ wrapper.addEventListener('click', function(event){
     
     // btn.addEventListener("click", ()=>{
     //     //clearInterval()
-    //     timerId4 = setInterval(logger, 500); //Присваиваем значение сетинтервала таймеру через 2 секунды
+    //     timerId4 = setInterval(logger, 500); //Присваиваем значение сетинтервала таймеру через 0,5 секунды
     // });
-    // //clearInterval(timerId4) не сработает потому что значение ему присвоится через 2 секунды. А текущее undefined
+    // //clearInterval(timerId4) не сработает потому что значение ему присвоится через 0,5 секунды. А текущее undefined
     // //изменяем logger
     // function logger(){
     //         if (i === 3){
@@ -637,7 +637,7 @@ wrapper.addEventListener('click', function(event){
     btn.addEventListener("click", myAnimation);
 }
 
-{//Date
+{//005 Date
     "use strict";
 
     //const now = new Date();
@@ -674,4 +674,233 @@ wrapper.addEventListener('click', function(event){
     
     let end = new Date();
     alert(`Цикл выполнился за ${end - start} миллисекунд`);
+}
+
+{//006 Timer обратного отсчета
+    "use strict";
+    const deadLine = "2022-01-20"; //Строкой задаем время окончания, такие строки получают еще из инпута на сайтах
+    
+    
+    function getTimeRemaining(endtime){
+        const t = Date.parse(endtime) - Date.parse(new Date()), //Превращает строку в количество милисекунд для математических расчетов
+        //Отнимаем текущую дату и получим число в милисекундах
+              days = Math.floor(t / (1000*60*60*24)),//Переводим в дни, милисек делим на 1 сек*60 в минуте*60 в часе*24 часов в дне
+              //и Math.floor округляет это число
+              hours = Math.floor((t / (1000*60*60) % 24)),//Переводим в часы, и получаем остаток от деления на 24 часа, что бы не было
+              //например 150 часов
+              minutes = Math.floor((t / 1000 / 60) % 60),
+              seconds = Math.floor((t / 1000) % 60);
+              //Для возврата этих локальных переменных из фунции используем ретурн и выводим объект
+              return{
+                "total": t,
+                "days": days,
+                "hours": hours,
+                "minutes": minutes,
+                "seconds": seconds
+              };
+    }
+    
+    //Функция помощник для подставления 0 если число часов/минут меньше 10
+    function getZero(num) {
+        if (num >=0 && num <10){
+            return `0${num}`;
+        }else{
+            return num;
+        }
+    }
+    
+    //функция Устанавливает время на страницу
+    function setClock(selector, endtime){
+        //получаем элементы со страницы
+        const timer = document.querySelector(selector),
+              days = timer.querySelector("#days"), //<span id="days">12</span>
+              hours = timer.querySelector("#hours"),
+              minutes = timer.querySelector("#minutes"),
+              seconds = timer.querySelector("#seconds"),
+              timeInterval = setInterval(updateClock, 1000); //запускаем функцию каждую секунду
+        
+        updateClock(); //Запускаем вручную что бы пофиксить второй баг
+        //функция обновления таймера
+        function updateClock () {
+            const t = getTimeRemaining(endtime); //в переменную получаем объект из функции
+    
+            days.innerHTML = getZero(t.days);
+            hours.innerHTML = getZero(t.hours);
+            minutes.innerHTML = getZero(t.minutes);
+            seconds.innerHTML = getZero(t.seconds);
+    
+            //Останавливаем таймер если время вышло
+            if(t.total <=0){
+                clearInterval(timeInterval);
+            }
+        }
+    }
+    //Запускаем таймер в селектор подставляем класс элемента в ендтайм дату которую задаем или откуда то получаем
+    setClock(".timer", deadLine);
+    
+                /* <div class="timer">
+                        <div class="timer__block">
+                            <span id="days">12</span>
+                            дней
+                        </div>
+                        <div class="timer__block">
+                            <span id="hours">20</span>
+                            часов
+                        </div>
+                        <div class="timer__block">
+                            <span id="minutes">56</span>
+                            минут
+                        </div>
+                        <div class="timer__block">
+                            <span id="seconds">20</span> */
+    
+    //Два бага нужно исправить 1) - если часов и минут меньше 10 то нужно подставлять 0 (09), 2) - при обновлении страницы таймер
+    //запускается только через секунду и мы видим таймер из верстки
+}
+
+{//007 Параметры документа, окна (document/window/screen)
+    'use strict';
+    const box = document.querySelector(".box");
+    
+    // clientWidth - включает в себя width + padding без бордеров
+    const width = box.clientWidth; //в css width: 400px + 2 шт padding: 10px с боков - 15px скролл = 405
+    let height = box.clientHeight; // height: 350px;
+    
+    //console.log(width, height); //405, 355 
+    
+    //Если в css используется box-sizing: border-box; включает padding в середину box
+    console.log(width, height); //385, 335 
+    
+    const owidth = box.offsetWidth; //свойство из css width: 400px 
+    let oheight = box.offsetHeight;
+    console.log(owidth, oheight); //400, 350
+    
+    const swidth = box.scrollWidth; // размер - скролл
+    let sheight = box.scrollHeight; // размер всего текста(который можно скролить в этом окне)
+    console.log(swidth, sheight); //384, 1430 
+    
+    let btn = document.querySelector("button");
+    btn.addEventListener("click", ()=>{
+        //box.style.height = sheight + "px"; //показываем весь текст
+        //box.style.width = 800 + "px";
+        console.log(box.scrollTop); //показывает сколько проскроллил пользователь текста вверху(над скролом) в пикселях
+    });
+    
+    //Метод получающий все координаты элемента 
+    console.log(box.getBoundingClientRect()); // bottom: 400 height: 350 left: 440 right: 840 top: 50 width: 400 x: 440 y: 50
+    //При этом в JS расчет идет от левого верхнего угла а в css от границы, например: css right отсчитывался бы от правой границы окна
+    //до правой границы элем., а в JS right отсчитывается от левой границы окна до правой границы элемента
+    //bottom css - от низа окна до элем, а в JS от верхней окна до нижней элемента bottom: 400 = высота 350 + margin-top: 50px;
+    console.log(box.getBoundingClientRect().top); //значение top - 50
+    
+    //Метод опеределяет какие стили css были применены(расчитаны/computed) на элем. изначально до применения скрипта. Например display.
+    //Можно только получить это значени но не изменить его в css, изменяем стили только инлайн которые в верстке, перебивая css
+    const style = window.getComputedStyle(box); // определяем по классу 
+    console.log(style.display); //block
+    
+    //Для обращения к свойствам document нужно обращатся к его елементу
+    console.log(document.documentElement.scrollTop);
+    //scrollTop/csrollLeft можно изменять ВРУЧНУЮ в консоли а другие нельзя, таким образом можно сделать стрелочку для быстрого
+    //перехода, есть еще методы window.scrollBy(0, 400) - скролит на 400 относительно текущего положения и 
+    //window.scrollTo(0, 400) - скролит на 400 относительно всей страницы. 0 - положение по горизонтали
+}
+
+{//008 Создание модального окна
+    "use strict";
+
+    //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
+    //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
+    //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
+    //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
+    const modal = document.querySelector(".modal"),
+          modalTrigger = document.querySelectorAll("[data-modal]"), //квадратные скобки что бы обратится к аттрибуту
+          modalCloseBtn = document.querySelector("[data-close]");
+    //Проверяем функционал выбирая только первую кнопку modalTrigger = document.querySelector("[data-modal]"),
+    //добавляем и убираем стили которые раньше прописали в css .show{display:block}.hide{display:none}
+    //.fade{animation-name: fade;animation-duration: 1.5s;}@keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}     
+    
+    // modalTrigger.addEventListener("click", ()=>{
+    //     modal.classList.add("show");
+    //     modal.classList.remove("hide");
+    //     document.body.style.overflow = "hidden";
+    // });
+    
+    // modalCloseBtn.addEventListener("click", ()=>{
+    //     modal.classList.add("hide");
+    //     modal.classList.remove("show");
+    //     document.body.style.overflow = ""; //оставляем пустые скобки и браузер сам возвращает дефолт для прокрутки страницы
+    // });
+    
+    //Страницу можно пролистывать не закрывая окно, многим заказчикам это не нужно. Нужно зафиксировать страницу скрывая скролл
+    // document.body.style.overflow = "hidden";
+    
+    //Делаем через toggle контролируя свойство display через стиль show
+    // modalTrigger.addEventListener("click", ()=>{
+    //     modal.classList.toggle("show"); //если класса нет - добавит, если есть уберет
+    //     document.body.style.overflow = "hidden";
+    // });
+    
+    // modalCloseBtn.addEventListener("click", ()=>{
+    //     modal.classList.toggle("show");
+    //     document.body.style.overflow = ""; //оставляем пустые скобки и браузер сам возвращает дефолт для прокрутки страницы
+    // });
+    
+    //Создаем функцию для перебора кнопок при querySelectorAll
+    modalTrigger.forEach(btn =>{
+        btn.addEventListener("click", ()=>{
+            modal.classList.add("show");
+            modal.classList.remove("hide");
+            document.body.style.overflow = "hidden";
+        });
+    });
+    
+    // modalCloseBtn.addEventListener("click", ()=>{
+    //     modal.classList.add("hide");
+    //     modal.classList.remove("show");
+    //     document.body.style.overflow = ""; 
+    // });
+    
+    //реализуем закрытие окна по клику на подложку(темную часть) и по кнопке Esc клавиатуры
+    //<div class="modal"> - подложка (обертка) (темная)
+    //   <div class="modal__dialog"> - область окна (светлая) - вложена в подложку(обертку)
+    //єл. подложки в переменной modal
+    // modal.addEventListener("click", (e)=>{
+    //     if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+    //         modal.classList.add("hide");
+    //         modal.classList.remove("show");
+    //         document.body.style.overflow = ""; 
+    //     }
+    // });
+    
+    //Можно встретить такой код, но это НЕ везде будет работать, строго привязываемся к названию event, нарушаем логику кода
+    //нужно четко говорить что (e) мы используем
+    // modal.addEventListener("click", ()=>{
+    //     if(event.target === modal){
+    
+    //Правило Don't Repeat yourself (DRY) если код повторяется нужно его вынести в одну функцию
+    function closeModal(){
+        modal.classList.add("hide");
+        modal.classList.remove("show");
+        document.body.style.overflow = ""; 
+    }
+    
+    modalCloseBtn.addEventListener("click", closeModal); // тут просто передаем функцию
+    
+    modal.addEventListener("click", (e)=>{
+        if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+            closeModal();          // тут вызываем функцию
+        }
+    });
+    
+    //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
+    document.addEventListener("keydown", (e)=>{
+        if(e.code === "Escape" && modal.classList.contains("show")){   // если код события строго равен Escape (так  обозначается кнопка Esc)
+            closeModal();           // вызываем функцию
+        }
+    });
+    //Сделаем что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+}
+
+{//Модификация модального окна
+
 }
