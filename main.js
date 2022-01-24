@@ -894,13 +894,141 @@ wrapper.addEventListener('click', function(event){
     
     //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
     document.addEventListener("keydown", (e)=>{
-        if(e.code === "Escape" && modal.classList.contains("show")){   // если код события строго равен Escape (так  обозначается кнопка Esc)
+        if(e.code === "Escape" && modal.classList.contains("show")){//если код события строго равен Escape(обозначение кнопки Esc)
             closeModal();           // вызываем функцию
         }
     });
-    //Сделаем что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+    //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
 }
 
-{//Модификация модального окна
+{//009 Модификация модального окна
+    "use strict";
 
+    //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
+    //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
+    //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
+    //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
+    const modal = document.querySelector(".modal"),
+          modalTrigger = document.querySelectorAll("[data-modal]"), //квадратные скобки что бы обратится к аттрибуту
+          modalCloseBtn = document.querySelector("[data-close]");
+    
+    
+    //Правило Don't Repeat yourself (DRY) если код повторяется нужно его вынести в одну функцию
+    function closeModal(){
+        modal.classList.add("hide");
+        modal.classList.remove("show");
+        document.body.style.overflow = ""; 
+    }
+    
+    modalCloseBtn.addEventListener("click", closeModal); // тут просто передаем функцию
+    
+    modal.addEventListener("click", (e)=>{
+        if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+            closeModal();          // тут вызываем функцию
+        }
+    });
+    
+    //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
+    document.addEventListener("keydown", (e)=>{
+        if(e.code === "Escape" && modal.classList.contains("show")){//если код события строго равен Escape(обозначение кнопки Esc)
+            closeModal();           // вызываем функцию
+        }
+    });
+    //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+    
+    //<<<<<<<009 Модальное окно должно появится через определенное время или когда пользователь долистал страницу до конца >>>>>
+    // const modalTimerId = setTimeout();
+    
+    //Создаем функцию для открытия окна преобразуя modalTrigger.forEach(btn =>{
+    function openModal() {
+        modal.classList.add("show");
+        modal.classList.remove("hide");
+        document.body.style.overflow = "hidden";
+        //Дорабатываем openModal что бы если пользователь сам открыл окно, таймер отменялся
+        clearInterval(modalTimerId); //Timeout отменяет также как и интервал
+    }
+    
+    modalTrigger.forEach(btn =>{
+        btn.addEventListener("click", openModal);
+    });
+    
+    const modalTimerId = setTimeout(openModal, 5000);
+    
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
+            openModal();
+            window.removeEventListener("scroll", showModalByScroll);
+        } 
+    }
+    
+    //Делаем что бы окно показывалось при долистывании страницы до конца
+    // window.addEventListener("scroll", ()=>{
+    //     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
+    //         openModal();
+    //     }   //pageYOffset - проскролленая часть + clientHeight - видимая часть на мониторе будут больше или равны
+    //         // или больше scrollHeight все области скролла, минус 1 пиксель из-за особенности некоторых браузеров и мониторов
+    // }//,{once: true});
+    
+    //что бы не запускалось много раз окно при доскроле до конца страницы можно использовать настройки обработчика событий
+    //после функции можно добавить {once: true}, но оно в данном случае не сработает потому что обработчик повешен на скролл
+    //тоесть оно срабатывает при скроле, но условия не выполняются и окно не появляется, а внизу страницы не запускается
+    //потому что уже как бы сработало 
+    //ВТОРОЙ способ будем удалять обработчик события с виндовся после 1 разового выполнения removeEventListener для этого
+    //создаем функцию showModalByScroll и там прописываем ремув, и модифицируем window.addEventListener
+    window.addEventListener("scroll", showModalByScroll);
+    
+}
+
+{//010 Функции конструкторы
+    "use strict";
+    //Функция - объект и по идее в нее можно записать какие то методы и свойства
+    
+    //длинный УСТАРЕВШИЙ синтаксис для создания типов данных начинается с ключевого слово new
+    const num = new Number(3);
+    //console.log(num);
+    //получили Number  [[Prototype]]: Number  [[PrimitiveValue]]: 3 , намбер с велью 3
+    //тоже можно сделать и с функцией
+    const func = new Function(3);
+    //console.log(func);
+    //ƒ anonymous() {3}
+    //Если такая функция будет содержать методы и свойства то она создаст нам новый объект
+    
+    //<<<<<< НОВЫЙ синтаксис >>>>>>>
+    function User(name, id) {
+        this.name = name;
+        this.id = id;
+        this.human = true;
+        this.hello = function() {
+            console.log(`Hello ${this.name}`);
+        };
+    }
+    //Наша функция стала КОНСТРУКТОРОМ с помощью нее можно создавать новые (ОБЪЕКТЫ) пользователей
+    const ivan = new User ("Ivan", 28);
+    const alex = new User ("Alex", 20);
+    console.log(ivan); // User {name: 'Ivan', id: 28, human: true}
+    console.log(alex);
+    alex.hello();
+    
+    //с помощью prototype можно добавлять свойства и методы в конструктор и они наследуются потомками
+    //используется когда нету доступа к конструктору или его нельзя менять но нужно немного модифицировать
+    User.prototype.exit = function(){
+        console.log(`Пользователь ${this.name} ушел`);
+    };
+    //Этот метод появится у всех потомков которые созданы ПОСЛЕ его объявления
+    alex.exit();
+    
+    //Это был ЕС5, в ЕС6 появились классы - синтаксический сахар(красивая обертка) их удобнее использовать
+    class User {
+        constructor(name, id){
+            this.name = name;
+            this.id = id;
+            this.human = true;
+        }
+        hello() {
+            console.log(`Hello ${this.name}`)
+        }
+        exit() {
+            console.log(`Пользователь ${this.name} ушел`)
+        }
+    }
 }
