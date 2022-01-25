@@ -1032,3 +1032,152 @@ wrapper.addEventListener('click', function(event){
         }
     }
 }
+
+{//011 Контекст вызова функции this.
+    "use strict";
+    //контекст - то что окружает функцию и в каких условиях она вызывается
+    //Функция может вызыватся 4мя способами и в каждом контекст вызова отличается
+    
+    //============ 1 =============
+    // function showThis() {
+    //     console.log(this);
+    // }
+    // showThis(); //без "use strict" this = window (глобальный обект), с "use strict" будет undefined
+    
+    //практическая задача - что выведет функция и как исправить если не работает
+    // function showThis2(a, b) {
+    //     console.log(this);
+    //     function sum(){
+    //         console.log(this);
+    //         return this.a + this.b;
+    //     }
+    //     console.log(sum());
+    // }
+    // showThis2(4, 5);
+    //Будет ошибка в "use strict", а без него выдаст NaN, потому что sum сслается на window или undefined, и у них нету а или b 
+    //Исправляется код удалением this из a и b, тогда sum не найдя их в себе ищет в функции выще благодаря замыканию функций
+    
+    //============ 2 ============= Метод объекта
+    // const obj = {
+    //     a: 20,
+    //     b: 15,
+    //     sum: function() {
+    //         console.log(this);
+    //     }
+    // };
+    // obj.sum();
+    //Контекст у методов объекта - сам объект
+    
+    // const obj = {
+    //     a: 20,
+    //     b: 15,
+    //     sum: function() {
+    //         function shout() {
+    //             console.log(this);
+    //         }
+    //         shout();
+    //     }
+    // };
+    // obj.sum();
+    //при таком методе будет возвращено с "use strict" будет undefined без - window, 
+    //потому что это уже не метод объекта а функция внутри метода
+    
+    //============ 3 ============= Функции конструкторы
+    // function User(name, id) {
+    //     this.name = name;
+    //     this.id = id;
+    //     this.human = true;
+    
+    //     this.hello = function() {
+    //         console.log(`Hello ${this.name}`);
+    //     };
+    // }
+    
+    // let ivan = new User("Ivan", 23);
+    // ivan.hello();
+    //this в конструкторах и классах - это новый экземпляр объекта, в данном случае ссылается на ivan
+    
+    //============ 4 ============= ручное присвоение this любой функции: call, apply, bind
+    // function sayName() {
+    //     console.log(this);
+    //     console.log(this.name);
+    // }
+    
+    // const user = {
+    //     name: "John"
+    // };
+    
+    // sayName.call(user);// получаем объект и второй строчкой John
+    // sayName.apply(user);//работает также как call, разница в синтаксисе при передаче аргументов
+    
+    // function sayName(surname) {
+    //     console.log(this);
+    //     console.log(this.name + surname);
+    // }
+    
+    // const user = {
+    //     name: "John"
+    // };
+    
+    // sayName.call(user, "Smith");    //разница в синтаксисе при передаче аргументов - передем строкй
+    // sayName.apply(user, ["Smith"]); //разница в синтаксисе при передаче аргументов - передем массивом
+    
+    // //третий метод bind - создает НОВУЮ ункцию и под нее подвязывает контекст
+    // function count(num) {
+    //     return this*num;
+    // }
+    // //создаем переменную и назначаем ей функцию count через метод bind
+    // const double = count.bind(2);
+    // //При этом (2) - переходит в this, а num будет передаваться в функцию double
+    // console.log(double(3)); // 6
+    // console.log(double(13)); // 26
+    
+    //=================== ПРАКТИКА ================= 
+    //В ХТМЛ есть <button></button> которая ничего не содержит
+    const btn = document.querySelector("button");
+    
+    btn.addEventListener("click", function() { //смотрим чему равен this применимо к нашему элементу при клике
+        console.log(this);  // в консоль получаем сам объект <button></button> тоесть тоже самое что event.target
+        this.style.backgroundColor = "red"; //работает, но чаще пользуются event.target
+    });
+    
+    // //Но если функция будет СТРЕЛОЧНОЙ (у стрелочной нету своего контекста вызова, она берет его от родителя) то 
+    // btn.addEventListener("click", ()=> { //стрелочная пытается всзять контекст у undefined или window в зависимости от "use strict";
+    //     console.log(this);  // в консоль получаем сам ОШИБКУ потому что теряется контекст
+    // }); 
+    
+    // тогда нужно прописывать обращение не через this а через event.target для работоспособности
+    // btn.addEventListener("click", (e)=> { 
+    //      e.target.style.backgroundColor = "red";
+    // });
+    
+    
+    const obj = {
+        num:5,
+        sayNumber: function() {
+            const say = () => {
+                console.log(this);
+            };
+            say();
+        }
+    };
+    obj.sayNumber();
+    //Если бы say была обычно функц. то было бы undefined, но у стрелочной нету своего контекста и она берет контекст у родителя
+    //у метода sayNumber, а метод объект всегда выдает сам объект, поэтому получаем сам объект в консоль
+    //Стрелочные ф. обычно используются для модификации элементов прямо тут на месте и имеет свой синтаксис
+    
+    //запись с классической функцией
+    // const double = function() {
+    //     return a * 2;
+    // }
+    
+    //Запись стрелочной ф. можно сократить если тело функции помещается в одну строку, убираем скобки 
+    const double = (a) => a * 2; // и return(c return будет ошибка) которое подставляется автоматически
+    //а если аргумент один то скобки у него тоже можно сократить  const double = a => a * 2;
+    
+    
+}
+
+{//012 Class (ES6)
+
+}
