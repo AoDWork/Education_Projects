@@ -468,7 +468,9 @@ deleteAdv(reklama);
 // loadScript("js/test.js"); //будут выполнятся последовательно
 // loadScript("js/some.js");
 }
-//---------------------------------------------------------------------------------------------
+
+//================================================ В РАБОТЕ =====================================================================
+
 {//002 Classlist м делегирование событий
     const btns = document.querySelectorAll("button");
 //console.log(btns[0].classList.length); // консоль показала 2 класса <button class="blue some"></button>
@@ -518,7 +520,7 @@ wrapper.addEventListener('click', function(event){
 
 {//003 Создание Табов (вкладок)
     "use strict";
-    //Зада при нажатии на определенную кнопку выводить изображение и описание для нее
+    //Задание - при нажатии на определенную кнопку выводить изображение и описание для нее
     window.addEventListener("DOMContentLoaded", ()=>{
         //получаем переменные
         const tabs = document.querySelectorAll(".tabheader__item"), //<div class="tabheader__item">Премиум</div> кнопки
@@ -569,4 +571,974 @@ wrapper.addEventListener('click', function(event){
         //.fade{animation-name: fade;animation-duration: 1.5s;}@keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}
     
     });
+}
+
+{//004 Время выполнения скриптов, setTimeout & setInterval
+    "use strict";
+    // const timerId = setTimeout(function(){
+    //     console.log("Hello");
+    // }, 1000);
+    
+    // const timerId2 = setTimeout(function(text){
+    //     console.log(text);
+    // }, 2000, "Hello2");
+    
+    // const timerId3 = setTimeout(logger, 3000);
+    // function logger(){
+    //     console.log("text");
+    // }
+    
+    // const btn = document.querySelector(".btn"); //<button class="btn">Animation</button>
+    // let timerId4;
+    // let i = 0;
+    
+    // btn.addEventListener("click", ()=>{
+    //     //clearInterval()
+    //     timerId4 = setInterval(logger, 500); //Присваиваем значение сетинтервала таймеру через 0,5 секунды
+    // });
+    // //clearInterval(timerId4) не сработает потому что значение ему присвоится через 0,5 секунды. А текущее undefined
+    // //изменяем logger
+    // function logger(){
+    //         if (i === 3){
+    //             clearInterval(timerId4);
+    //         }
+    //         console.log("text");
+    //         i++;
+    //     }
+    // //Рекурсия (когда функция сама себя внутри вызывает) 
+    // //setInterval(logger, 500) нарушается если функция logger будет выполнятся например 3 секунды, то следующие повторения
+    // //будут запускаться сразу же без задержки, считая что 500 прошли во время выполнения функции
+    // //решение - рекурсивный setTimeout - работает как setInterval но всегда ждет отведенное ему время
+    // // let id = setTimeout(function log(){
+    // //     console.log("text");
+    // //     id = setTimeout(log, 500);
+    // // }, 500);
+    
+    const btn = document.querySelector(".btn"); //<button class="btn">Animation</button>
+    let timerId4;
+    let i = 0;
+    
+    function myAnimation(){
+        const elem = document.querySelector(".box"); //получаем элемент - квадрат <div class="box"></div>
+        let pos = 0; //переменная позиции
+    
+        const id = setInterval(frame, 10);
+        function frame() {
+            if (pos == 300){ // .box { position: absolute; width: 100px; height: 100px; размер 100 на 100, размер обертки
+                //wrapper { position: relative; width: 400px; height: 400px; 400 на 400 чистой площади получается 300px
+                clearInterval(id);
+            } else{
+                pos++;
+                elem.style.top = pos + "px";
+                elem.style.left = pos + "px";
+            }
+        }
+    
+    }
+    
+    btn.addEventListener("click", myAnimation);
+}
+
+{//005 Date
+    "use strict";
+
+    //const now = new Date();
+    //const now = new Date("2020.1.8");
+    //new Date.parse("2020.1.8"); //работает идентично const now = new Date("2020.1.8");
+    //const now = new Date(2020, 1, 8, 18); //18 часов, месяц и день указываем без 0. 
+    //Часы могут показывать по гринвичу, а месяцы считаются с 0, 0-январь
+    //const now = new Date(0);//Дата (Тайм стемп) хранится в милисекундах. отсчет с начала 1970 года
+    
+    const now = new Date();
+    // console.log(now.getFullYear()); //2022 год
+    // console.log(now.getMonth()); // месяц считаются с 0, 0-январь
+    // console.log(now.getDate()); //число
+    // console.log(now.getHours());//часы
+    // console.log(now.getMinutes());
+    // console.log(now.getDay()); // номер дня в неделе, воскресение - 0, понедельник - 1
+    // //Все значения по местному часовому поясу
+    // console.log(now.getUTCHours()); // часовой пояс +0
+    
+    // console.log(now.getTimezoneOffset()); //разница в минутах между основным час.пояс. и местным
+    // console.log(now.getTime()); //количество милисекунд с начала 1970 года
+    
+    //Для установки даты используем теже методы но с set
+    //console.log(now.setHours(18)); // устанавливаем это время для переменной
+    //console.log(now.setHours(40));//автоисправление
+    //console.log(now);
+    
+    //Для измерения промежутков времени используем бенчмарк
+    let start = new Date();
+    
+    for (let i = 0; i < 100000; i++){
+        let some = i ** 3; // i возводим в степень 3
+    }
+    
+    let end = new Date();
+    alert(`Цикл выполнился за ${end - start} миллисекунд`);
+}
+
+{//006 Timer обратного отсчета
+    "use strict";
+    const deadLine = "2022-01-20"; //Строкой задаем время окончания, такие строки получают еще из инпута на сайтах
+    
+    
+    function getTimeRemaining(endtime){
+        const t = Date.parse(endtime) - Date.parse(new Date()), //Превращает строку в количество милисекунд для математических расчетов
+        //Отнимаем текущую дату и получим число в милисекундах
+              days = Math.floor(t / (1000*60*60*24)),//Переводим в дни, милисек делим на 1 сек*60 в минуте*60 в часе*24 часов в дне
+              //и Math.floor округляет это число
+              hours = Math.floor((t / (1000*60*60) % 24)),//Переводим в часы, и получаем остаток от деления на 24 часа, что бы не было
+              //например 150 часов
+              minutes = Math.floor((t / 1000 / 60) % 60),
+              seconds = Math.floor((t / 1000) % 60);
+              //Для возврата этих локальных переменных из фунции используем ретурн и выводим объект
+              return{
+                "total": t,
+                "days": days,
+                "hours": hours,
+                "minutes": minutes,
+                "seconds": seconds
+              };
+    }
+    
+    //Функция помощник для подставления 0 если число часов/минут меньше 10
+    function getZero(num) {
+        if (num >=0 && num <10){
+            return `0${num}`;
+        }else{
+            return num;
+        }
+    }
+    
+    //функция Устанавливает время на страницу
+    function setClock(selector, endtime){
+        //получаем элементы со страницы
+        const timer = document.querySelector(selector),
+              days = timer.querySelector("#days"), //<span id="days">12</span>
+              hours = timer.querySelector("#hours"),
+              minutes = timer.querySelector("#minutes"),
+              seconds = timer.querySelector("#seconds"),
+              timeInterval = setInterval(updateClock, 1000); //запускаем функцию каждую секунду
+        
+        updateClock(); //Запускаем вручную что бы пофиксить второй баг
+        //функция обновления таймера
+        function updateClock () {
+            const t = getTimeRemaining(endtime); //в переменную получаем объект из функции
+    
+            days.innerHTML = getZero(t.days);
+            hours.innerHTML = getZero(t.hours);
+            minutes.innerHTML = getZero(t.minutes);
+            seconds.innerHTML = getZero(t.seconds);
+    
+            //Останавливаем таймер если время вышло
+            if(t.total <=0){
+                clearInterval(timeInterval);
+            }
+        }
+    }
+    //Запускаем таймер в селектор подставляем класс элемента в ендтайм дату которую задаем или откуда то получаем
+    setClock(".timer", deadLine);
+    
+                /* <div class="timer">
+                        <div class="timer__block">
+                            <span id="days">12</span>
+                            дней
+                        </div>
+                        <div class="timer__block">
+                            <span id="hours">20</span>
+                            часов
+                        </div>
+                        <div class="timer__block">
+                            <span id="minutes">56</span>
+                            минут
+                        </div>
+                        <div class="timer__block">
+                            <span id="seconds">20</span> */
+    
+    //Два бага нужно исправить 1) - если часов и минут меньше 10 то нужно подставлять 0 (09), 2) - при обновлении страницы таймер
+    //запускается только через секунду и мы видим таймер из верстки
+}
+
+{//007 Параметры документа, окна (document/window/screen)
+    'use strict';
+    const box = document.querySelector(".box");
+    
+    // clientWidth - включает в себя width + padding без бордеров
+    const width = box.clientWidth; //в css width: 400px + 2 шт padding: 10px с боков - 15px скролл = 405
+    let height = box.clientHeight; // height: 350px;
+    
+    //console.log(width, height); //405, 355 
+    
+    //Если в css используется box-sizing: border-box; включает padding в середину box
+    console.log(width, height); //385, 335 
+    
+    const owidth = box.offsetWidth; //свойство из css width: 400px 
+    let oheight = box.offsetHeight;
+    console.log(owidth, oheight); //400, 350
+    
+    const swidth = box.scrollWidth; // размер - скролл
+    let sheight = box.scrollHeight; // размер всего текста(который можно скролить в этом окне)
+    console.log(swidth, sheight); //384, 1430 
+    
+    let btn = document.querySelector("button");
+    btn.addEventListener("click", ()=>{
+        //box.style.height = sheight + "px"; //показываем весь текст
+        //box.style.width = 800 + "px";
+        console.log(box.scrollTop); //показывает сколько проскроллил пользователь текста вверху(над скролом) в пикселях
+    });
+    
+    //Метод получающий все координаты элемента 
+    console.log(box.getBoundingClientRect()); // bottom: 400 height: 350 left: 440 right: 840 top: 50 width: 400 x: 440 y: 50
+    //При этом в JS расчет идет от левого верхнего угла а в css от границы, например: css right отсчитывался бы от правой границы окна
+    //до правой границы элем., а в JS right отсчитывается от левой границы окна до правой границы элемента
+    //bottom css - от низа окна до элем, а в JS от верхней окна до нижней элемента bottom: 400 = высота 350 + margin-top: 50px;
+    console.log(box.getBoundingClientRect().top); //значение top - 50
+    
+    //Метод опеределяет какие стили css были применены(расчитаны/computed) на элем. изначально до применения скрипта. Например display.
+    //Можно только получить это значени но не изменить его в css, изменяем стили только инлайн которые в верстке, перебивая css
+    const style = window.getComputedStyle(box); // определяем по классу 
+    console.log(style.display); //block
+    
+    //Для обращения к свойствам document нужно обращатся к его елементу
+    console.log(document.documentElement.scrollTop);
+    //scrollTop/csrollLeft можно изменять ВРУЧНУЮ в консоли а другие нельзя, таким образом можно сделать стрелочку для быстрого
+    //перехода, есть еще методы window.scrollBy(0, 400) - скролит на 400 относительно текущего положения и 
+    //window.scrollTo(0, 400) - скролит на 400 относительно всей страницы. 0 - положение по горизонтали
+}
+
+{//008 Создание модального окна
+    "use strict";
+
+    //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
+    //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
+    //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
+    //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
+    const modal = document.querySelector(".modal"),
+          modalTrigger = document.querySelectorAll("[data-modal]"), //квадратные скобки что бы обратится к аттрибуту
+          modalCloseBtn = document.querySelector("[data-close]");
+    //Проверяем функционал выбирая только первую кнопку modalTrigger = document.querySelector("[data-modal]"),
+    //добавляем и убираем стили которые раньше прописали в css .show{display:block}.hide{display:none}
+    //.fade{animation-name: fade;animation-duration: 1.5s;}@keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}     
+    
+    // modalTrigger.addEventListener("click", ()=>{
+    //     modal.classList.add("show");
+    //     modal.classList.remove("hide");
+    //     document.body.style.overflow = "hidden";
+    // });
+    
+    // modalCloseBtn.addEventListener("click", ()=>{
+    //     modal.classList.add("hide");
+    //     modal.classList.remove("show");
+    //     document.body.style.overflow = ""; //оставляем пустые скобки и браузер сам возвращает дефолт для прокрутки страницы
+    // });
+    
+    //Страницу можно пролистывать не закрывая окно, многим заказчикам это не нужно. Нужно зафиксировать страницу скрывая скролл
+    // document.body.style.overflow = "hidden";
+    
+    //Делаем через toggle контролируя свойство display через стиль show
+    // modalTrigger.addEventListener("click", ()=>{
+    //     modal.classList.toggle("show"); //если класса нет - добавит, если есть уберет
+    //     document.body.style.overflow = "hidden";
+    // });
+    
+    // modalCloseBtn.addEventListener("click", ()=>{
+    //     modal.classList.toggle("show");
+    //     document.body.style.overflow = ""; //оставляем пустые скобки и браузер сам возвращает дефолт для прокрутки страницы
+    // });
+    
+    //Создаем функцию для перебора кнопок при querySelectorAll
+    modalTrigger.forEach(btn =>{
+        btn.addEventListener("click", ()=>{
+            modal.classList.add("show");
+            modal.classList.remove("hide");
+            document.body.style.overflow = "hidden";
+        });
+    });
+    
+    // modalCloseBtn.addEventListener("click", ()=>{
+    //     modal.classList.add("hide");
+    //     modal.classList.remove("show");
+    //     document.body.style.overflow = ""; 
+    // });
+    
+    //реализуем закрытие окна по клику на подложку(темную часть) и по кнопке Esc клавиатуры
+    //<div class="modal"> - подложка (обертка) (темная)
+    //   <div class="modal__dialog"> - область окна (светлая) - вложена в подложку(обертку)
+    //єл. подложки в переменной modal
+    // modal.addEventListener("click", (e)=>{
+    //     if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+    //         modal.classList.add("hide");
+    //         modal.classList.remove("show");
+    //         document.body.style.overflow = ""; 
+    //     }
+    // });
+    
+    //Можно встретить такой код, но это НЕ везде будет работать, строго привязываемся к названию event, нарушаем логику кода
+    //нужно четко говорить что (e) мы используем
+    // modal.addEventListener("click", ()=>{
+    //     if(event.target === modal){
+    
+    //Правило Don't Repeat yourself (DRY) если код повторяется нужно его вынести в одну функцию
+    function closeModal(){
+        modal.classList.add("hide");
+        modal.classList.remove("show");
+        document.body.style.overflow = ""; 
+    }
+    
+    modalCloseBtn.addEventListener("click", closeModal); // тут просто передаем функцию
+    
+    modal.addEventListener("click", (e)=>{
+        if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+            closeModal();          // тут вызываем функцию
+        }
+    });
+    
+    //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
+    document.addEventListener("keydown", (e)=>{
+        if(e.code === "Escape" && modal.classList.contains("show")){//если код события строго равен Escape(обозначение кнопки Esc)
+            closeModal();           // вызываем функцию
+        }
+    });
+    //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+}
+
+{//009 Модификация модального окна
+    "use strict";
+
+    //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
+    //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
+    //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
+    //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
+    const modal = document.querySelector(".modal"),
+          modalTrigger = document.querySelectorAll("[data-modal]"), //квадратные скобки что бы обратится к аттрибуту
+          modalCloseBtn = document.querySelector("[data-close]");
+    
+    
+    //Правило Don't Repeat yourself (DRY) если код повторяется нужно его вынести в одну функцию
+    function closeModal(){
+        modal.classList.add("hide");
+        modal.classList.remove("show");
+        document.body.style.overflow = ""; 
+    }
+    
+    modalCloseBtn.addEventListener("click", closeModal); // тут просто передаем функцию
+    
+    modal.addEventListener("click", (e)=>{
+        if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+            closeModal();          // тут вызываем функцию
+        }
+    });
+    
+    //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
+    document.addEventListener("keydown", (e)=>{
+        if(e.code === "Escape" && modal.classList.contains("show")){//если код события строго равен Escape(обозначение кнопки Esc)
+            closeModal();           // вызываем функцию
+        }
+    });
+    //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+    
+    //<<<<<<<009 Модальное окно должно появится через определенное время или когда пользователь долистал страницу до конца >>>>>
+    // const modalTimerId = setTimeout();
+    
+    //Создаем функцию для открытия окна преобразуя modalTrigger.forEach(btn =>{
+    function openModal() {
+        modal.classList.add("show");
+        modal.classList.remove("hide");
+        document.body.style.overflow = "hidden";
+        //Дорабатываем openModal что бы если пользователь сам открыл окно, таймер отменялся
+        clearInterval(modalTimerId); //Timeout отменяет также как и интервал
+    }
+    
+    modalTrigger.forEach(btn =>{
+        btn.addEventListener("click", openModal);
+    });
+    
+    const modalTimerId = setTimeout(openModal, 5000);
+    
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
+            openModal();
+            window.removeEventListener("scroll", showModalByScroll);
+        } 
+    }
+    
+    //Делаем что бы окно показывалось при долистывании страницы до конца
+    // window.addEventListener("scroll", ()=>{
+    //     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
+    //         openModal();
+    //     }   //pageYOffset - проскролленая часть + clientHeight - видимая часть на мониторе будут больше или равны
+    //         // или больше scrollHeight все области скролла, минус 1 пиксель из-за особенности некоторых браузеров и мониторов
+    // }//,{once: true});
+    
+    //что бы не запускалось много раз окно при доскроле до конца страницы можно использовать настройки обработчика событий
+    //после функции можно добавить {once: true}, но оно в данном случае не сработает потому что обработчик повешен на скролл
+    //тоесть оно срабатывает при скроле, но условия не выполняются и окно не появляется, а внизу страницы не запускается
+    //потому что уже как бы сработало 
+    //ВТОРОЙ способ будем удалять обработчик события с виндовся после 1 разового выполнения removeEventListener для этого
+    //создаем функцию showModalByScroll и там прописываем ремув, и модифицируем window.addEventListener
+    window.addEventListener("scroll", showModalByScroll);
+    
+}
+
+{//010 Функции конструкторы
+    "use strict";
+    //Функция - объект и по идее в нее можно записать какие то методы и свойства
+    
+    //длинный УСТАРЕВШИЙ синтаксис для создания типов данных начинается с ключевого слово new
+    const num = new Number(3);
+    //console.log(num);
+    //получили Number  [[Prototype]]: Number  [[PrimitiveValue]]: 3 , намбер с велью 3
+    //тоже можно сделать и с функцией
+    const func = new Function(3);
+    //console.log(func);
+    //ƒ anonymous() {3}
+    //Если такая функция будет содержать методы и свойства то она создаст нам новый объект
+    
+    //<<<<<< НОВЫЙ синтаксис >>>>>>>
+    function User(name, id) {
+        this.name = name;
+        this.id = id;
+        this.human = true;
+        this.hello = function() {
+            console.log(`Hello ${this.name}`);
+        };
+    }
+    //Наша функция стала КОНСТРУКТОРОМ с помощью нее можно создавать новые (ОБЪЕКТЫ) пользователей
+    const ivan = new User ("Ivan", 28);
+    const alex = new User ("Alex", 20);
+    console.log(ivan); // User {name: 'Ivan', id: 28, human: true}
+    console.log(alex);
+    alex.hello();
+    
+    //с помощью prototype можно добавлять свойства и методы в конструктор и они наследуются потомками
+    //используется когда нету доступа к конструктору или его нельзя менять но нужно немного модифицировать
+    User.prototype.exit = function(){
+        console.log(`Пользователь ${this.name} ушел`);
+    };
+    //Этот метод появится у всех потомков которые созданы ПОСЛЕ его объявления
+    alex.exit();
+    
+    //Это был ЕС5, в ЕС6 появились классы - синтаксический сахар(красивая обертка) их удобнее использовать
+    class User {
+        constructor(name, id){
+            this.name = name;
+            this.id = id;
+            this.human = true;
+        }
+        hello() {
+            console.log(`Hello ${this.name}`)
+        }
+        exit() {
+            console.log(`Пользователь ${this.name} ушел`)
+        }
+    }
+}
+
+{//011 Контекст вызова функции this.
+    "use strict";
+    //контекст - то что окружает функцию и в каких условиях она вызывается
+    //Функция может вызыватся 4мя способами и в каждом контекст вызова отличается
+    
+    //============ 1 =============
+    // function showThis() {
+    //     console.log(this);
+    // }
+    // showThis(); //без "use strict" this = window (глобальный обект), с "use strict" будет undefined
+    
+    //практическая задача - что выведет функция и как исправить если не работает
+    // function showThis2(a, b) {
+    //     console.log(this);
+    //     function sum(){
+    //         console.log(this);
+    //         return this.a + this.b;
+    //     }
+    //     console.log(sum());
+    // }
+    // showThis2(4, 5);
+    //Будет ошибка в "use strict", а без него выдаст NaN, потому что sum сслается на window или undefined, и у них нету а или b 
+    //Исправляется код удалением this из a и b, тогда sum не найдя их в себе ищет в функции выще благодаря замыканию функций
+    
+    //============ 2 ============= Метод объекта
+    // const obj = {
+    //     a: 20,
+    //     b: 15,
+    //     sum: function() {
+    //         console.log(this);
+    //     }
+    // };
+    // obj.sum();
+    //Контекст у методов объекта - сам объект
+    
+    // const obj = {
+    //     a: 20,
+    //     b: 15,
+    //     sum: function() {
+    //         function shout() {
+    //             console.log(this);
+    //         }
+    //         shout();
+    //     }
+    // };
+    // obj.sum();
+    //при таком методе будет возвращено с "use strict" будет undefined без - window, 
+    //потому что это уже не метод объекта а функция внутри метода
+    
+    //============ 3 ============= Функции конструкторы
+    // function User(name, id) {
+    //     this.name = name;
+    //     this.id = id;
+    //     this.human = true;
+    
+    //     this.hello = function() {
+    //         console.log(`Hello ${this.name}`);
+    //     };
+    // }
+    
+    // let ivan = new User("Ivan", 23);
+    // ivan.hello();
+    //this в конструкторах и классах - это новый экземпляр объекта, в данном случае ссылается на ivan
+    
+    //============ 4 ============= ручное присвоение this любой функции: call, apply, bind
+    // function sayName() {
+    //     console.log(this);
+    //     console.log(this.name);
+    // }
+    
+    // const user = {
+    //     name: "John"
+    // };
+    
+    // sayName.call(user);// получаем объект и второй строчкой John
+    // sayName.apply(user);//работает также как call, разница в синтаксисе при передаче аргументов
+    
+    // function sayName(surname) {
+    //     console.log(this);
+    //     console.log(this.name + surname);
+    // }
+    
+    // const user = {
+    //     name: "John"
+    // };
+    
+    // sayName.call(user, "Smith");    //разница в синтаксисе при передаче аргументов - передем строкй
+    // sayName.apply(user, ["Smith"]); //разница в синтаксисе при передаче аргументов - передем массивом
+    
+    // //третий метод bind - создает НОВУЮ ункцию и под нее подвязывает контекст
+    // function count(num) {
+    //     return this*num;
+    // }
+    // //создаем переменную и назначаем ей функцию count через метод bind
+    // const double = count.bind(2);
+    // //При этом (2) - переходит в this, а num будет передаваться в функцию double
+    // console.log(double(3)); // 6
+    // console.log(double(13)); // 26
+    
+    //=================== ПРАКТИКА ================= 
+    //В ХТМЛ есть <button></button> которая ничего не содержит
+    const btn = document.querySelector("button");
+    
+    btn.addEventListener("click", function() { //смотрим чему равен this применимо к нашему элементу при клике
+        console.log(this);  // в консоль получаем сам объект <button></button> тоесть тоже самое что event.target
+        this.style.backgroundColor = "red"; //работает, но чаще пользуются event.target
+    });
+    
+    // //Но если функция будет СТРЕЛОЧНОЙ (у стрелочной нету своего контекста вызова, она берет его от родителя) то 
+    // btn.addEventListener("click", ()=> { //стрелочная пытается всзять контекст у undefined или window в зависимости от "use strict";
+    //     console.log(this);  // в консоль получаем сам ОШИБКУ потому что теряется контекст
+    // }); 
+    
+    // тогда нужно прописывать обращение не через this а через event.target для работоспособности
+    // btn.addEventListener("click", (e)=> { 
+    //      e.target.style.backgroundColor = "red";
+    // });
+    
+    
+    const obj = {
+        num:5,
+        sayNumber: function() {
+            const say = () => {
+                console.log(this);
+            };
+            say();
+        }
+    };
+    obj.sayNumber();
+    //Если бы say была обычно функц. то было бы undefined, но у стрелочной нету своего контекста и она берет контекст у родителя
+    //у метода sayNumber, а метод объект всегда выдает сам объект, поэтому получаем сам объект в консоль
+    //Стрелочные ф. обычно используются для модификации элементов прямо тут на месте и имеет свой синтаксис
+    
+    //запись с классической функцией
+    // const double = function() {
+    //     return a * 2;
+    // }
+    
+    //Запись стрелочной ф. можно сократить если тело функции помещается в одну строку, убираем скобки 
+    const double = (a) => a * 2; // и return(c return будет ошибка) которое подставляется автоматически
+    //а если аргумент один то скобки у него тоже можно сократить  const double = a => a * 2;
+    
+    
+}
+
+{//012 Classes (ES6)
+    "use strict";
+    //Классы - красиваяобертка ф. конструкторов (синтаксический сахар)
+    //название класса ВСЕГДА с БОЛЬШОЙ буквы
+    //=== Принципы ООП ====
+    //1)=== АБСТРАКЦИЯ ==== когда отделяем концепцию от ее экземпляра. Rectangle - концепция(шаблон), square и long - экземпляры
+    class Rectangle {
+        constructor(height, width) {
+            this.height = height;
+            this.width = width;
+        }
+    
+        calcArea(){
+            return this.height * this.width;
+        }
+    } 
+    
+    // const square = new Rectangle(10, 10);
+    // const long = new Rectangle(20, 100);
+    
+    // console.log(square.calcArea());
+    // console.log(long.calcArea());
+    
+    
+    //2) === НАСЛЕДОВАНИЕ === способность объекта или класса базироваться на другом объекте или классе (extends - наследуется)
+    class ColoredRectangleWithText extends Rectangle {
+        constructor(height, width, text, bgColor) {
+            super(height, width); //метод вызывает суперконструктор родителя, тот код который был у родителя в конструкторе и методы 
+                     // super() - должен быть в конструкторе ВСЕГДА на ПЕРВОМ месте
+            this.text = text;
+            this.bgColor = bgColor;
+        }
+    
+        showMyProps() {
+            console.log(`Текст: ${this.text}, цвет ${this.bgColor}`);
+        }
+    }
+    
+    const div = new ColoredRectangleWithText(25, 10, "Hello", "red");
+    div.showMyProps(); // Текст: Hello, цвет red
+    console.log(div.calcArea()); //250
+}
+
+{//013 Use Classes in real work (шаблонизация, создание єлементов на странице через классы)
+    "use strict";
+
+    //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
+    //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
+    //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
+    //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
+    const modal = document.querySelector(".modal"),
+          modalTrigger = document.querySelectorAll("[data-modal]"), //квадратные скобки что бы обратится к аттрибуту
+          modalCloseBtn = document.querySelector("[data-close]"),
+          btnCall = document.querySelector(".btn_min");
+    
+    
+    //Правило Don't Repeat yourself (DRY) если код повторяется нужно его вынести в одну функцию
+    function closeModal(){
+        modal.classList.add("hide");
+        modal.classList.remove("show");
+        document.body.style.overflow = ""; 
+    }
+    
+    modalCloseBtn.addEventListener("click", closeModal); // тут просто передаем функцию
+    
+    modal.addEventListener("click", (e)=>{
+        if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+            closeModal();          // тут вызываем функцию
+        }
+    });
+    
+    //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
+    document.addEventListener("keydown", (e)=>{
+        if(e.code === "Escape" && modal.classList.contains("show")){//если код события строго равен Escape(обозначение кнопки Esc)
+            closeModal();           // вызываем функцию
+        }
+    });
+    //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+    
+    //<<<<<<<009 Модальное окно должно появится через определенное время или когда пользователь долистал страницу до конца >>>>>
+    // const modalTimerId = setTimeout();
+    
+    //Создаем функцию для открытия окна преобразуя modalTrigger.forEach(btn =>{
+    function openModal() {
+        modal.classList.add("show");
+        modal.classList.remove("hide");
+        document.body.style.overflow = "hidden";
+        //Дорабатываем openModal что бы если пользователь сам открыл окно, таймер отменялся
+        clearInterval(modalTimerId); //Timeout отменяет также как и интервал
+    }
+    
+    modalTrigger.forEach(btn =>{
+        btn.addEventListener("click", openModal);
+    });
+    
+    //const modalTimerId = setTimeout(openModal, 5000);
+    
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
+            openModal();
+            window.removeEventListener("scroll", showModalByScroll);
+        } 
+    }
+    
+    //Делаем что бы окно показывалось при долистывании страницы до конца
+    // window.addEventListener("scroll", ()=>{
+    //     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
+    //         openModal();
+    //     }   //pageYOffset - проскролленая часть + clientHeight - видимая часть на мониторе будут больше или равны
+    //         // или больше scrollHeight все области скролла, минус 1 пиксель из-за особенности некоторых браузеров и мониторов
+    // }//,{once: true});
+    
+    //что бы не запускалось много раз окно при доскроле до конца страницы можно использовать настройки обработчика событий
+    //после функции можно добавить {once: true}, но оно в данном случае не сработает потому что обработчик повешен на скролл
+    //тоесть оно срабатывает при скроле, но условия не выполняются и окно не появляется, а внизу страницы не запускается
+    //потому что уже как бы сработало 
+    //ВТОРОЙ способ будем удалять обработчик события с виндовся после 1 разового выполнения removeEventListener для этого
+    //создаем функцию showModalByScroll и там прописываем ремув, и модифицируем window.addEventListener
+    window.addEventListener("scroll", showModalByScroll);
+    
+    //013
+    class MenuCard{
+        constructor(src, alt, title, descr, price, parentSelector){ //alt - будет показываться если картинки нету
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.descr = descr;
+            this.price = price;
+            this.parent = document.querySelector(parentSelector);
+            this.transfer = 28; //пока записываем статически курс валют
+            this.changeToUAH(); // вызываем метод для конвертирования, он выполниться перед методом создания верстки
+        }
+    
+        changeToUAH() { // Метод для конвертирования цены из долларов в гривну когда эта информация будет приходить с сервера
+            this.price = this.price * this.transfer;
+        }
+    
+        render() { //метод для формирования верстки. 
+            const element = document.createElement("div"); //создаем элемент div
+            //Вставлем верстку из хтмл в innerHTML созданного div
+            element.innerHTML = `
+                <div class="menu__item">
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>
+                </div>
+            `;
+            //Для размещения этой структуры нужно знать родителя, добавляем в принимаемые аргументы parentSelector, 
+            //он может быть разный в зависимости от создаваемой карты MenuCard, сразу получаем его элемент
+            this.parent.append(element);
+        }
+    }
+    //Можно использовать вызов объекта на месте, без присвоения его к переменной, но тогда в будущем не сможем к нему обратиться
+    new MenuCard(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"”',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        9,
+        ".menu .container"
+    ).render();
+    //заменяем карточки которые были в верстке и удаляем их оттуда
+    new MenuCard(
+        "img/tabs/elite.jpg",
+        "elite",
+        'меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        9,
+        ".menu .container"
+    ).render();
+    
+    new MenuCard(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        9,
+        ".menu .container"
+    ).render();
+    
+    
+    // const testCard = new MenuCard(
+    //     "img/tabs/elite.jpg",
+    //     "elite",
+    //     'меню “Премиум”',
+    //     'В меню “Премиум” мы ...',
+    //     100,
+    //     ".menu .container");
+    // testCard.render();
+    //btnCall.addEventListener("click", testCard.render); //- через кнопку почему то не работает
+    
+    //Структура HTML верстки. Обращаемся к самому верхнему элементу .menu а потом к его div .container
+    /* <div class="menu">
+            <h2 class="title">Наше меню на день</h2>
+    
+            <div class="menu__field">
+                <div class="container">
+                    <div class="menu__item"></div> */
+}
+
+{//014 Rest оператор и параметры по умолчанию (ES6)
+    "use strict";
+    //Spread - оператор разворота, берет сущность и раскладывает на отдельные элементы
+    //Rest - объединяет отдельные элементы в один массив, обратен spread синтаксис такой же но в других условиях.
+    // записывается как ...name(name-любой) всегда последним аргументом, это если мы не знаем сколько еще будет аргументов (опциональных)
+    const log = function(a, b, ...rest) {
+        console.log(a, b, ...rest);
+    };
+    
+    log("basic", "else", "operator", "usage"); // basic else [operator usage]
+    
+    //Параметры по умолчанию
+    // function calcOrDouble(number, basis) {
+    //     basis = basis || 2;
+    //     console.log(number * basis);
+    // }
+    // calcOrDouble(3, ); // но если второго аргумента не будет то будет ошибка, и что бы этого избежать раньше делали basis = basis || 2;
+    // в некоторых случаях такая проверка приводила к ошибкам, и поэтому в ES6 можно присвоить 2 сразу в объявлении
+    function calcOrDouble(number, basis = 2) {
+        console.log(number * basis);
+    }
+    calcOrDouble(3, );
+    
+    //Переходим в файл со скриптом о карточках
+    //=========  014 используем rest оператор =============
+//В методе render мы создаем лишний div, что бы от этого избавится нужно класс "menu__item" присвоить этому div 
+//но что бы нам присвоить еще классы этому div которые могут появится в будущем, можно их задать через rest
+class MenuCard{
+    constructor(src, alt, title, descr, price, parentSelector, ...classes){ //alt - будет показываться если картинки нету
+        this.src = src;
+        this.alt = alt;
+        this.title = title;
+        this.descr = descr;
+        this.price = price;
+        this.classes = classes;
+        this.parent = document.querySelector(parentSelector);
+        this.transfer = 28; 
+        this.changeToUAH(); 
+    }
+
+    changeToUAH() { 
+        this.price = this.price * this.transfer;
+    }
+
+    render() { //метод для формирования верстки. 
+        const element = document.createElement("div"); 
+        //Задаем параметр класса по умолчанию, в случае если его не будет.Проверку выполняе на количество элементов, так как rest
+        //все равно сформирует пустой массив который в условии будет интерпретироваться как true. Также ведут себя qeurySelectorAll,
+        //getElementsByClassName и т.д. когда мы пытаемся получить эл. со страницы и их не находит, формируется пустой массив
+        if(this.classes.length === 0) {
+            this.element = "menu__item"; //присваиваем класс в пустой массив для возможной дальнейшей работы с ним
+            element.classList.add("menu__item");
+        } else {
+             //перебираем массив и выдергиваем каждое название класса и присваи ваем его как класс сласслисту элемента
+            this.classes.forEach(className => element.classList.add(className)); 
+        }
+       
+        //убираем <div class="menu__item">, и присваивам его при задании новой карточки последним аргументом
+        //Записываем без точки потому что присвоние через classList
+        element.innerHTML = `
+                <img src=${this.src} alt=${this.alt}>
+                <h3 class="menu__item-subtitle">${this.title}</h3>
+                <div class="menu__item-descr">${this.descr}</div>
+                <div class="menu__item-divider"></div>
+                <div class="menu__item-price">
+                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                </div>
+        `;
+        this.parent.append(element);
+    }
+}
+
+new MenuCard(
+    "img/tabs/vegy.jpg",
+    "vegy",
+    'Меню "Фитнес"”',
+    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+    9,
+    ".menu .container",
+).render();
+//заменяем карточки которые были в верстке и удаляем их оттуда
+new MenuCard(
+    "img/tabs/elite.jpg",
+    "elite",
+    'меню “Премиум”',
+    'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+    14,
+    ".menu .container",
+    "menu__item"
+).render();
+
+new MenuCard(
+    "img/tabs/post.jpg",
+    "post",
+    'Меню "Постное"',
+    'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+    12,
+    ".menu .container",
+    "menu__item"
+).render();
+}
+
+//=============================================== ПРОДВИНУТЫЙ ==================================================================
+
+{//001 Local servers
+//Разновидности серверов: Простые - выполняют одну задачу или несколько простых(LiveServer в VSCode, http server, JSON server),
+// Комплексные - выполняют всё
+//Самые популярные HTTP запросы  Get и Post. Простые сервера принимают только Get запросы.
+//AJAX серверная технелогоия позволяет отправлять Гет и Пост запросы без перезагрузки страницы
+}
+
+{//002 JSON, глубокое клонирование объектов
+    "use strict";
+    //JSON текстовый формат обмена данных. В файлах с расширениями JSON можно хранить данные в формате ключ - значение.
+    //Главное правило - все строки должны быть в двойных кавычках
+    
+    // const persone = {
+    //     name: "Alex",
+    //     tel: "+7777744444"
+    // };
+    
+    //Что бы передать этот объект на сервер нужно его преобразовать в один из вариантов который можно транспортировать.
+    //Посмотреть основы протокола http. 
+    //В уроках будем разбирать стандартный URL encoded  - форма просто отправляется с сайта с перезагрузко страницы(даже без скрипта)
+    //Передача объекта form - data  и формат данных JSON
+    
+    //Все современные браузеры имеют встроенные инструменты для работы с даннми JSON это свойства и методы
+    //методов два 
+    
+    //1) stringify - превращает объекты в нужный формат 
+    // console.log(JSON.stringify(persone)); // {"name":"Alex","tel":"+7777744444"}
+    
+    // //2)parse превращает информацию с сервера JSON в привычный формат данных
+    // console.log(JSON.parse(JSON.stringify(persone))); // получаем объект {name: 'Alex', tel: '+7777744444'} с которым можно работать
+    
+    //данные в JSON занимают мало метса и легко читаются, до него был XML та не было таких преимуществ
+    
+    //============================ Клонирование объектов. ГЛУБОКИЕ КОПИИ ===================================
+    const persone = {
+        name: "Alex",
+        tel: "+7777744444",
+        parents: {
+            mom: "Olga",
+            dad: "Mike"
+        }
+    };
+    //такая структура превращает объект в формат JSON потом парсит обратно и отвязывает от исходного объекта, присваивая НОВЫЙ переменной
+    const clone = JSON.parse(JSON.stringify(persone)); 
+    clone.parents.mom = "Ann" ;
+    console.log(persone);
+    console.log(clone);
+}
+
+{//003 AJAX и общение с сервером
+
 }
