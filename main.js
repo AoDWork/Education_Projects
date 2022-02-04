@@ -1,4 +1,374 @@
 "use strict";
+{//Методы от Snieda 
+    "use strict";
+
+    //++++++++++++++++++++++++ СТРОКИ ++++++++++++++++++++
+    
+    let str = 'Hello , World !';
+    
+    str.length // 15 Длина строки ( 15 элементов) последний элемент под индексом 14
+    
+    str.charAt(0); // 'H' - Возвращает букву под индексом 0
+    str[0]; // 'H'
+    
+    str.charCodeAt(0); // 72 - код буквы
+    
+    str.concat (33); // 'Hello , World !33' - присоединяет к строке
+    str.concat ([1,2,4]); // 'Hello , World !1,2,4'
+    str.concat ({a:1, b:2}); //'Hello , World ![object Object]'
+    
+    str.startsWith('Hello') //true  Проверяет содержит ли строка это выражение в начале
+    str.startsWith('ello'); //false
+    str.startsWith('hello') //false регистр влияет
+    str.startsWith('Hello', 1) //false Можхно задать начальный индекс поиска
+    
+    str.endsWith("!"); // true, Проверяет с конца строки, можно задать индекс
+    str.endsWith("!", 10); //false
+    
+    str.includes('Hello') //true Проверяет содержится ли где то в строке такая подстрока
+    str.includes('o') // true  Ищет по всей строке, а не только сначала
+    str.includes('o', 13) //false можно указать индек с какого начинать искать
+    
+    str.indexOf('o') //4 Возвращает индекс первого совпадения
+    str.indexOf('o', 5) //9 Можно задать начальный индекс, тогда вернет индекс следующего совпадения
+    str.indexOf('y') // -1  При отсутствии совпадений возвращает минус 1
+    
+    str.slice() //'Hello , World !' - Обрезает строку и возвращает обрезанную. Если не указать индексы вернет всю строку
+    str.slice(0, 5) //'Hello' Обрезает с 0 до 5го индекса НЕ включая 5й индекс
+    str.slice(-7, -3) //'Worl' Принимает отрицательные числа
+    str.slice(7) //' World !' указывая первый индекс, строку будет резаться до конца
+    
+    str.split() // ['Hello , World !'] - возвращает массив, разделенный заданным разделителем. Тут нету разделителя. 1 элем
+    str.split('') //['H', 'e', 'l', 'l', 'o', ' ', ',', ' ', 'W', 'o', 'r', 'l', 'd', ' ', '!'] Разделитель - пустая строка. 15 элем
+    str.split(' ') // ['Hello', ',', 'World', '!'] Разделитель - пробел. 4 элемента
+    str.split(',') // ['Hello ', ' World !'] Разделитель - запятая.  2 элемента
+    str.split('o') // ['Hell', ' , W', 'rld !'] 3 элемента
+    
+    str.substr(1, 8); //'ello , W' Обрезает строку и возвращает обрезанную. 
+    //Первый аргумент - начальный индекс, второй - количество символов которые нужно вернуть
+    
+    str.toLowerCase()  // 'hello , world !'  Возвращает новую строку в нижнем регистре      НЕ ИЗМЕНЯЕТ исходную строку.
+    str.toUpperCase()  // 'HELLO , WORLD !'  В верхнем  регистре.                           НЕ ИЗМЕНЯЕТ исходную строку.
+    
+    
+    let str2 = '     Hello , World !     ';
+    
+    str2.trim() //'Hello , World !'  Убирает пробелы в начале и в конце текста
+    str2.trimStart() //'Hello , World !     ' - Только в начале
+    str2.trimEnd() // '     Hello , World ! ' - Только в конце
+    
+    
+    
+    //++++++++++++++++++++++ МАССИВЫ ++++++++++++++++++++
+    
+    let arr = ["one", 'two', 'three', 'four', 'five'];
+    
+    arr.push(100) // 6 - Добавляет переданные элементы в КОНЕЦ массива, прадварительно превращая его в строку
+    // ['one', 'Two', 'Three', 'Four', 'Five', 100] -                                    ***ИЗМЕНЯЕТ исходный массив
+    //console.log(arr.push(['7'])); // 7 Возвращает количество эллементов
+    //['one', 'two', 'three', 'four', 'five', 100, Array(1)]
+    arr.push({a:1}) //8 ['one', 'two', 'three', 'four', 'five', 100, Array(1), {…}]     ***ИЗМЕНЯЕТ исходный массив
+    
+    arr.pop() //{a: 1} - Удаляет один последний элемент и возвращает его значение       ***ИЗМЕНЯЕТ исходный массив
+    
+    arr.unshift(1, 2) //9 - Добавляет элементы в начало массива, возвращает колличество элем.  
+    //[1, 2, 'one', 'two', 'three', 'four', 'five', 100, Array(1)]                       ***ИЗМЕНЯЕТ исходный массив
+    
+    arr.shift(); //1   Удаляет первый элемент и возвращает его
+    //[ 2, 'one', 'two', 'three', 'four', 'five', 100, Array(1)]                          ***ИЗМЕНЯЕТ исходный массив
+    
+    arr.concat([1, 2]); // Добавляет эл. в конец массива как push, но если добавим массив то он добавляет его элементы, а не сам массив 
+    //(10) [2, 'one', 'two', 'three', 'four', 'five', 100, Array(1), 1, 2] НЕ ИЗМЕНЯЕТ исходный массив, а возвращает НОВЫЙ
+    
+    
+    
+    // ++++++++ Методы ПЕРЕБОРА массива forEach, map, some, every, find, findIndex, filter, reduce +++++++++++++++
+    //Каждый из этих методов проходится по массиву от начал и до конца и принимает коллбэк функцию в качестве параметра(аргумента)
+    arr = [1, 2, 3, 4, 5];
+    
+    // 1) forEach - перебирает эл. массива.  Аргументы el - элемент, ind - индекс, arr - массив. 
+    //              ind и arr - указываем если хотим использовать, имена произвольны.
+    // arr.forEach((el, ind, arr) => {
+    //     console.log(`Element ${el}, Index: ${ind}, Massive: ${arr}`);
+    // })
+    
+    // arr.forEach((elem, index) => {
+    //     console.log(`Element ${elem}, Index: ${index} in this massive`);
+    // })
+    // Element 1, Index: 0 in this massive
+    // Element 2, Index: 1 in this massive
+    // Element 3, Index: 2 in this massive
+    // Element 4, Index: 3 in this massive
+    // Element 5, Index: 4 in this massive
+    
+    
+    // 2) map - обязан вернуть значение поэтому прописываем return. возвращает НОВЫЙ массив, для хранения присваиваем переменной
+    const mapArr = arr.map((el, ind, arr) => {
+        return el * 2 + ind
+    });
+    //mapArr (5) [2, 5, 8, 11, 14]      при этом       arr  (5) [1, 2, 3, 4, 5];
+    
+    
+    // 3) some Проверяет есть ли в массиве заданное условие, если хоть одно истинно возвращает true, если нет false
+    const checkSome = arr.some ((el, ind, arr) => {
+        return el > 1
+    }) // true
+    
+    
+    // 4) every Проверяет истину условия для каждого елем. если хоть один элем. не подходит, прекращает выполнение и возвращает false
+    const checkEvery = arr.every ((el, ind, arr) => {
+        return el > 1
+    }) // false
+    
+    
+    // 5) find - позволяет найти эл. в массиве и возвращает его (проверка останавливается на нем), если элемента нет - undefined
+    const foundElem = arr.find((el, ind, arr) => {
+        return el === 1
+    }) // 1
+    
+    
+    
+    // 6) findIndex - возвращает индекс первого найденого элемента, если элемента нет - undefined
+    const foundIndex = arr.findIndex ((el, ind, arr) => {
+        return el === 1
+    }) // 0
+    
+    
+    // 7) filter - проверяет эл. на соответствие условию и возвращает НОВЫЙ массив с подходящими по условию элементами 
+    const filterArr = arr.filter((el, ind, arr) => {
+        return el > 3
+    }) //(2) [4, 5]
+    
+    
+    // 8) reduce - возвращает сумму всех элементов массива в НОВЫЙ массив sum - переменная в которую ложится сумма(название произвольное)
+    //             init - можно задать значение по умолчанию для sum (0, 10, функцию, объект)
+    
+    // const arrReduce = arr.reduce((sum, el, ind, arr) => {
+    //     return sum + el
+    // }, init);
+    
+    const arrReduce = arr.reduce((total, el) => {
+        return total + el
+    }, 0);  // 15
+    
+    //++++++++ ++++++++ ++++++++ ++++++++
+    
+    // flat - возвращает НОВЫЙ массив в котором раскрывает 1 степень вложенности массива   НЕ ИЗМЕНЯЕТ исходный массив
+    const arr2 = [0, [1, 2], [3, [4, 5], [6, 7] ] ];  //  [0, Array(2), Array(3)]
+    const arrFlat = arr2.flat(); // (6) [0, 1, 2, 3, Array(2), Array(2)]
+    arrFlat.flat(); // (8) [0, 1, 2, 3, 4, 5, 6, 7]    Можно записать как arr.flat().flat()
+    
+    // indexOf Возвращает индекс элемента. первый аргумент - искомый элемент, второй - с какого индекса начинать искать
+    arr.indexOf(1); // 0
+    arr.indexOf("six"); // -1  - если не найдено совпадений
+    arr.indexOf(1, 1); // -1
+    
+    // lastIndexOf - Начинает искать с конца массива. первый аргумент 
+    arr.lastIndexOf(1); // 0
+    arr.push(1);
+    arr.lastIndexOf(1); //5
+    arr.lastIndexOf(1, 1); //0
+    arr.lastIndexOf("six"); // -1
+    
+    // slice - обрезает часть массива и возвращает обрезанный кусок в виде массива. 1 аргум - с какого обрезать, 2й - до какого
+    //                                                                               НЕ ИЗМЕНЯЕТ исходный массив
+    arr.slice(1, 5); // (4) [2, 3, 4, 5]
+    arr.slice();     //(6) [1, 2, 3, 4, 5, 1]
+    
+    //fill - заполняет массив заданным аргументом - 1й, 2й - с какого по какой 3й аргумент заполнить  ***ИЗМЕНЯЕТ исходный массив
+    arr.fill(0) // (6) [0, 0, 0, 0, 0, 0]
+    arr.fill(1, 0, 3) // (6) [1, 1, 1, 0, 0, 0]
+    
+    // join - преобразует массив в строку и разлеит разделителем который принимает. Возвращает строку. НЕ ИЗМЕНЯЕТ исходный массив
+    arr.join() // '1,1,1,0,0,0'
+    arr.join('') //'111000' - пустая строка
+    arr.join(' ') //'1 1 1 0 0 0'   пробел
+    
+    // reverse - изменяет порядок эл. массива на обратный. ***ИЗМЕНЯЕТ исходный массив
+    arr.reverse()  //(6) [0, 0, 0, 1, 1, 1]
+    
+    // sort - сортирует эл. массива. 2 аргумента а и b. Сортировка от меньшего к большему a - b, b - a - от большего к меньшему
+    let arr3 = [10, 5, 2, 15, 11];                  //   Имена произвольные         ***ИЗМЕНЯЕТ исходный массив
+    arr3.sort((a, z) => {
+        return a - z
+    })
+    
+    // splice - заменяет определенные эл. массива задаными, возвращает удаленные элем.   ***ИЗМЕНЯЕТ исходный массив
+    // 1й аргумент - начальный индекс, 2й - сколько эл. удалить, следующие аргум - добавляемые элем.(может быть больше чем удаляемых)
+    arr.splice(3, 2, 'two', 'three', 'four') // (2) [1, 1]  
+    arr //(7) [0, 0, 0, 'two', 'three', 'four', 1]
+    arr.splice(3, 3, 'new') //(3) ['two', 'three', 'four']
+    arr //(5) [0, 0, 0, 'new', 1]
+    arr.splice(1, 0, 2) //[]            - не удаляли эл. , а только вставили в индекс 1
+    arr //(6) [0, 2, 0, 0, 'new', 1]
+    
+    // includes Проверяет содержится ли где то в массиве такая подстрока. Возвращает - true / false
+    arr.includes('new') //true
+    arr.includes('new', 5) //false - второй параметр - начальный индекс поиска
+    
+    
+    
+    //++++++++++++++++++++++ ОБЪЕКТЫ ++++++++++++++++++++
+    
+    const obj1 = {
+        name: 'Maks',
+        age: 33,
+        hi: function() {console.log(this.name);}
+    };
+    const obj2 = {
+        country: 'Ua',
+        skills: ['html', 'css', 'js'],
+        obj: {name2: 'Vladimir'}
+    };
+    const targetObj = {};
+    
+    
+    // Object.assign()  - Копирует свойства, методы и ОБЪЕКТЫ объектов в другой объект. Обращаемся к глобальному классу Object
+    // Object.assign(target, source); - 1й объект куда копируем, 2й из которого копируем
+    
+    Object.assign(targetObj, obj1, obj2);  // копируемых объектов может быть несколько
+    targetObj //{name: 'Maks', age: 33, country: 'Ua', skills: Array(3), hi: ƒ}
+    const person = Object.assign({}, obj1, obj2); // присваиваем константе, аргумент - пустой объект
+    person    //{name: 'Maks', age: 33, country: 'Ua', skills: Array(3), hi: ƒ}
+    Object.assign(obj1, obj2);//                                           ***ИЗМЕНЯЕТ исходный массив obj1
+    obj1      //{name: 'Maks', age: 33, country: 'Ua', skills: Array(3), hi: ƒ}
+    
+    
+    //Object.entries(obj) - принимает объект и возвращает массив с вложенными массивами
+    Object.entries(obj2); //(3) [Array(2), Array(2), Array(2)]
+    // 0: (2) ['country', 'Ua'] 1: (2) ['skills', Array(3)] 2: (2) ['obj', {…}]
+    //Вложенные массивы и объекты обекта - сохраняют свою структуру
+    
+    
+    //Object.fromEntries([]) - принимает массив с лож. массивами и вернет объект
+    const obj3 = Object.fromEntries([['name', 'John'],['age', 44]]); // {name: 'John', age: 44}
+    obj3 // {name: 'John', age: 44}
+    
+    
+    //Object.is(el1, el2) - определяет являются ли оданиковыми эти два значения, возвращает true / false
+    Object.is(1, 2) //false
+    Object.is(1, 1) //true
+    Object.is(1, '1') //false
+    Object.is(NaN, NaN) //true  - только при этой проверке NaN равняется NaN
+    
+    
+    //Object.keys(obj) - возвращает массив из ключей (название свойств, методов, объектов объекта)
+    Object.keys(obj3) //(2) ['name', 'age']
+    Object.keys(obj2) //(3) ['country', 'skills', 'obj']
+    
+    
+    //Object.values(obj) - возвращает массив из значений (сохраняет структуру вложенных ассивов и объектов)
+    Object.values(obj3) //(2) ['John', 44]
+    Object.values(obj2)  // (3) ['Ua', Array(3), {…}]
+    
+    
+    // ++++++++  ПРИСВОЕНИЕ в ОБЪЕКТАХ    bind, call, apply - позволяют изменить контекст вызова (изменить this)
+    
+    const person1 = {
+        name: 'Maks',
+        age: 33,
+        getInfo: function(country, standart) {
+            if(standart){
+            return `Hi, my name is ${this.name}, i'm from ${standart}`
+            }else{
+            return `Hi, my name is ${this.name}, i'm from ${country}`};}
+    };
+    const person2 = {
+        name: 'Oleg',
+        age: 18,
+    };
+    
+    
+    // 1) bind - возвращает метод присвоенного объекта(присоединяет метод одного объекта к контексту второго)
+    //obj1.method.bind(obj2)() -  obj2 - объект контекст которого используем для метода obj1
+    
+    //console.log(person1.getInfo('Ua')); // Hi, my name is Maks, i'm from Ua
+    //console.log(person2.getInfo('Ua')); // Получаем ошибку
+    
+    //console.log(person1.getInfo.bind(person2)); // ƒ (country) {return `Hi, my name is ${this.name}, i'm from ${country}`}
+    // console.log(person1.getInfo.bind(person2)('Ukr')); // Hi, my name is Oleg, i'm from Ukr - вызываем функцию
+    
+    // //Может принимать несколько параметров
+    // console.log(person1.getInfo.bind(person2)('Ukr', 'Ukraine')); //// Hi, my name is Oleg, i'm from Ukraine
+    // //или
+    // console.log(person1.getInfo.bind(person2, 'Ukr', 'Ukraine')()); //// Hi, my name is Oleg, i'm from Ukraine
+    
+    // const getInfoPerson2 = person1.getInfo.bind(person2); // присваиваем метод переменной для сокращения вызова
+    // console.log(getInfoPerson2("Ru")) // "Hi, my name is Oleg, i'm from Ru"
+    
+    
+    // 2) call - НЕ ВОЗВРАЩАЕТ функцию, изменяет контекст передавая параметры, поэтому скобки вызова отсутствуют
+    // console.log(person1.getInfo.call(person2, 'Ukr', 'Ukraine'));
+    
+    // //Так как метод не привязывается к функции то невозможно позже через вызов переменной задавать новые параметры, их нужно
+    // //присвоить переменной сразу
+    // const getInfoCall = person1.getInfo.call(person2, 'Ukr');
+    // console.log(getInfoCall);
+    
+    
+    // 3) apply - не привязывает метод. Работает как и call но синтаксис другой(запись)
+    // console.log(person1.getInfo.call(person2, ['Ukr'], ['Ukraine'] ));
+    
+    
+    
+    //++++++++++++++++++++++ ЧИСЛА ++++++++++++++++++++
+    
+    //Обращаемся через глобальный объект Number
+    
+    //isInteger - проверяет целое число или нет. Возвращает true / false
+    Number.isInteger(10) // true
+    Number.isInteger(10.5) // false
+    
+    //isFinite() - определяет передаваемый параметр число или нет true / false
+    Number.isFinite(1) //true
+    Number.isFinite('1') //false
+    // но если обращатся без Number то происходит преобразование к числу и сравнение
+    isFinite(1) //true
+    isFinite('1') //true
+    isFinite('') //true
+    isFinite([1]) //true
+    isFinite('o') //false
+    isFinite({}) //false
+    
+    //parseInt - преобразует содержимое в целое число (обрезая остальное если числа в начале) и возвращает его
+    parseInt('1.6 bb') //1
+    parseInt('bb') //NaN
+    
+    //parseFloat - преобразует содержимое в дробное число
+    parseFloat('1.6'); // 1.6
+    
+    //toFixed - вызывается у числа обернутого в скобки для округления к целому числу, возвращает число в СТРОКЕ
+    (5.4).toFixed(); // 5
+    (5.555555).toFixed(2) // '5.55'   (2) - Параметр определяет знаки после запятой
+    +(5.556666).toFixed(2) // 5.56 - через + получаем число
+    
+    
+    //++++++++++++++++++++++ MATH ++++++++++++++++++++
+    
+    // ceil - округляет к ближнему большему целому числу
+    Math.ceil(25.1) // 26
+    
+    // floor - округляет к ближнему меньшему целому числу
+    Math.floor(25.9999) // 25
+    
+    // round - округляет к  целому числу
+    Math.round(25.1) // 25
+    Math.round(25.9999) // 26
+    
+    // min - из принимаемых элементов возвращает наименьший
+    Math.min( 20, 10, 5, 15) //5
+    
+    // max - из принимаемых элементов возвращает наибольшее
+    Math.max( 20, 10, 5, 15) //20
+    
+    // trunc - удаляет дробную часть
+    Math.trunc(25.55) // 25
+    
+    // random - возвращает случайное число от 0 до 1
+    Math.random() // 0.43748290973274084
+    
+}
+
 {//002 Переменные и строгий режим
 //= - знак присваивания. Название переменной не должно начинаться с цифры и не дожны совпадать с зарезервированными названиями
 // и может содержать буквы, цифры и знак доллара и нижнего подчеркиния. Записываем кемэл кейсом. Num и num - переменные
@@ -1227,7 +1597,7 @@ wrapper.addEventListener('click', function(event){
     // sayName.call(user, "Smith");    //разница в синтаксисе при передаче аргументов - передем строкй
     // sayName.apply(user, ["Smith"]); //разница в синтаксисе при передаче аргументов - передем массивом
     
-    // //третий метод bind - создает НОВУЮ ункцию и под нее подвязывает контекст
+    // //третий метод bind - создает НОВУЮ функцию и под нее подвязывает контекст
     // function count(num) {
     //     return this*num;
     // }
@@ -1643,7 +2013,7 @@ new MenuCard(
     console.log(clone);
 }
 
-{//003 AJAX и общение с сервером
+{//003 AJAX и общение с сервером CALC (Converter)
     "use strict";
     //AJAX (Asynchronous Javascript and XML) позволяет обновлять часть контента страницы, без полной перезагрузки, экономя траффик
     //Создадим конвертер валю где курс будет приходить от сервера по требованию
