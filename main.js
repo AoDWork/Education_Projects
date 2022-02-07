@@ -2089,5 +2089,237 @@ new MenuCard(
 
 {//004 Реализация скрипта ОТПРАВКИ данных на сервер (POST) XML http request
 //Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
+//Задача собрать данные из форм  Имя и Телефон в двух местах(на сайте и в модальном окне) и отправить на сервер при нажатии кнопки
+//Для контроля правильной отработки бэкенда создаем в корне проэкта файл server.php и запишем <?php echo var_dump($_POST);
+//Эта комманда берет данные которые пришли из клиента ( массив _POST ) превращает в строку и показывает обратно на клиенте(ответ сервера, responce)
 
+//формы две (имя, телефон) поэтому функция отправки будет повторятся, что бы не дублировать два обработчика, обернем
+//в функцию для последующего вызова. Тут еще используем XML hhtp request, в следующих уроках будет более современный метод
+
+//получаем все формы по тегу
+const forms = document.querySelectorAll('form');
+
+//Создаем объект для вывода текстовых сообщений пользователю о ходе запроса
+const message = {
+    loading: 'Загрузка',
+    success: 'Спасибо! До связи',
+    failure: ' Что-то пошло не так...'
+};
+
+//берем все form и для каждой подвязываем функцию postData
+form.forEach(item => {
+    postData(item);
+});
+
+
+//Функция для постинга данных
+function postData(form) { //принимаем аргумент form для удобства навешивания на него обработчика события submit
+    form.addEventListener('submit', (e) => {  // submit срабатывает по Enter или button с type submit. если в верстке кнопка задана
+                                            //тегом <button - у нее автоматически установлен type submit
+        e.preventDefault(); // принимаем аргумент е - события, что бы отменить стандартное повередение - перезагрузку страницы
+        
+        //Создаем переменную для вывода пользователю сообщений
+        const statusMessage = document.createElement('div');
+        statusMessage.classList.add('status'); //добавляем класс status
+        statusMessage.textContent = message.loading;
+        form.append(statusMessage); // Прикрепляем этот див с сообщением к form для отображения на странице
+
+        const req = new XMLHttpRequest(); //создаем объект запроса
+        req.open('POST', 'server.php'); // вызываем метод open для настройки запроса
+
+        //как получить все данные введенные пользователем и отправить на сервер. Можно вручную. взять форму, взять все инпуты
+        //которые есть внутри, взять их value, перебрать, сформировать объект, но это очень нерационально потому что есть готовые
+        //механизмы, и самый простой способ подготовить данные для отправки из формы использовать объект - formData
+        //не всегда нужно передавать в формате JSON, зависит от поддержки сервера или программиста бэкенда
+        //рассмотрим formData и второй формат JSON
+
+        // Если работаем с JSON, FormData спецыфический объект который просто превратить в JSON не получится, есть спецю прием
+        req.setRequestHeader('Content-type', 'application/json');
+        //Для этого создаем пустой объект и через переюор FormData через forEach запушим в новый объект значения
+        const object = {};
+        formData.forEach(function(value, key){
+            object[key] = value;
+        });
+        //Теперь используем конвертацию в json и помещаем его в  req.send(json);
+        const json = JSON.stringify(object);
+
+        //если передаем через XMLHttpRequest
+        //req.setRequestHeader('Content-type', 'multipart/form-data'); // multipart/form-data - используем что бы работал FormData
+                                                                    //согласно описанию FormData, но есть ***ньюанс - смотр ниже!!!
+
+        const formData = new FormData(form); // формирует объект ключ-значение из полей input/option/textarea, но только если 
+                                            // у них прописан тег name, иначе не найдет эти значения.(name="name", name="phone")
+        req.send(formData); // так как мы отправляем данные то есть body - formData
+
+        //Если работаем с JSON то 
+        //req.send(json);
+
+        req.addEventListener('load', () => {
+            if (req.status === 200) {
+                console.log(req.response);
+                statusMessage.textContent = message.success;
+                form.reset(); // очищаем форму
+                setTimeout(() =>{
+                    statusMessage.remove()   // удаляем блок со страницы
+                }, 2000);
+            }else{
+                statusMessage.textContent = message.failure;
+                }
+        });
+    });
+}
+//Что бы изменения сохраненные в коде применились при работе с сервером, нужно каждый раз сбрасывать кеш. shift+f5
+// После заполнения полей и нажатия кнопки отправить, данные ушли - смотрим по вкладке Network, статус сервера -200 ОК
+// нам написало 'Спасибо! До связи' но в консоль получили пустой массив, это случилось из-за заголовка  multipart/form-data
+// Когда используем связку XMLHttpRequest(), Объекта и FormData - заголовок устанавливать не нужно, он устанавливается
+//автоматически, поэтому весь заголовок req.setRequestHeader('Content-type', 'multipart/form-data'); нам не нужно прописывать
+//поэтому закомментируем его и все будет отрабатывать хорошо. 
+//Если нужно отправлять данные в JSON тогда прописываем req.setRequestHeader('Content-type', 'application/json');
+//*** Ньюанс PHP нативно не умеет работать с данными JSON, чаще всего такие данные отправляют на сервера Node.JS
+//Но можно вручную прописать совместимость с PHP в файле допишем строку 
+//<?php echo 
+//$_POST = json_decode(file_get_contents("php://input), true);
+//var_dump($_POST);
+}
+
+{//005 Красивое оповещение пользователя
+//Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
+//============================ 005 Красивое оповещение пользователя
+//Прикручиваем спиннер в течении отправки запроса на сервер, а после успешного выполнения появление нового модального окна с текстом
+//Если запрос неудачный то будет другое сообщение. Модальное окно можно сделать новое, а можно использовать существующее.
+//Используем существующее и в нем заменим <div class="modal__dialog"> для изменения контента окна. Стили действуют прежние
+{/* <div class="modal">
+        <div class="modal__dialog">
+            <div class="modal__content">
+                <form action="#">
+                    <div data-close class="modal__close">&times;</div>
+                    <div class="modal__title">Мы свяжемся с вами как можно быстрее!</div>
+                    <input required placeholder="Ваше имя" name="name" type="text" class="modal__input">
+                    <input required placeholder="Ваш номер телефона" name="phone" type="phone" class="modal__input">
+                    <button class="btn btn_dark btn_min">Перезвонить мне</button>
+                </form>
+            </div>
+        </div>
+    </div> */}
+
+    function showThanksModal(message) {
+        const prevModalDialog = document.querySelector('.modal__dialog');
+    
+        //скрываем, а не удаляем предыдущее модальное окно что бы пользователь повторно его мог использовать
+        prevModalDialog.classList.add('hide');
+        openModal(); // открывается модальное окно
+    
+        const thanksModal = document.createElement('div'); //Создаем обвертку для нового модального окна
+        thanksModal.classList.add('modal__dialog'); // добавляем стили для модального окна
+        //Создаем новый тайтл и крестик х - закрытия, но он динамически создается и на него обработчик события ранее созданный closemodal
+        // которая вешалась на modalCloseBtn получаемому по аттрибуту [data-close] действовать не будут, поэтому мы их подправим
+        // modalCloseBtn = document.querySelector("[data-close]") и modalCloseBtn.addEventListener("click", closeModal); - этот удалим
+        //
+        //Этот подправим    modal.addEventListener("click", (e)=>{
+        //                      if(e.target === modal){    
+        //                      closeModal();          
+                                //}
+                            //});
+        //теперь выглядит так 
+        //005 Усовершенствованное для динамически создаваемых окон
+        // modal.addEventListener("click", (e)=>{
+        //     // Проверяем равенство объекту modal или объект содержащий аттрибут data-close равен пустой строке, мы туда ничего не помещаем
+        //     if(e.target === modal || e.target.getAttribute('data-close') == '') {  
+        //         closeModal();          // тут вызываем функцию
+        //     }
+        // });
+    
+        //***Крестик x  - специальный ХТМЛ символ (✖	&#10006;	Жирный символ закрыть (крестик))
+        //Сообщение для пользователя в modal__title будем перелаваит как аргумент message в showThanksModal который будем брать из
+        //объекта message
+        thanksModal.innerHTML = `
+        <div class="modal__content">
+            <div class="modal__close" data-close>x</div> 
+            <div class="modal__title">${message}</div> 
+        </div>
+        `;
+    
+        //Получаем модальное окно и сразу аппендим наш блок для замены старого окна новым
+        document.querySelector('.modal').append(thanksModal);
+    
+        //Реализуем появление старого окна если пользователь снова его вызовет
+        setTimeout(() => { // удаляем наш новый блок
+            thanksModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            closeModal(); // закрываем окно что бы не мешало пользователю
+        } , 4000);
+    }
+    
+    // Теперь в функции отправки проведем изменения
+    // function postData(form) { 
+    //     form.addEventListener('submit', (e) => {  
+          
+    //         e.preventDefault(); 
+            
+    //          const statusMessage = document.createElement('div');
+    //         statusMessage.classList.add('status'); 
+    //         statusMessage.textContent = message.loading;
+    //         form.append(statusMessage); 
+    
+    //         const req = new XMLHttpRequest(); 
+    //         req.open('POST', 'server.php'); 
+    
+    //         req.setRequestHeader('Content-type', 'application/json');
+    //         const object = {};
+    //         formData.forEach(function(value, key){
+    //             object[key] = value;
+    //         });
+           
+    //         const json = JSON.stringify(object);
+    
+    //         const formData = new FormData(form); 
+    //         req.send(formData); 
+    
+    //         req.addEventListener('load', () => {
+    //             if (req.status === 200) {
+    //                 console.log(req.response);
+    //                 showThanksModal(message.success); // запускаем нашу нункцию с аргументом сообщением
+    //                 form.reset(); //Удалили таймаут потому что она будет использоваться только для спинера
+    //                 statusMessage.remove(); // удаляется спиннер   
+    //             }else{
+    //                 showThanksModal(message.failure);
+    //             }
+    //         });
+    //     });
+    // }
+    
+    //Раскоментируем const modalTimerId = setTimeout(openModal, 50000); потому что она давала ошибку в консоле и если так и оставить
+    //то вызов  openModal() в функции showThanksModal завершится ошибкой и дальше код не пойдет
+    
+    //Добавляем вместо loading: 'Загрузка' в объекте message - картинку спиннер "spinner.svg". В папке img создаем папку form
+    //и туда помещаем спиннер, как относящийся к этому элементу
+    // const message = {
+    //     loading: 'img/form/spinner.svg',
+    //     success: 'Спасибо! До связи',
+    //     failure: ' Что-то пошло не так...'
+    // };
+    
+    //Также изменяем
+    // form.addEventListener('submit', (e) => {  
+    //     e.preventDefault(); 
+    //     //005 изменяем для показа картинки и класс
+    //     const statusMessage = document.createElement('img');
+    //     statusMessage.src = message.loading;
+    //     //записываем инлайн стили что бы картинка была по центру
+    //     statusMessage.style.cssText = `
+    //         display: block;
+    //         margin: 0 auto;
+    //     `;
+    //     form.append(statusMessage); 
+    
+    //При первой эмуляции медленного интернета slow 3G(вместо online) на вкладке Network в консоли изображение мелькнуло и пропало,
+    //так как эмулируется медленный интерней картинка не успела подгрузится до выполнения запроса, нужно повторить отправку формы
+    //для нормального отображения.
+    //При сбросе кеша параметр slow 3G нужно менять снова на online, а то будет долго перекешироваться страница
+    
+    //При проверке второй формы без модального окна, спиннер сдвигает форму влево, потому что верстка на флексах(фликсах) этого
+    //можно избежать если вместо аппенда  form.append(statusMessage) присоединять спиннер после формы
+            //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма используем insertAdjacentElement послеформы
+            // form.insertAdjacentElement('afterend', statusMessage);
 }
