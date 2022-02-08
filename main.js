@@ -2467,6 +2467,45 @@ function postData(form) { //принимаем аргумент form для уд
     // });
 
     
+    // Промисификация – это когда берут асинхронную функциональность и делают для неё обёртку, возвращающую промис.
+    // После промисификации использование функциональности зачастую становится гораздо удобнее.
+    // В качестве примера сделаем такую обёртку для запросов при помощи XMLHttpRequest.
+    // Функция httpGet(url) будет возвращать промис, который при успешной загрузке данных с url будет переходить в
+    // fulfilled с этими данными, а при ошибке – в rejected с информацией об ошибке:      
+    
+    //Пример с learn.javascript.ru/promise    
+    // function httpGet(url) {
+    //     return new Promise(function(resolve, reject) {
+     
+    //       var xhr = new XMLHttpRequest();
+    //       xhr.open('GET', url, true);
+      
+    //       xhr.onload = function() {
+    //         if (this.status == 200) {
+    //           resolve(this.response);
+    //         } else {
+    //           var error = new Error(this.statusText);
+    //           error.code = this.status;
+    //           reject(error);
+    //         }
+    //       };
+      
+    //       xhr.onerror = function() {
+    //         reject(new Error("Network Error"));
+    //       };
+      
+    //       xhr.send();
+    //     });
+    //   }   
+
+    //Использование:
+    //     httpGet("/article/promise/user.json")
+    //   .then(
+    //     response => alert(`Fulfilled: ${response}`),
+    //     error => alert(`Rejected: ${error}`)
+    //   );
+
+
     //Рассмотрим методы all и race - принимают аргументом массив с промисами
     
     // Эта функция запускается принимает аргумент time(колю времени) возвращает Promise который зарезолвится через время time
