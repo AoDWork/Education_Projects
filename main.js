@@ -2325,233 +2325,233 @@ function postData(form) { //принимаем аргумент form для уд
 }
 
 {//006 Promise
-    "use strict";
-    //Позволяет удобно работать с асинхронными операциями(timeOut или запросы на сервер). При выполнении клика хотим что бы только
-    // в этом случае выполнялся заданный код, тогда мы используем коллбек фунции. ПРИМЕР :Когда делаем запрос на сервер получаем
-    //данные, выполняем с ними какие то действия и снова отправляем на сервер что бы получить следующие данные и снова с ними произвести
-    //какие то операции. Цепочка действий зависит от предыдущих результатов (выполняем действие только после успешного выполнения 
-    // предыдущих действий). Для такого кода можно написать много функций обратного вызова что превратится в большой нечитабельный код,
-    // его также иногда называются call back hell.  Promise заменяет большой код с функциями обратного вызова.
+"use strict";
+//Позволяет удобно работать с асинхронными операциями(timeOut или запросы на сервер). При выполнении клика хотим что бы только
+// в этом случае выполнялся заданный код, тогда мы используем коллбек фунции. ПРИМЕР :Когда делаем запрос на сервер получаем
+//данные, выполняем с ними какие то действия и снова отправляем на сервер что бы получить следующие данные и снова с ними произвести
+//какие то операции. Цепочка действий зависит от предыдущих результатов (выполняем действие только после успешного выполнения 
+// предыдущих действий). Для такого кода можно написать много функций обратного вызова что превратится в большой нечитабельный код,
+// его также иногда называются call back hell.  Promise заменяет большой код с функциями обратного вызова.
+
+// Promise после reject/resolve – неизменны. после вызова resolve/reject промис уже не может «передумать».
+// Когда промис переходит в состояние «выполнен» – с результатом (resolve) или ошибкой (reject) – это навсегда.
+// Последующие вызовы resolve/reject будут просто проигнорированы.
+
+
+
+// НЕБОЛЬШОЙ ПРИМЕР (вместо setTimeot  могут быть запросы к серверу)
+// console.log('Запрос данных...');
+
+// setTimeout(() => {
+//     console.log('Подготовка данных...');
+
+//     const product = {
+//         name: 'TV',
+//         price: 2000
+//     };
+
+//     setTimeout(() => {
+//         product.status = 'Ordered';
+//         console.log(product);
+//     }, 2000);
+// }, 2000);
+
+
+    console.log('Запрос данных...');
+
+//создаем новый промис с коллбек функцией внутри обычно принимает 2 аргумента function(resolve, reject). resolve, reject - функции
+//которые мы сами сможем передавать. resolve - означает что то выполнилось правильно, reject - что то пошло не так, 
+//обещание не выполнилось. Сеттаймут с  product.status - заменяем на resolve, потому что он выполнится только в случае выполнения
+//предыдущего кода
+        const req = new Promise(function(resolve, reject) {
+            setTimeout(() => {
+                console.log('Подготовка данных...');
+            
+                const product = {
+                    name: 'TV',
+                    price: 2000
+                };
+            
+                resolve(product);
+            }, 2000);
+        }); 
+
+//vscode подсказывает то есть методы req (catch, then, finally). then - запускает функцию в случае положительного выполнения
+//предыдущего кода, будет вызыватся из места где resolve впредыдущем коде. В этом коде product не существует, поэтому его
+//нужно вернуть из предыдущей функции, вписав аргументом в resolve(product) и req.then((product)
+// req.then((product) => {
+//     setTimeout(() => {
+//         product.status = 'Ordered';
+//         console.log(product);
+//     }, 2000);
+// });
     
-    // Promise после reject/resolve – неизменны. после вызова resolve/reject промис уже не может «передумать».
-    // Когда промис переходит в состояние «выполнен» – с результатом (resolve) или ошибкой (reject) – это навсегда.
-    // Последующие вызовы resolve/reject будут просто проигнорированы.
     
+//Для дальнейших действий с кодом req.then оборачиваем его в промис как и предыдущий(исходный код)
+// req.then((product) => {
+//     const req2 = new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             product.status = 'Ordered';
+//             resolve(product);
+//         }, 2000);
+//     });
+
+//     req2.then(data => {
+//         console.log(data);
+//     });
+// });
+
+//По сравнению с обычнымы колбеками преимуществом промисов является то что мы можем возвращать промис из then по цепочке.
+//Когда одна операция выполнится, выполним следующую, и т.д. сокращая написание функции вот так
+// req.then(product => {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             product.status = 'Ordered';
+//             resolve(product);
+//         }, 2000);
+//     });
+// }).then(data => {
+//     data.modify = true;
+//     return data;
+// }).then((prevData) => {
+//     console.log(prevData);
+// });
     
-    
-    // НЕБОЛЬШОЙ ПРИМЕР (вместо setTimeot  могут быть запросы к серверу)
-    // console.log('Запрос данных...');
-    
-    // setTimeout(() => {
-    //     console.log('Подготовка данных...');
-    
-    //     const product = {
-    //         name: 'TV',
-    //         price: 2000
-    //     };
-    
-    //     setTimeout(() => {
-    //         product.status = 'Ordered';
-    //         console.log(product);
-    //     }, 2000);
-    // }, 2000);
-    
-    
-            console.log('Запрос данных...');
-    
-    //создаем новый промис с коллбек функцией внутри обычно принимает 2 аргумента function(resolve, reject). resolve, reject - функции
-    //которые мы сами сможем передавать. resolve - означает что то выполнилось правильно, reject - что то пошло не так, 
-    //обещание не выполнилось. Сеттаймут с  product.status - заменяем на resolve, потому что он выполнится только в случае выполнения
-    //предыдущего кода
-            const req = new Promise(function(resolve, reject) {
+//При помощи reject обрабатывается невыполнение кода из-за ссылки на несуществующий файл при его запросе, не существующий сервер,
+// падение сервера и его ответ - ошибка. Метод catch обычно идет в конце. При ошибке все then пропускаются и выполнение кода
+//переходит на catch. (При возникновении ошибки – она отправляется в ближайший обработчик onRejected.)
+        req.then(product => {
+            return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    console.log('Подготовка данных...');
-                
-                    const product = {
-                        name: 'TV',
-                        price: 2000
-                    };
-                
+                    product.status = 'Ordered';
                     resolve(product);
                 }, 2000);
-            }); 
-    
-    //vscode подсказывает то есть методы req (catch, then, finally). then - запускает функцию в случае положительного выполнения
-    //предыдущего кода, будет вызыватся из места где resolve впредыдущем коде. В этом коде product не существует, поэтому его
-    //нужно вернуть из предыдущей функции, вписав аргументом в resolve(product) и req.then((product)
-    // req.then((product) => {
-    //     setTimeout(() => {
-    //         product.status = 'Ordered';
-    //         console.log(product);
-    //     }, 2000);
-    // });
-    
-    
-    //Для дальнейших действий с кодом req.then оборачиваем его в промис как и предыдущий(исходный код)
-    // req.then((product) => {
-    //     const req2 = new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //             product.status = 'Ordered';
-    //             resolve(product);
-    //         }, 2000);
-    //     });
-    
-    //     req2.then(data => {
-    //         console.log(data);
-    //     });
-    // });
-    
-    //По сравнению с обычнымы колбеками преимуществом промисов является то что мы можем возвращать промис из then по цепочке.
-    //Когда одна операция выполнится, выполним следующую, и т.д. сокращая написание функции вот так
-    // req.then(product => {
-    //     return new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //             product.status = 'Ordered';
-    //             resolve(product);
-    //         }, 2000);
-    //     });
-    // }).then(data => {
-    //     data.modify = true;
-    //     return data;
-    // }).then((prevData) => {
-    //     console.log(prevData);
-    // });
-    
-    //При помощи reject обрабатывается невыполнение кода из-за ссылки на несуществующий файл при его запросе, не существующий сервер,
-    // падение сервера и его ответ - ошибка. Метод catch обычно идет в конце. При ошибке все then пропускаются и выполнение кода
-    //переходит на catch. (При возникновении ошибки – она отправляется в ближайший обработчик onRejected.)
-            req.then(product => {
-                return new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        product.status = 'Ordered';
-                        resolve(product);
-                    }, 2000);
-                });
-            }).then(data => {
-                data.modify = true;
-                return data;
-            }).then((prevData) => {
-                console.log(prevData);
-            }).catch(() => {
-                console.error('Произошла ошибка');
-            }).finally(() => {
-                console.log('Finally');
             });
-    // Блок finally всегда в конце - позволяет выполнить действия не зависимо от успеха выполнения кода. Используется например для
-    //очистки формы от старых данных по завершении работы кода
-    
-    //Пример с learn.javascript.ru/promise
-    //     'use strict';
-    // httpGet('/article/promise/userNoGithub.json')
-    // .then(JSON.parse)
-    // .then(user => httpGet(`https://api.github.com/users/${user.name}`))
-    // .then(
-    //     JSON.parse,
-    //     function githubError(error) {
-    //     if (error.code == 404) {
-    //         return {name: "NoGithub", avatar_url: '/article/promise/anon.png'};
-    //     } else {
-    //         throw error;
-    //     }
-    //     }
-    // )
-    // .then(function showAvatar(githubUser) {
-    //     let img = new Image();
-    //     img.src = githubUser.avatar_url;
-    //     img.className = "promise-avatar-example";
-    //     document.body.appendChild(img);
-    //     setTimeout(() => img.remove(), 3000);
-    // })
-    // .catch(function genericError(error) {
-    //     alert(error); // Error: Not Found
-    // });
-
-    
-    // Промисификация – это когда берут асинхронную функциональность и делают для неё обёртку, возвращающую промис.
-    // После промисификации использование функциональности зачастую становится гораздо удобнее.
-    // В качестве примера сделаем такую обёртку для запросов при помощи XMLHttpRequest.
-    // Функция httpGet(url) будет возвращать промис, который при успешной загрузке данных с url будет переходить в
-    // fulfilled с этими данными, а при ошибке – в rejected с информацией об ошибке:      
-    
-    //Пример с learn.javascript.ru/promise    
-    // function httpGet(url) {
-    //     return new Promise(function(resolve, reject) {
-     
-    //       var xhr = new XMLHttpRequest();
-    //       xhr.open('GET', url, true);
-      
-    //       xhr.onload = function() {
-    //         if (this.status == 200) {
-    //           resolve(this.response);
-    //         } else {
-    //           var error = new Error(this.statusText);
-    //           error.code = this.status;
-    //           reject(error);
-    //         }
-    //       };
-      
-    //       xhr.onerror = function() {
-    //         reject(new Error("Network Error"));
-    //       };
-      
-    //       xhr.send();
-    //     });
-    //   }   
-
-    //Использование:
-    //     httpGet("/article/promise/user.json")
-    //   .then(
-    //     response => alert(`Fulfilled: ${response}`),
-    //     error => alert(`Rejected: ${error}`)
-    //   );
-
-
-    //Рассмотрим методы all и race - принимают аргументом массив с промисами
-    
-    // Эта функция запускается принимает аргумент time(колю времени) возвращает Promise который зарезолвится через время time
-    //Эту функцию используют для запуска одинаковых операций через разные промежутки времени
-    const test = time => {
-        return new Promise(resolve => { // ***Очень редко бывает второй аргумент reject не нужен, тогда мы его не передаем
-            setTimeout(() => resolve(), time); //resolve выполнится через time
+        }).then(data => {
+            data.modify = true;
+            return data;
+        }).then((prevData) => {
+            console.log(prevData);
+        }).catch(() => {
+            console.error('Произошла ошибка');
+        }).finally(() => {
+            console.log('Finally');
         });
-    };
-    
-    test(1000).then(() => console.log('1000 ms')); // - console.log - через then для того что бы увидеть результат
-    test(2000).then(() => console.log('2000 ms'));
-    test(3000).then(() => console.log('3000 ms'));
-    
-    // all получает массив (или другой итерируемый объект) промисов и возвращает промис, который ждёт, 
-    //пока все переданные промисы завершатся, и переходит в состояние «выполнено» с массивом их результатов.
-    //Промисы вернут результат который можем обработать через then. Этот метод служит для того что бы точно убедится что все
-    //промисы выполнились. Например запрашиваем 4 картинки из разных серверов, и что бы одновременно их показать ждем пока 
-    //все промисы выполнятся. Ориентируемся на промис который выполнится последним. Если какой-то из промисов завершился с ошибкой,
-    // то результатом Promise.all будет эта ошибка. При этом остальные промисы игнорируются.
-    Promise.all([test(1000), test(2000), test(3000)]).then(() => {
-        console.log('All');
-    });
-    //Можно дописать catch для обработки ошибки
+// Блок finally всегда в конце - позволяет выполнить действия не зависимо от успеха выполнения кода. Используется например для
+//очистки формы от старых данных по завершении работы кода
 
-    // Пример с learn.javascript.ru/promise
-    // Promise.all([
-    //     httpGet('/article/promise/user.json'),
-    //     httpGet('/article/promise/guest.json'),
-    //     httpGet('/article/promise/no-such-page.json') // (нет такой страницы)
-    //   ]).then(
-    //     result => alert("не сработает"),
-    //     error => alert("Ошибка: " + error.message) // Ошибка: Not Found
-    //   )
+//Пример с learn.javascript.ru/promise
+//     'use strict';
+// httpGet('/article/promise/userNoGithub.json')
+// .then(JSON.parse)
+// .then(user => httpGet(`https://api.github.com/users/${user.name}`))
+// .then(
+//     JSON.parse,
+//     function githubError(error) {
+//     if (error.code == 404) {
+//         return {name: "NoGithub", avatar_url: '/article/promise/anon.png'};
+//     } else {
+//         throw error;
+//     }
+//     }
+// )
+// .then(function showAvatar(githubUser) {
+//     let img = new Image();
+//     img.src = githubUser.avatar_url;
+//     img.className = "promise-avatar-example";
+//     document.body.appendChild(img);
+//     setTimeout(() => img.remove(), 3000);
+// })
+// .catch(function genericError(error) {
+//     alert(error); // Error: Not Found
+// });
 
     
-    // race  - в отличие от all, результатом будет только первый успешно выполнившийся промис из списка. Остальные игнорируются.
-    //этот метод начнет выполнятся как только выполнится самый первый промис из массива
-    Promise.race([test(1000), test(2000), test(3000)]).then(() => {
-        console.log('Race');
+// Промисификация – это когда берут асинхронную функциональность и делают для неё обёртку, возвращающую промис.
+// После промисификации использование функциональности зачастую становится гораздо удобнее.
+// В качестве примера сделаем такую обёртку для запросов при помощи XMLHttpRequest.
+// Функция httpGet(url) будет возвращать промис, который при успешной загрузке данных с url будет переходить в
+// fulfilled с этими данными, а при ошибке – в rejected с информацией об ошибке:      
+
+//Пример с learn.javascript.ru/promise    
+// function httpGet(url) {
+//     return new Promise(function(resolve, reject) {
+    
+//       var xhr = new XMLHttpRequest();
+//       xhr.open('GET', url, true);
+    
+//       xhr.onload = function() {
+//         if (this.status == 200) {
+//           resolve(this.response);
+//         } else {
+//           var error = new Error(this.statusText);
+//           error.code = this.status;
+//           reject(error);
+//         }
+//       };
+    
+//       xhr.onerror = function() {
+//         reject(new Error("Network Error"));
+//       };
+    
+//       xhr.send();
+//     });
+//   }   
+
+//Использование:
+//     httpGet("/article/promise/user.json")
+//   .then(
+//     response => alert(`Fulfilled: ${response}`),
+//     error => alert(`Rejected: ${error}`)
+//   );
+
+
+//Рассмотрим методы all и race - принимают аргументом массив с промисами
+
+// Эта функция запускается принимает аргумент time(колю времени) возвращает Promise который зарезолвится через время time
+//Эту функцию используют для запуска одинаковых операций через разные промежутки времени
+const test = time => {
+    return new Promise(resolve => { // ***Очень редко бывает второй аргумент reject не нужен, тогда мы его не передаем
+        setTimeout(() => resolve(), time); //resolve выполнится через time
     });
-    // 1000 ms
-    // Race
-    // 2000 ms
-    // 3000 ms
-    // All
+};
+
+test(1000).then(() => console.log('1000 ms')); // - console.log - через then для того что бы увидеть результат
+test(2000).then(() => console.log('2000 ms'));
+test(3000).then(() => console.log('3000 ms'));
+
+// all получает массив (или другой итерируемый объект) промисов и возвращает промис, который ждёт, 
+//пока все переданные промисы завершатся, и переходит в состояние «выполнено» с массивом их результатов.
+//Промисы вернут результат который можем обработать через then. Этот метод служит для того что бы точно убедится что все
+//промисы выполнились. Например запрашиваем 4 картинки из разных серверов, и что бы одновременно их показать ждем пока 
+//все промисы выполнятся. Ориентируемся на промис который выполнится последним. Если какой-то из промисов завершился с ошибкой,
+// то результатом Promise.all будет эта ошибка. При этом остальные промисы игнорируются.
+Promise.all([test(1000), test(2000), test(3000)]).then(() => {
+    console.log('All');
+});
+//Можно дописать catch для обработки ошибки
+
+// Пример с learn.javascript.ru/promise
+// Promise.all([
+//     httpGet('/article/promise/user.json'),
+//     httpGet('/article/promise/guest.json'),
+//     httpGet('/article/promise/no-such-page.json') // (нет такой страницы)
+//   ]).then(
+//     result => alert("не сработает"),
+//     error => alert("Ошибка: " + error.message) // Ошибка: Not Found
+//   )
+
+    
+// race  - в отличие от all, результатом будет только первый успешно выполнившийся промис из списка. Остальные игнорируются.
+//этот метод начнет выполнятся как только выполнится самый первый промис из массива
+Promise.race([test(1000), test(2000), test(3000)]).then(() => {
+    console.log('Race');
+});
+// 1000 ms
+// Race
+// 2000 ms
+// 3000 ms
+// All
 
 //     Пример с learn.javascript.ru/promise
 //     Promise.race([
@@ -2581,4 +2581,166 @@ function postData(form) { //принимаем аргумент form для уд
 // В современной JavaScript-разработке сложные цепочки с промисами используются редко, так как они куда проще 
 //описываются при помощи генераторов с библиотекой co, которые рассмотрены в соответствующей главе. Можно сказать, 
 //что промисы лежат в основе более продвинутых способов асинхронной разработки.
+}
+
+{//007 Fetch API, promise + server
+// API - Application Programming Interface (интерфейс программного приложения). Это набор данных и возможностей которые 
+//предоставляет нам какое то готовое решение, мы уже пользуемся DOM API (document.qerySelector - используя методы doument)
+
+// Fetch API - уже встроена в браузер, построена на промисах и позволяет общаться с сервером.
+//Будем обращаться к jsonplaceholder.typicode.com - небольшая база данных в интернете к которой можно обращаться для тестирования
+
+// Что на сервере хранится
+// /posts	100 posts
+// /comments	500 comments
+// /albums	100 albums
+// /photos	5000 photos
+// /todos	200 todos
+// /users   10 users
+
+//Какие запросы можно отправлять
+// GET	/posts
+// GET	/posts/1
+// GET	/posts/1/comments
+// GET	/comments?postId=1
+// POST	/posts
+// PUT	/posts/1
+// PATCH	/posts/1
+// DELETE	/posts/1
+
+//На этом сайте есть пример как обращаться к базе, копируем его - обращаемся к todo
+//Без указания дополнительных параметров - это будет класический GET запрос который получит данные
+// response.json- встроенный метод fetch заменяет JSON.parse и возвращает promise(потому что не знаем сколько будет длится операция)
+// fetch('https://jsonplaceholder.typicode.com/todos/1') // 1 - уникальній идентификатор по которому делаем запрос (id: 1)
+//     .then(response => response.json()) 
+//     .then(json => console.log(json));
+// получили объект {userId: 1, id: 1, title: 'delectus aut autem', completed: false}
+//Также с сервера может прийти текст который нужно будет потом превратить в объект
+
+//Для формирования POST запроса нужно добавить объект с настройками (обязательные 2 свойства - mehod и body, желательно указывать
+// еще заголовки для указания что мы отправляем )
+// fetch('https://jsonplaceholder.typicode.com/posts', { // обращаемся к POST	/posts 
+//     method: "POST",
+//     body: JSON.stringify({name:"Alex"}),
+//     headers: {
+//         'Content-type': 'application/json'
+//     }
+// }) 
+// .then(response => response.json()) 
+// .then(json => console.log(json));
+// {name: 'Alex', id: 101} - запостили и получили назад ответ с фейковой id: 101, на самом деле мы ничего не записали на сервер
+//просто получили такой ответ, который говорит нам что все работает 
+
+// Метод запросов fetch намного проще XMLHttpRequest запросов. url задается одной строкой, а настройки идут одним объектом. Этотом
+//метод запросов сейчас используется почти везде, однако можно встретить и XMLHttpRequest запросы.
+
+//======== Перписываем функционал сайта продуктов с использованием fetch
+//============================ 007 Переписываем запросы с помощью fetch
+// 1) отправим классическую формдейту 2) отправим JSON файл на наш сервер
+function postData(form) { 
+    form.addEventListener('submit', (e) => {  
+        e.preventDefault(); 
+        
+        //005 изменяем для показа картинки и класс
+        const statusMessage = document.createElement('img');
+        statusMessage.src = message.loading;
+        //записываем инлайн стили что бы картинка была по центру
+        statusMessage.style.cssText = `
+            display: block;
+            margin: 0 auto;
+        `;
+        //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма используем insertAdjacentElement послеформы
+        form.insertAdjacentElement('afterend', statusMessage);
+
+        //007 Убираем этот запрос, вместо него будет fetch - который перемещаем ниже под создание formData
+        // const req = new XMLHttpRequest(); 
+        // req.open('POST', 'server.php'); 
+        
+        //007 из req.setRequestHeader берем headers только через двоеточие и удаляем строку
+        //req.setRequestHeader('Content-type', 'application/json');
+     
+        const formData = new FormData(form);
+
+        //007- пока закоментируем потому что  отправляем только FormData и превращать в json не нужно
+        // const object = {};
+        // formData.forEach(function(value, key){
+        //     object[key] = value;
+        // });
+        // const json = JSON.stringify(object);
+
+ 
+        // req.send(formData);  //007 убрано
+
+                //007  Раньше обрабатывали результат запроса так, теперь с помощью промисов
+        // req.addEventListener('load', () => {
+        //     if (req.status === 200) {
+        //         console.log(req.response);
+        //         showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
+        //         form.reset(); //Удалили таймаут потому что она будет использоваться только для спинера
+        //         statusMessage.remove(); // удаляется спиннер   
+        //     }else{
+        //         showThanksModal(message.failure);
+        //     }
+        // });
+
+        fetch('server.php', {
+            method: 'POST',
+            // headers: {                // заголовок раскоментируем когда будем отправлять json данные
+            //     'Content-type': 'application/json'
+            // },
+            body: formData
+        }).then(data => data.text()) //От сервера пришел отве Responce объект, но не данные которые мы отправляли, что бы их получить
+        //что бы понимать какой ответ приходит нужно этот ответ модифицировать. В данном случае в текст, потому что мы знаем
+        //что отправляи не json. ***Так же в Сервере .php  закоментируем строку для работы с json
+        .then(data => { 
+            console.log(data);
+            showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
+            statusMessage.remove(); // удаляется спиннер  
+        }).catch(() => {
+            showThanksModal(message.failure); // Показываем ошибку если есть
+        }).finally(() => {
+            form.reset(); //очищаем форму в любом случае в конце этого кода
+        });
+    });
+}
+// Что бы передать JSON изменяем
+
+//007- пока закоментируем потому что  отправляем только FormData и превращать в json не нужно
+        // const object = {};
+        // formData.forEach(function(value, key){
+        //     object[key] = value;
+        // });
+
+        // const json = JSON.stringify(object); // - избавляемся от лишней переменной и подставляем вместо formData
+
+        fetch('server.php', {
+            method: 'POST',
+            headers: {                // заголовок раскоментируем для отправки json данных 
+                'Content-type': 'application/json' //***Так же в Сервере .php  раскомментируем строку для работы с json
+            },
+            body: JSON.stringify(object)
+            //body: formData 
+        }).then(data => data.text()) 
+        .then(data => { 
+            console.log(data);
+            showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
+            statusMessage.remove(); // удаляется спиннер  
+        }).catch(() => {
+            showThanksModal(message.failure); // Показываем ошибку если есть
+        }).finally(() => {
+            form.reset(); //очищаем форму в любом случае в конце этого кода
+        });
+
+//**** Проверим вывод ошибки для пользователя. Допустим ошибку в пути сервера server1.php, при этом в консоль выкидывается ошибка
+//но сообщение в модальном окне выводится как при положительном ответе. Это особенность fetch, промис который он запускает
+// не перейдет в состояни отклонено(rejected) из-за ответа http который считается ошибкой (404, 500, 502, ...) он все равно
+//выполнится нормально у него поменятся только status который будет false. (Еще раз простыми словами - если внутри фетча промис
+//попадает на ошибку которая связана с http протоколом - он не выкинет reject, для него это не считается ошибкой, он нормально
+//отработает resolve. Главное для фетча что он вообще смог сделать запрос, соответственно reject юудет только в случае сбоя сети
+// или если что то помешало запросу выполнится)
+
+}
+
+{//008 Методы перебора массивов
+
 }
