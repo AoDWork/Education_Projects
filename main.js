@@ -140,7 +140,7 @@
     }) //(2) [4, 5]
     
     
-    // 8) reduce - возвращает сумму всех элементов массива в НОВЫЙ массив sum - переменная в которую ложится сумма(название произвольное)
+    // 8) reduce - возвращает сумму всех элементов массива в НОВЫЙ. sum - переменная в которую ложится сумма(название произвольное)
     //             init - можно задать значение по умолчанию для sum (0, 10, функцию, объект)
     
     // const arrReduce = arr.reduce((sum, el, ind, arr) => {
@@ -794,7 +794,7 @@ document.write(answers);
 //!!! НОДА - узел, отличается от получения элемента тем что может быть просто перенос на новыю строку, а не элемент
 //data элементы <li data-current="3">3</li> используем вместо id
 // console.log(document.querySelector("[data-current='3']"));//получить элем по дата аттрибуту !комбинация кавычек
-// console.log(document.querySelector("[data-current='3']").nextSibling); //Следующий нода 
+// console.log(document.querySelector("[data-current='3']").nextSibling); //Следующая нода 
 // console.log(document.querySelector("[data-current='3']").previousSibling); //Предыдущая нода
 // console.log(document.querySelector("[data-current='3']").nextElementSibling); // Следующий элемент
 // console.log(document.querySelector("[data-current='3']").nextSibling);
@@ -2402,8 +2402,8 @@ function postData(form) { //принимаем аргумент form для уд
 // });
 //
 
-//***Если код не обернуть в новый промис то второ обращение then будет обращаться к первому промису и будет выполнятся не 
-//после сторого, а совместно со первым tnen ***  МОЙ ПРИМЕР
+//***Если код не обернуть в новый промис то второе обращение then будет обращаться к первому промису и будет выполнятся не 
+//после второго, а совместно с первым tnen ***  МОЙ ПРИМЕР
 // const prom = new Promise((resolve, reject) => {
 //     let x = 5*2;
 //     setTimeout(() => {
@@ -2851,6 +2851,17 @@ new Promise(function(resolve, reject) {
 // Возвращая промисы, мы можем строить цепочки из асинхронных действий.
 
 // Пример: loadScript
+function loadScript(src) {
+    return new Promise(function(resolve, reject) {
+      let script = document.createElement('script');
+      script.src = src;
+  
+      script.onload = () => resolve(script);
+      script.onerror = () => reject(new Error(`Ошибка загрузки скрипта ${src}`));
+  
+      document.head.append(script);
+    });
+  }
 // Давайте используем эту возможность вместе с промисифицированной функцией loadScript, созданной нами в предыдущей главе, чтобы
 // загружать скрипты по очереди, последовательно:
 
@@ -3229,6 +3240,87 @@ function postData(form) {
 
 }
 
-{//008 Методы перебора массивов
+{//008 Методы перебора массивов и объектов
+// 1) filter - фильтрует массив согласно заданному правилу и ***возвращает в новом массиве. Поэтому присваиваем результат переменной
+//в примере нужно получить все имена которые меньше 5 символов
+
+const names = ['Ivan', 'Ann', ' Ksenia', 'Volandemort'];
+
+const shortNames = names.filter(function(name) {
+    return name.length < 5; // можно использовать запись через if if(name.length < 5) { return name.length;}
+});
+
+
+// 2) map - аналогичен forEach но ***возвращает новый массив
+//Нам нужно все элементы привести к нижнему регистру для дальнейшоего использования
+
+let answers = ['iVaN', 'AnnA', 'Hello'];
+
+const result = answers.map(item => {  //  сокращаем запись  answers.map(item => item.toLowerCase());
+    return item.toLowerCase(); 
+});
+console.log(result); // ['ivan', 'anna', 'hello']
+
+// //Можно переприсвоить значение исходному массиву, объявляя его через let. 
+// //***С точки зрения Иммутабельности лучше создавать новую переменную
+answers = answers.map(item => item.toLocaleLowerCase()); // ['ivan', 'anna', 'hello']
+
+
+// 3) every/some
+// some - если хотя бы один эл. подходит под условие возвращает true
+//*** при использовании стрелочной записи функции return подставляется автоматически
+const some = [4, 'Some', 'user'];
+console.log(some.some(item => typeof(item) === 'number')); //true  сравниеваем эл. с типом number
+
+//every - true если все эл. массива подходят под условие
+console.log(some.every(item => typeof(item) === 'number')); //false  сравниеваем эл. с типом number
+
+
+// 4) reduce - собирает массив в единое целое ( чаще всего работает с числами)
+const arr = [4, 3, 2, 1];
+
+const result = arr.reduce((sum, current) => sum + current); //10
+
+//Можно проводить другие действия 
+//*** Если не задавать значение по умолчанию для sum - тогда оно равняется первому элементу массива 
+const resultMinus = arr.reduce((sum, current) => sum - current); // -2 (4 -3 -2 -1)
+//*** Если задать 0
+const resultMinus2 = arr.reduce((sum, current) => sum - current, 0); // -10 (0 -4 -3 -2 -1)
+
+const resultDouble = arr.reduce((sum, current) => (sum + current)*2, 0); // 98 ((0+4)*2 = (8+3)*2 = (22+2)*2 = (48+1)*2 = 98)
+
+//*** Массив со строками можно собрать в единую строку
+const str = ['Apple', 'Juice', 'Awesome'];
+//Метод 1 через конкатенацию
+const solidStr = str.reduce((sum, current) => sum + ', ' + current); //Apple, Juice, Awesome
+//Метод 2 через интерполяцию
+const solidStr2 = str.reduce((sum, current) => `${sum}, ${current}`); //Apple, Juice, Awesome
+
+
+//*** ПРАКТИЧЕСКИЙ ПРИМЕР
+// После обращения к серверу с него пришел объект с поменяными сетами названиями и свойствами (так делают потому что объект не может
+// содержать одинаковые названия свойств). Задача - вытащить имена пользователей ivan и ann, при том что расположение свойств 
+//в объекте неизвестно (индекс не известен)
+const obj = {
+    ivan: 'persone',
+    ann: 'persone',
+    dog: 'animal',
+    cat: 'animal'
+};
+
+// entries - метод для преобразования объекта в матрицу (*НОВЫЙ массив с вложенными массивами)
+    //const newArr = Object.entries(obj);  // [ ['ivan', 'persone'], ['ann', 'persone'], ['dog', 'animal'], ['cat', 'animal'] ]
+
+//теперь фильтруем массив и оставляем те массивы у которых вторым эл. persone. Сделаем это методом цепочек(chaining) как промисы
+const newArr = Object.entries(obj)
+.filter(item => item[1] === 'persone')  //[ ['ivan', 'persone'], ['ann', 'persone'] ] снова используем цепочку
+.map(item => item[0]);                  // ['ivan', 'ann']
+}
+
+{//009 Подробно про npm и проект. JSON-server
+
+}
+
+{//Деструктуризация / todo list
 
 }
