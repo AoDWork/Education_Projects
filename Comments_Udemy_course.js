@@ -389,129 +389,129 @@
 
 {/*  002    ====  ПЕРЕМЕННЫЕ И СТРОГИЙ РЕЖИМ  ====
 
-=(равно) - знак присваивания. Название переменной не должно начинаться с цифры и не должно совпадать с зарезервированными названиями
-и может содержать буквы, цифры и знак доллара и нижнего подчеркиния. Записываем кемэл кейсом. Num и num - разные переменные
+    =(равно) - знак присваивания. Название переменной не должно начинаться с цифры и не должно совпадать с зарезервированными названиями
+    и может содержать буквы, цифры и знак доллара и нижнего подчеркиния. Записываем кемэл кейсом. Num и num - разные переменные
 
 
-let -(можно использовать переменную после ее объявления) изменяемая переменная с ограниченной областью 
-видимости(в пределах фигурных скобок {} если объект или функция, если в основной зоне видимости тогда - глобальная)
+    let -(можно использовать переменную после ее объявления) изменяемая переменная с ограниченной областью 
+    видимости(в пределах фигурных скобок {} если объект или функция, если в основной зоне видимости тогда - глобальная)
 
 
-const - (используется только после того как объявлены)(константа), ограниченная областью видимости
-не изменяется на прямую, но если задать объект, то его можно изменять. Прямых констант в JS нет.
+    const - (используется только после того как объявлены)(константа), ограниченная областью видимости
+    не изменяется на прямую, но если задать объект, то его можно изменять. Прямых констант в JS нет.
 
-const obj = {
-    a: 50
-}
-obj.a = 10;
-console.log(obj);// {a:10}
-
-
-var (старый метод задания переменной), существует еще до того как была объявлена(всплытие переменной при первом проходе браузера) 
-поэтому будет undefined  вместо ошибки 
-
-console.log(name);
-var name = "Ivan";
-это затрудняет debugging. проблемы: глобальная область видимости из любого места, поднятие кода(всплытие переменной, hoisting)
+    const obj = {
+        a: 50
+    }
+    obj.a = 10;
+    console.log(obj);// {a:10}
 
 
-Новый стандарт let и const не поддерживается в старых версиях браузеров, тогда нужно программой-конвертером переводить код в старый
-режим, для того что бы использовать новый режим существует директива "use strict"; - существует для вывода ошибок.
-прописывается на первой строке кода при этом также не работает такое выражение a = 15; будет выдавать ошибку.
+    var (старый метод задания переменной), существует еще до того как была объявлена(всплытие переменной при первом проходе браузера) 
+    поэтому будет undefined  вместо ошибки 
+
+    console.log(name);
+    var name = "Ivan";
+    это затрудняет debugging. проблемы: глобальная область видимости из любого места, поднятие кода(всплытие переменной, hoisting)
+
+
+    Новый стандарт let и const не поддерживается в старых версиях браузеров, тогда нужно программой-конвертером переводить код в старый
+    режим, для того что бы использовать новый режим существует директива "use strict"; - существует для вывода ошибок.
+    прописывается на первой строке кода при этом также не работает такое выражение a = 15; будет выдавать ошибку.
 
 */}
 
 
 {/*  003    ====  ТИПЫ ДАННЫХ  ====
 
-Тип данных можно проверить typeof.  console.log(typeof(5));
+    Тип данных можно проверить typeof.  console.log(typeof(5));
 
 
-  +++ ПРОСТЫЕ ТИПЫ (примитивы): 
+    +++ ПРОСТЫЕ ТИПЫ (примитивы): 
 
-1) Числа (1, 2, 3.2) , infinity - получается при делании на 0(может быть отрицательной если делить отрицательное число на 0)
-NaN (not a number)- получается при операции с не математической логикой ("string" * 9)
+    1) Числа (1, 2, 3.2) , infinity - получается при делании на 0(может быть отрицательной если делить отрицательное число на 0)
+    NaN (not a number)- получается при операции с не математической логикой ("string" * 9)
 
-2) Строки ("string", 'name', `you are ${years}`, "5")
+    2) Строки ("string", 'name', `you are ${years}`, "5")
 
-3)Логический тип(boolean) (true, false) 
+    3)Логический тип(boolean) (true, false) 
 
-4) null - что то чего не существует. null в консоль получаем редко, чаще будет ошибка ReferenceError: something is not defined
-ошибка ссылочного типа, которая говорит что мы ссылаемся на не существующий объект.
+    4) null - что то чего не существует. null в консоль получаем редко, чаще будет ошибка ReferenceError: something is not defined
+    ошибка ссылочного типа, которая говорит что мы ссылаемся на не существующий объект.
 
-5) undefined - существует но значение не определено.
+    5) undefined - существует но значение не определено.
 
-6) Symbol 
+    6) Symbol 
 
-7) BigInt - тип данных для больших чисел больше чем 2 в 53 степени.
-
-
-  +++ КОМПЛЕКСНЫЕ (объекты)
-
-обычные объекты - коллекция данных, может содержать разные типы данных (свойства) и действия(методы) */
-const obj = {
-    age: 10, 
-    name: "John",
-        say: function() {
-        console.log("Hello");
-    },
-    isMarried: false
-}
-console.log(obj.age); //10       console.log( obj.say() ); // Hello
-console.log(obj["age"]);//10
+    7) BigInt - тип данных для больших чисел больше чем 2 в 53 степени.
 
 
-/* +++ СПЕЦ. ОБЪЕКТЫ: 
+    +++ КОМПЛЕКСНЫЕ (объекты)
 
-1) Массивы ["text", 6, {}, [], true] - частный случай объектов, конструкция для хранения данных строго по порядку. 
-Первый элемент под номером 0. let arr = [6, true]; console.log(arr[1]); //true
-Для записи эл. в массив используем arr[0] = "9";
+    обычные объекты - коллекция данных, может содержать разные типы данных (свойства) и действия(методы) */
+    const obj = {
+        age: 10, 
+        name: "John",
+            say: function() {
+            console.log("Hello");
+        },
+        isMarried: false
+    }
+    console.log(obj.age); //10       console.log( obj.say() ); // Hello
+    console.log(obj["age"]);//10
 
-2) Функции
-3) Объекты даты
-4) Регулярные выражения 
-5) Ошибки
+
+    /* +++ СПЕЦ. ОБЪЕКТЫ: 
+
+    1) Массивы ["text", 6, {}, [], true] - частный случай объектов, конструкция для хранения данных строго по порядку. 
+    Первый элемент под номером 0. let arr = [6, true]; console.log(arr[1]); //true
+    Для записи эл. в массив используем arr[0] = "9";
+
+    2) Функции
+    3) Объекты даты
+    4) Регулярные выражения 
+    5) Ошибки
 
 */}
 
 
-{// 004     ====  alert, confirm, prompt, document.write  ====
+{//  004    ====  alert, confirm, prompt, document.write  ====
 
-//alert, confirm, prompt Эти события не могут быть стилизированы и их вид зависит от браузера. они блокируют построение страницы.
-
-
-//alert - окно предупреждения имеет 1 кнопку -  ок
-alert("hello"); 
+    //alert, confirm, prompt Эти события не могут быть стилизированы и их вид зависит от браузера. они блокируют построение страницы.
 
 
-// confirm - 2 кнопки ок и отмена.
-const result = confirm("are u here?"); // Результат нажатия этих клавиш будет записан в result
-console.log(result); //При нажатии ок - true, false - при нажатии кнопки отмена
+    //alert - окно предупреждения имеет 1 кнопку -  ок
+    alert("hello"); 
 
 
-//prompt - 2 кнопки (ок и отмена) и поле ввода.
-const answer = prompt("Вам есть 18", "");//первый аргумент вопрос, второй аргумент пустые кавычки, 
-//для получения ответа пользователя в них можно указать значение по умолчанию prompt("Вам есть 18", "18")
-//ответ пользователя приходит в виде строки, что бы перевести в число ставим плюс впереди +prompt;
-console.log(answer);
-console.log( typeof(answer) );
-//если просто promt - при закрытии окна Esc или Отмена - получим null (объект)
-//если +prompt - 0 (number), если введут что то кроме числа - NaN (number)
+    // confirm - 2 кнопки ок и отмена.
+    const result = confirm("are u here?"); // Результат нажатия этих клавиш будет записан в result
+    console.log(result); //При нажатии ок - true, false - при нажатии кнопки отмена
 
-//Помещаем ответы в массив
-const answers = [];
 
-answers[0] = prompt("Как ваше имя?", "");
-answers[1] = prompt("Как ваша Фамилия?", "");
-answers[2] = prompt("Сколько вам лет?", "");
+    //prompt - 2 кнопки (ок и отмена) и поле ввода.
+    const answer = prompt("Вам есть 18", "");//первый аргумент вопрос, второй аргумент пустые кавычки, 
+    //для получения ответа пользователя в них можно указать значение по умолчанию prompt("Вам есть 18", "18")
+    //ответ пользователя приходит в виде строки, что бы перевести в число ставим плюс впереди +prompt;
+    console.log(answer);
+    console.log( typeof(answer) );
+    //если просто promt - при закрытии окна Esc или Отмена - получим null (объект)
+    //если +prompt - 0 (number), если введут что то кроме числа - NaN (number)
 
-//Если записать в консоле на сайте то заменяет все содержимое страницы
-document.write(answers);
+    //Помещаем ответы в массив
+    const answers = [];
+
+    answers[0] = prompt("Как ваше имя?", "");
+    answers[1] = prompt("Как ваша Фамилия?", "");
+    answers[2] = prompt("Сколько вам лет?", "");
+
+    //Если записать в консоле на сайте то заменяет все содержимое страницы
+    document.write(answers);
 
 }
 
 
-{//        ==== Sort massive (сортировка по порядку)  ====
+{//         ==== Sort massive (сортировка по порядку)  ====
 
     // const arr = [1, 14, 4, 30, 54];
     // let sorted = arr.sort(CompareNum);
@@ -524,444 +524,306 @@ document.write(answers);
 }
 
 
-{// 005     ====  ИНТЕРПОЛЯЦИЯ (ES6)  ====
+{//  005    ====  ИНТЕРПОЛЯЦИЯ (ES6)  ====
 
-//Интерполяция - вставка значения переменной внутрь строки, используя кавычки на тильде(косые бэктики).
+    //Интерполяция - вставка значения переменной внутрь строки, используя кавычки на тильде(косые бэктики).
 
-//Задача - подставить в пусть перехода по ссылке переменную category. До ES6 реализовывалось через конкатенацию строк.
-const category = 'toys';
-console.log('https://someurl.com/' + category);
+    //Задача - подставить в пусть перехода по ссылке переменную category. До ES6 реализовывалось через конкатенацию строк.
+    const category = 'toys';
+    console.log('https://someurl.com/' + category);
 
-//Далее есои нужно перейти на четвертую игрушку например, код начинает выглядеть не очень красиво и удобно
-console.log('https://someurl.com/' + category + '/' + '4');
+    //Далее есои нужно перейти на четвертую игрушку например, код начинает выглядеть не очень красиво и удобно
+    console.log('https://someurl.com/' + category + '/' + '4');
 
-//Теперь это реализуется интерполяцией
-console.log(`https://someurl.com/${category}/4`);
-//Можно динамически менять содержимое строки в зависимости от  пришедших данных.
+    //Теперь это реализуется интерполяцией
+    console.log(`https://someurl.com/${category}/4`);
+    //Можно динамически менять содержимое строки в зависимости от  пришедших данных.
 
 }
 
 
 {//         ====  ПРАКТИЧЕСКОЕ ЗАДАНИЕ  ====
-let personalMovieDB = {
-    count:  0,
-    movies: {},
-    actors: {},
-    genres: [],
-    privat: false,
-    start: function (){
-        personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
-            
-                while(personalMovieDB.count == ""||personalMovieDB.count ==null || isNaN(personalMovieDB.count ) ){
-                    personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
-                }
-            },
-    rememberMyFilms: function (){
-                        for (let i = 0; i < 2; i++) {
-                            let a = prompt("Последний просмотренный фильм?", "");
-                            let b = prompt("Оцените этот фильм.", "");
-                        
-                            if(a != null && b != null && a != "" && b != "" && a.length < 50){
-                                personalMovieDB.movies[a] = b;
-                                console.log("Job's Done");
-                            }else{
-                                console.log("Error");
-                                i--;
-                            }
-                        }
-                    },
-    detectPersonalLevel: function (){
-        if(personalMovieDB.count < 10){
-            document.write("Просмотрено мало фильмов");
-        }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30){
-            document.write("Вы классический зритель");
-        }else if(personalMovieDB.count >= 30){
-            document.write("Вы киноман");
-        }else{
-            document.write("Произошла ошибка");
-        }
-    },
-    showMyDB: function (hidden){
-                    if(!hidden){
-                        console.log(personalMovieDB);
+
+    let personalMovieDB = {
+        count:  0,
+        movies: {},
+        actors: {},
+        genres: [],
+        privat: false,
+        start: function (){
+            personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
+                
+                    while(personalMovieDB.count == ""||personalMovieDB.count ==null || isNaN(personalMovieDB.count ) ){
+                        personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
                     }
                 },
-    writeYourGenres: function () {
-                        //Method cycling
-                        // for (let i = 1; i <= 3; i++) {
-                        //     let a = prompt(`Ваш любимый жанр под номером ${i}`, "");
+        rememberMyFilms: function (){
+                            for (let i = 0; i < 2; i++) {
+                                let a = prompt("Последний просмотренный фильм?", "");
+                                let b = prompt("Оцените этот фильм.", "");
                             
-                        //     if(a != null && a != ""){
-                        //         personalMovieDB.genres[i-1] = a;
-                        //         console.log("Job's Done");
-                        //     }else{
-                        //         console.log("Error");
-                        //         i--;
-                        //     }
-                        // }
-                        //Method for all values in massive
-                        for (let i = 1; i < 2; i++) {  //decrease i that cycle has 1 itteration
-                            let all = prompt(`Введите ваши любимые жанры через запятую.`, "").toLowerCase();
-                            
-                            if(all != null && all != ""){
-                                personalMovieDB.genres = all.split(", ");
-                                personalMovieDB.genres.sort();
-                                console.log("Job's Done");
-                            }else{
-                                console.log("Error");
-                                i--; //Decrease increament for back in one itteration back
+                                if(a != null && b != null && a != "" && b != "" && a.length < 50){
+                                    personalMovieDB.movies[a] = b;
+                                    console.log("Job's Done");
+                                }else{
+                                    console.log("Error");
+                                    i--;
+                                }
                             }
+                        },
+        detectPersonalLevel: function (){
+            if(personalMovieDB.count < 10){
+                document.write("Просмотрено мало фильмов");
+            }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30){
+                document.write("Вы классический зритель");
+            }else if(personalMovieDB.count >= 30){
+                document.write("Вы киноман");
+            }else{
+                document.write("Произошла ошибка");
+            }
+        },
+        showMyDB: function (hidden){
+                        if(!hidden){
+                            console.log(personalMovieDB);
                         }
-
-                        personalMovieDB.genres.forEach( (value, index ) => {
-                                                            console.log(`Любимый жанр #${index+1} - это ${value}`);
-                                                        }
-                        );
                     },
-    toggleVisibleMyDB: function(){
-                           if (personalMovieDB.privat){
-                            personalMovieDB.privat = false;
-                           } else{
-                            personalMovieDB.privat = true;  
-                           }
-                        }
-};
-// personalMovieDB.start();
-// personalMovieDB.rememberMyFilms();
-// personalMovieDB.detectPersonalLevel();
-// personalMovieDB.toggleVisibleMyDB();
-// personalMovieDB.showMyDB(personalMovieDB.privat);
-// personalMovieDB.writeYourGenres();
-// console.log(personalMovieDB);
-}
+        writeYourGenres: function () {
+                            //Method cycling
+                            // for (let i = 1; i <= 3; i++) {
+                            //     let a = prompt(`Ваш любимый жанр под номером ${i}`, "");
+                                
+                            //     if(a != null && a != ""){
+                            //         personalMovieDB.genres[i-1] = a;
+                            //         console.log("Job's Done");
+                            //     }else{
+                            //         console.log("Error");
+                            //         i--;
+                            //     }
+                            // }
+                            //Method for all values in massive
+                            for (let i = 1; i < 2; i++) {  //decrease i that cycle has 1 itteration
+                                let all = prompt(`Введите ваши любимые жанры через запятую.`, "").toLowerCase();
+                                
+                                if(all != null && all != ""){
+                                    personalMovieDB.genres = all.split(", ");
+                                    personalMovieDB.genres.sort();
+                                    console.log("Job's Done");
+                                }else{
+                                    console.log("Error");
+                                    i--; //Decrease increament for back in one itteration back
+                                }
+                            }
 
-
-{// 006     ====  ОПЕРАТОРЫ   ====
-
-//Вычитание(-), умножение(*), деление(/) - работают также как в матиматике. 
-
-
-// +++ СЛОЖЕНИЕ (+)
-
-//При сложении Двух строк или строки с чем либо получим строку(конкатенация)
-console.log('arr' + ' - object'); // arr - object  - строка
-console.log(4 + ' - object');     // 4 - object    - строка
-console.log(4 + '5');             // 45            - строка
-
-// Плюс перед строкой (унарный - ставится перед чем то(использует только 1 аргумент)) позволяет получить из нее число
-console.log(4 + +'5');            // 9             - строка
-
-
-// +++ ИНКРЕМЕНТ(++) и ДЕКРЕМЕНТ(--)
-
-// Используются для укорочения кода. Существуют префиксные и постфиксные.
-
-let incr = 10,
-    decr = 10;
-
-//Префиксные - сначала возвращает старое значение, а потом выполняет операцию  
-console.log(++incr); // 11
-console.log(--decr); // 9
-
-//Постфиксные - сначала выполняет операцию, а потом возвращает значение
-console.log(incr++); // 10
-console.log(decr--); // 10
-
-
-// +++ ОСТАТОК ОТ ДЕЛЕНИЯ(%)
-
-console.log(5%2); // 1
-//5 делится на 2 столько раз сколько может а остаток возвращается.
-
-
-// +++ РАВЕНСТВО(==) и СТРОГОЕ РАВЕНСТВО(===)
-
-console.log(2*4 == 8); // true    - сравнивает по значению, а не типу данных.
-console.log(2*4 == '8'); // true  - сравнение со строкой тоже дает истину.
-
-console.log(2*4 === '8'); // false - строгое равенство сравнивает также типы.
-console.log(2*4 === 8); // true 
-
-
-// +++ ЛОГИЧЕСКИЕ ОПЕРАТОРЫ И(&&) и ИЛИ(||)
-
-// И(&&) - возвращает true если ВСЕ аргументы true, иначе выводит false 
-const isCheked = true,
-      isClose = true,
-      isFalse = false;
-
-console.log(isCheked && isClose); // true
-console.log(isCheked && isClose && isFalse); // false
-
-// ИЛИ(||) - возвращает true если ХОТЯБІ ОДИН аргумент true, возвращает false если все аргументы false.
-console.log(isCheked || isClose || isFalse); // true
-
-
-// +++ ОТРИЦАНИЕ(!) - превращает значение в обратное
-console.log(isCheked && isClose && !isFalse); // true
-console.log(!isCheked || !isClose || isFalse); // false
-console.log(2 + 2 * 2 != 8); // true  - потому что 6 (НЕ) равно 8
-console.log(2 + 2 * 2 != '6'); // false - потому что 6 (НЕ) равно 6
-console.log(2 + 2 * 2 !== '6'); // true - потому что 6 число (НЕ) НЕ равно 6 строке
-
-// +++ ПОРЯДОК ВЫПОЛНЕНИЯ ОПЕРАТОРОВ - приоритет можно посмотреть по таблице
-console.log(2 + 2 * 2 == 8); //false - потому что умножение выполнится раньше и получится 6 == 8
-
-
-//Существуют еще побитовые операторы, но в первы годы работы с кодом они не стречаются.
+                            personalMovieDB.genres.forEach( (value, index ) => {
+                                                                console.log(`Любимый жанр #${index+1} - это ${value}`);
+                                                            }
+                            );
+                        },
+        toggleVisibleMyDB: function(){
+                            if (personalMovieDB.privat){
+                                personalMovieDB.privat = false;
+                            } else{
+                                personalMovieDB.privat = true;  
+                            }
+                            }
+    };
+    // personalMovieDB.start();
+    // personalMovieDB.rememberMyFilms();
+    // personalMovieDB.detectPersonalLevel();
+    // personalMovieDB.toggleVisibleMyDB();
+    // personalMovieDB.showMyDB(personalMovieDB.privat);
+    // personalMovieDB.writeYourGenres();
+    // console.log(personalMovieDB);
 
 }
 
 
-{/* 007     ====  GIT   ====
+{//  006    ====  ОПЕРАТОРЫ  ====
 
-GIT - система контроля версий, GitHub - сервис для хранения репозиториев.
+    //Вычитание(-), умножение(*), деление(/) - работают также как в матиматике. 
 
-Скачать GIT с сайта git-scm.com, установить.
 
-Для создания репозитория в папке проекта нужно вызвать через shift+ правая кнопка мыши - PowerShell или Graphic user inerface.
-Если такой функции нету тогда вызываем cmd прописываем cd(change directory) - и докопируем путь к папке проекта, что бы туда 
-перейти.
+    // +++ СЛОЖЕНИЕ (+)
+
+    //При сложении Двух строк или строки с чем либо получим строку(конкатенация)
+    console.log('arr' + ' - object'); // arr - object  - строка
+    console.log(4 + ' - object');     // 4 - object    - строка
+    console.log(4 + '5');             // 45            - строка
+
+    // Плюс перед строкой (унарный - ставится перед чем то(использует только 1 аргумент)) позволяет получить из нее число
+    console.log(4 + +'5');            // 9             - строка
+
+
+    // +++ ИНКРЕМЕНТ(++) и ДЕКРЕМЕНТ(--)
+
+    // Используются для укорочения кода. Существуют префиксные и постфиксные.
+
+    let incr = 10,
+        decr = 10;
+
+    //Префиксные - сначала возвращает старое значение, а потом выполняет операцию  
+    console.log(++incr); // 11
+    console.log(--decr); // 9
+
+    //Постфиксные - сначала выполняет операцию, а потом возвращает значение
+    console.log(incr++); // 10
+    console.log(decr--); // 10
+
+
+    // +++ ОСТАТОК ОТ ДЕЛЕНИЯ(%)
+
+    console.log(5%2); // 1
+    //5 делится на 2 столько раз сколько может а остаток возвращается.
+
+
+    // +++ РАВЕНСТВО(==) и СТРОГОЕ РАВЕНСТВО(===)
+
+    console.log(2*4 == 8); // true    - сравнивает по значению, а не типу данных.
+    console.log(2*4 == '8'); // true  - сравнение со строкой тоже дает истину.
+
+    console.log(2*4 === '8'); // false - строгое равенство сравнивает также типы.
+    console.log(2*4 === 8); // true 
+
+
+    // +++ ЛОГИЧЕСКИЕ ОПЕРАТОРЫ И(&&) и ИЛИ(||)
+
+    // И(&&) - возвращает true если ВСЕ аргументы true, иначе выводит false 
+    const isCheked = true,
+        isClose = true,
+        isFalse = false;
+
+    console.log(isCheked && isClose); // true
+    console.log(isCheked && isClose && isFalse); // false
+
+    // ИЛИ(||) - возвращает true если ХОТЯБІ ОДИН аргумент true, возвращает false если все аргументы false.
+    console.log(isCheked || isClose || isFalse); // true
+
+
+    // +++ ОТРИЦАНИЕ(!) - превращает значение в обратное
+    console.log(isCheked && isClose && !isFalse); // true
+    console.log(!isCheked || !isClose || isFalse); // false
+    console.log(2 + 2 * 2 != 8); // true  - потому что 6 (НЕ) равно 8
+    console.log(2 + 2 * 2 != '6'); // false - потому что 6 (НЕ) равно 6
+    console.log(2 + 2 * 2 !== '6'); // true - потому что 6 число (НЕ) НЕ равно 6 строке
+
+    // +++ ПОРЯДОК ВЫПОЛНЕНИЯ ОПЕРАТОРОВ - приоритет можно посмотреть по таблице
+    console.log(2 + 2 * 2 == 8); //false - потому что умножение выполнится раньше и получится 6 == 8
+
+
+    //Существуют еще побитовые операторы, но в первы годы работы с кодом они не стречаются.
+
+}
+
+
+{/*  007    ====  GIT  ====
+
+    GIT - система контроля версий, GitHub - сервис для хранения репозиториев.
+
+    Скачать GIT с сайта git-scm.com, установить.
+
+    Для создания репозитория в папке проекта нужно вызвать через shift+ правая кнопка мыши - PowerShell или Graphic user inerface.
+    Если такой функции нету тогда вызываем cmd прописываем cd(change directory) - и докопируем путь к папке проекта, что бы туда 
+    перейти.
 
 
 
 */}
 
 
-{ //025 Get elements from page
-// let box = document.getElementById("box");
-// console.log(box);
-// let btns = document.getElementsByTagName("button");
-// console.log(btns[1]);
-// let circles = document.getElementsByClassName("circle");
-// console.log(circles[1]);
+{//  025    ====  GET ELEMENTS FROM PAGE  ====  
 
-// let hearts = document.querySelectorAll('.heart'); 
-// //в середину круглых скобок можно помещать любой сss селектор или их вложенность
-// console.log(hearts);
-// hearts.forEach(item => {
-//     console.log(item);
-// });
+    let box = document.getElementById("box");
+    console.log(box);
+    let btns = document.getElementsByTagName("button");
+    console.log(btns[1]);
+    let circles = document.getElementsByClassName("circle");
+    console.log(circles[1]);
 
-// let oneHeart = document.querySelector('.heart'); 
-// //Позволяет получить только первый подходящий элемент
-// console.log(oneHeart);
+    let hearts = document.querySelectorAll('.heart'); 
+    //в середину круглых скобок можно помещать любой сss селектор или их вложенность
+    console.log(hearts);
+    hearts.forEach(item => {
+        console.log(item);
+    });
+
+    let oneHeart = document.querySelector('.heart'); 
+    //Позволяет получить только первый подходящий элемент
+    console.log(oneHeart);
+
 }
 
 
-{//}026 ={ interaction with elements 
-    // let box = document.getElementById("box"),
-    //     btns = document.getElementsByTagName("button"),
-    //     circles = document.getElementsByClassName("circle"),
-    //     wrapper = document.querySelector(".wrapper"),
-    //     hearts = document.querySelectorAll('.heart'),
-    //     oneHeart = document.querySelector('.heart'); 
-//также можно получить эти переменный внутри wrapper обращаясь сразу к нему
-    //hearts = wrapper.querySelectorAll('.heart'),
-   // oneHeart = wrapper.querySelector('.heart'); 
-    // квери селектор будет искать .heart внутри wrapper,  wrapper должен быть получен перед этими запросами
+{//  026    ====  INTERACTION WITH ELEMENTS  ====
 
-//Свойства записываются в инлайн строку, прямо в хтмл, поэтому по приоритету 
-//они будут главнее чем сss свойства
-    // box.style.backgroundColor = "green";
-    // box.style.width = "500px";
-//Задаем множество свойств одной командой
-    // let num = 400;
-    // box.style.cssText = `background-color: blue; width: ${num}px`;
+    let box = document.getElementById("box"),
+        btns = document.getElementsByTagName("button"),
+        circles = document.getElementsByClassName("circle"),
+        wrapper = document.querySelector(".wrapper"),
+        hearts = document.querySelectorAll('.heart'),
+        oneHeart = document.querySelector('.heart'); 
+ //также можно получить эти переменный внутри wrapper обращаясь сразу к нему
+    hearts = wrapper.querySelectorAll('.heart'),
+   oneHeart = wrapper.querySelector('.heart'); 
+    квери селектор будет искать .heart внутри wrapper,  wrapper должен быть получен перед этими запросами
 
-    // btns[1].style.borderRadius = "100%";
-    // circles[0].style.backgroundColor = "red";
+ // Свойства записываются в инлайн строку, прямо в хтмл, поэтому по приоритету 
+ // они будут главнее чем сss свойства
+    box.style.backgroundColor = "green";
+    box.style.width = "500px";
+ // Задаем множество свойств одной командой
+    let num = 400;
+    box.style.cssText = `background-color: blue; width: ${num}px`;
 
-    // for (let i = 0; i < hearts.length; i++){
-    //     hearts[i].style.backgroundColor = "blue";
-    // }
+    btns[1].style.borderRadius = "100%";
+    circles[0].style.backgroundColor = "red";
 
-//Вместо циклов в основном используем перебирающие методы
-    // hearts.forEach(item=>{
-    //     item.style.backgroundColor = "blue";
-    // });
-//Методы для создания элементов на лету
-    // let div = document.createElement("div"); //елементы
-    // let text = document.createTextNode("Новый текст");  // текст(ноды)
-//Обычно объекту назначают класс что бы применить сразу много аттрибутов
-    // div.classList.add("black");  
-    // document.body.append(div); // Современный способ Прикрепляем созданный див в КОНЕЦ тега body что бы он появился на странице
+    for (let i = 0; i < hearts.length; i++){
+        hearts[i].style.backgroundColor = "blue";
+    }
 
-// //Для присоединения к диву с классом wrapper
-//     document.querySelector(".wrapper").append(div);  // можно не создавать переменную если обращаться 1 раз  
-    //wrapper.append(div); // С переменной
-//wrapper.appendChild(div); // УСТАРЕВШИЙ метод (разницы нету)
-// // Для присоединения нужно сначала получить элемент к которому присоединять
-//     //     wrapper.prepend(div); //Прикрепляем в НАЧАЛО тега
-// //ПЕРЕД и ПОСЛЕ
-//     hearts[1].before(div);
-//     hearts[1].after(div);
+ // Вместо циклов в основном используем перебирающие методы
+    hearts.forEach(item=>{
+        item.style.backgroundColor = "blue";
+    });
+ // Методы для создания элементов на лету
+    let div = document.createElement("div"); //елементы
+    let text = document.createTextNode("Новый текст");  // текст(ноды)
+ // Обычно объекту назначают класс что бы применить сразу много аттрибутов
+    div.classList.add("black");  
+    document.body.append(div); // Современный способ Прикрепляем созданный див в КОНЕЦ тега body что бы он появился на странице
 
-    //wrapper.insertBefore(div,  hearts[1]); //СТАРЫЙ метод для бефор
+ //Для присоединения к диву с классом wrapper
+    document.querySelector(".wrapper").append(div);  // можно не создавать переменную если обращаться 1 раз  
+    wrapper.append(div); // С переменной
+    wrapper.appendChild(div); // УСТАРЕВШИЙ метод (разницы нету)
+ // Для присоединения нужно сначала получить элемент к которому присоединять
+ //wrapper.prepend(div); //Прикрепляем в НАЧАЛО тега
+ //ПЕРЕД и ПОСЛЕ
+    hearts[1].before(div);
+    hearts[1].after(div);
+
+    wrapper.insertBefore(div,  hearts[1]); //СТАРЫЙ метод для бефор
 
 
-// //Удаление со страницы
-//     circles[1].remove();
-       // wrapper.removeChild(circles[1]); //СТАРЫЙ метод
-// //Замена одного элемента другим
-//     hearts[2].replaceWith(circles[0]); // Сердце заменяем кругом
-   //  wrapper.replaceChild(circles[0], hearts[2] ); //Старый метод
+ //Удаление со страницы
+    circles[1].remove();
+       wrapper.removeChild(circles[1]); //СТАРЫЙ метод
+ //Замена одного элемента другим
+    hearts[2].replaceWith(circles[0]); // Сердце заменяем кругом
+    wrapper.replaceChild(circles[0], hearts[2] ); //Старый метод
 
-//Первый Метод Для вставки ТЕКСТА или ХМТЛ структуры
-    //div.innerHTML = "<h1>Hello World</h1>";
-//Второй Метод но только для текста(безопасность при вводе пользователем данных)
-   // div.textContent = "Hello";
-//Для вставки куска ХТМЛ кода перед или после определенных тегов
-    //div.insertAdjacentHTML("beforebegin", "<h2>Hello</h2>"); // вставляем второй аргумент бефорбегин(перед) див
-    // afterbegim - в начало(первый в середине) элемента. beforeend - в конец в середину, afterend - после элемента
+ // Первый Метод Для вставки ТЕКСТА или ХМТЛ структуры
+    div.innerHTML = "<h1>Hello World</h1>";
+ // Второй Метод но только для текста(безопасность при вводе пользователем данных)
+   div.textContent = "Hello";
+ // Для вставки куска ХТМЛ кода перед или после определенных тегов
+    div.insertAdjacentHTML("beforebegin", "<h2>Hello</h2>"); // вставляем второй аргумент бефорбегин(перед) див
+    afterbegim - в начало(первый в середине) элемента. beforeend - в конец в середину, afterend - после элемента
+
 }
 
 
-{//027 Practise with elements
-    const movieDB = {
-    movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
-    ]
-};
-
-//1 Удалить все рекламные блоки со страницы (правая часть сайта)
-// let reklama =  document.querySelectorAll('.promo__adv img');
-//        reklama.forEach(item=>{
-//            item.remove();
-//          });
-// //2 Изменить жанр фильма, поменять "комедия" на "драма"
-// let genre = document.querySelector(".promo__genre");
-// genre.textContent = "Драма";
-// //3 Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
-// //Реализовать только при помощи JS
-// let bg = document.querySelector(".promo__bg");
-// bg.style.backgroundImage =  "url('img/bg.jpg')";//Прописываем внутры другие кавычки что бы избежать конфликта
-// //4  Список фильмов на странице сформировать на основании данных из этого JS файла.
-// //Отсортировать их по алфавиту 
-// let movieList =  document.querySelector(".promo__interactive-list"); // Селктор один что бы получить доступ к родителю списка и его методу
-// movieList.innerHTML = ""; //Очистили список на странице
-// movieDB.movies.sort(); // сортируем по алфавиту
-// movieDB.movies.forEach((film, i) =>{    //a=a+1 или a+=1;
-//         movieList.innerHTML += ` 
-//                 <li class="promo__interactive-item">№${i+1} ${film}
-//                     <div class="delete"></div>
-//                 </li>
-//         `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
-//})
-}
-
-
-{//028 Event listener
-// //1 способ записать прямо в хтмл свойстве, комбинируем кавычки
-// //<button onclick = "alert('Click')" id="btn">Нажми меня</button>
-
-// //2 способ при этом способе мы не сможем удалить этот обработчик событий и следующий онклик заменит предыдущий
-// // let btn = document.querySelector("button"); // button - тег - выбирает только первый элемент с этим тегом
-// // btn.onclick = function(){
-// //     alert("Knock");
-// // btn.onclick = function(){
-// //     alert("Second cilck");
-// // };
-
-// //3 Способ первый аргумент click - вариант события, второй аргумент коллбек функция
-// let btn = document.querySelector("button");
-// // btn.addEventListener("click", ()=>{
-// //     alert("click");
-// // });
-
-// // btn.addEventListener("mouseenter", ()=>{ // при наведении
-// //     console.log("Hover");
-// // });
-
-// // //Для получения данных об элементе с которым взаимодействуем (координаты, событие)
-// // // он передается первым аргументом в коллбек функцию (название е или event или другое?)
-// // btn.addEventListener("mouseenter", (e)=>{ 
-// //     console.log(e);// при наведении получаем объект в консоль
-// // });
-
-// // btn.addEventListener("mouseenter", (e)=>{ 
-// //     console.log(e.target);// при наведении получаем на каком объекте сработало
-// //     e.target.remove(); // получаем элемент и удаляем его после наведения
-// // });
-
-// //Для удаления обработчика его нужно присвоить переменной или мы не сможем к нему обратится
-// let overlay = document.querySelector(".overlay");
-// // let i = 0;
-// // const targetElement = (e)=>{ 
-// //     console.log(e.target);
-// //     i++;
-// //     if(i==2){
-// //         btn.removeEventListener("click", targetElement);
-// //     }
-// // };
-// // btn.addEventListener("click", targetElement);
-// //     //Удаление btn.removeEventListener("click", targetElement);
-
-// //Всплытие событий - когда событие срабатывает сначала на вложенном элементе, а потом на родителе
-// const targetOverlay = (e)=>{ 
-//     console.log(e.currentTarget); // Показывает на каком елементе произошло событие СЕЙЧАС
-//     console.log(e.type);
-// };
-// // btn.addEventListener("click", targetOverlay);
-// // overlay.addEventListener("click", targetOverlay);
-
-// //Отмена стандартного поведения
-// const link = document.querySelector("a"); // получение елемента ссылки <a href="https://www.youtube.com/">https://www.youtube.com/</a>
-// link.addEventListener("click", function(event){
-//     event.preventDefault();     // отмена перехода по ссылке, всегда прописываем вначале 
-//     console.log(event.target);  // потом то что нужно сделать
-// });
-
-// // //Применение обработчика события к множеству элементов
-// const btns = document.querySelectorAll("button");
-// // btns.forEach(btn =>{
-// //     btn.addEventListener("click", targetOverlay);
-// // });
-
-// //Опции события (третий аргумент EventListener (capture / once/ passive/ mozSystemGroup))
-// btns.forEach(btn =>{
-//     btn.addEventListener("click", targetOverlay, {once:true});
-// });
-}
-
-
-{//029 Navigation in DOM, Data attributes, forof преимущества
-//console.log(document.body); //- получаем боди
-//console.log(document.documentElement); //- получаем ХТМЛ
-//console.log(document.body.childNodes); //- псевдомассив узлов(нод) боди - 
-//аналога с Элементами нету иногда его создают вручную перебором фороф потому что в нем есть брейк и континье
-// for(let node of document.body.childNodes){
-//     if(node.nodeName == "#text"){ // пропускаем узлы содержащие в названии #text
-//         continue;              
-//     }
-//     console.log(node);
-// }
-
-// console.log(document.body.firstChild); //первая Нода
-//console.log(document.body.firstElementChild); // первый Элемент
-// console.log(document.body.lastChild);// последняя Нода
-// console.log(document.querySelector("#current").parentNode); // получаем ноду по классу и обращаемя к его родителю
-// console.log(document.querySelector("#current").parentNode);// получаем ноду родителя еще на уровень выше
-//console.log(document.querySelector("#current").parentElement); // получаем ЭЛЕМЕНТ
-
-//!!! НОДА - узел, отличается от получения элемента тем что может быть просто перенос на новыю строку, а не элемент
-//data элементы <li data-current="3">3</li> используем вместо id
-// console.log(document.querySelector("[data-current='3']"));//получить элем по дата аттрибуту !комбинация кавычек
-// console.log(document.querySelector("[data-current='3']").nextSibling); //Следующая нода 
-// console.log(document.querySelector("[data-current='3']").previousSibling); //Предыдущая нода
-// console.log(document.querySelector("[data-current='3']").nextElementSibling); // Следующий элемент
-// console.log(document.querySelector("[data-current='3']").nextSibling);
-}
-
-
-{//30 Practice use eventListeners
-    'use strict';
-
-document.addEventListener('DOMContentLoaded', () =>{ // - скрипт начнет работу при полной загрузке ДОМ дерева
+{//  027    ====  PRACTICE WITH ELEMENTS  ====
 
     const movieDB = {
         movies: [
@@ -972,186 +834,344 @@ document.addEventListener('DOMContentLoaded', () =>{ // - скрипт начн�
             "Скотт Пилигрим против..."
         ]
     };
-    
-    //1 Удалить все рекламные блоки со страницы (правая часть сайта)
+
+    // 1 Удалить все рекламные блоки со страницы (правая часть сайта)
     let reklama =  document.querySelectorAll('.promo__adv img');
-        //    reklama.forEach(item=>{
-        //        item.remove();
-        //      });
+        reklama.forEach(item=>{
+            item.remove();
+            });
     //2 Изменить жанр фильма, поменять "комедия" на "драма"
     let genre = document.querySelector(".promo__genre");
-    // genre.textContent = "Драма";
+    genre.textContent = "Драма";
     //3 Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
     //Реализовать только при помощи JS
     let bg = document.querySelector(".promo__bg");
-    // bg.style.backgroundImage =  "url('img/bg.jpg')";//Прописываем внутры другие кавычки что бы избежать конфликта
+    bg.style.backgroundImage =  "url('img/bg.jpg')";//Прописываем внутры другие кавычки что бы избежать конфликта
     //4  Список фильмов на странице сформировать на основании данных из этого JS файла.
     //Отсортировать их по алфавиту 
     let movieList =  document.querySelector(".promo__interactive-list"); // Селктор один что бы получить доступ к родителю списка и его методу
-    // movieList.innerHTML = ""; //Очистили список на странице
-    // movieDB.movies.sort(); // сортируем по алфавиту
-    // movieDB.movies.forEach((film, i) =>{    //a=a+1 или a+=1;
-    //         movieList.innerHTML += ` 
-    //                 <li class="promo__interactive-item">№${i+1} ${film}
-    //                     <div class="delete"></div>
-    //                 </li>
-    //         `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
-    // });
-
-//30 Practice
-// После введения текста в форму и нажатия кнопки 'Подтвердить'- добавляется новый фильм в список 
-//без перезагрузки страницы. Новый фильм должен добавиться в movieDB.movies. Для получения значения из
-// инпут  обращаемся  input.value.
-let addForm = document.querySelector("form.add"); //<form class="add">
-let addInput = addForm.querySelector(".adding__input"); // в теге form с классом add ищем класс <input class="adding__input"
-let checkbox = addForm.querySelector("[type=checkbox]");  // ищем по аттрибуту <input type="checkbox">
-
-addForm.addEventListener('submit', (event)=>{
-    event.preventDefault();
-
-    let newMovie = addInput.value;
-    let favorite = checkbox.checked; // обращаемся к чекбоксу что б он вернул тру или фолсе галочка отмечена или нет
-    
-    if(newMovie) {  // Проверка на пустую строку
-       if(newMovie.length > 21){
-        newMovie = `${newMovie.substring(0, 22)}...`; //проверяем на длинну символом и больше 21 знака добавляем троеточие
-       }
-       if(favorite){
-           console.log("Добавляем любимый фильм");
-       }
-        movieDB.movies.push(newMovie);
-        sortArr(movieDB.movies); //заново сортируем список
-        
-        createMovieList(movieDB.movies, movieList);
-    }
-  
-    event.target.reset(); // удаляем текст из формы (addForm заменили на event.target разницы нету)
-});
-
-//создаем функцию для вывода списка и добавляем аргументы что бы она вызывалась только при нажатии
-function createMovieList(films, parent){
-    parent.innerHTML = ""; //Очистили список на странице
-    sortArr(films);
-
-    films.forEach((film, i) =>{    //a=a+1 или a+=1;
-        parent.innerHTML += ` 
+    movieList.innerHTML = ""; //Очистили список на странице
+    movieDB.movies.sort(); // сортируем по алфавиту
+    movieDB.movies.forEach((film, i) =>{    //a=a+1 или a+=1;
+            movieList.innerHTML += ` 
                     <li class="promo__interactive-item">№${i+1} ${film}
                         <div class="delete"></div>
                     </li>
-            `; 
+            `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
+    })
+
+}
+
+
+{//  028    ====  EVENT LISTENER  ====
+
+    //1 способ записать прямо в хтмл свойстве, комбинируем кавычки
+    //<button onclick = "alert('Click')" id="btn">Нажми меня</button>
+
+    //2 способ при этом способе мы не сможем удалить этот обработчик событий и следующий онклик заменит предыдущий
+    // let btn = document.querySelector("button"); // button - тег - выбирает только первый элемент с этим тегом
+    // btn.onclick = function(){
+    //     alert("Knock");
+    // btn.onclick = function(){
+    //     alert("Second cilck");
+    // };
+
+    //3 Способ первый аргумент click - вариант события, второй аргумент коллбек функция
+    let btn = document.querySelector("button");
+    // btn.addEventListener("click", ()=>{
+    //     alert("click");
+    // });
+
+    // btn.addEventListener("mouseenter", ()=>{ // при наведении
+    //     console.log("Hover");
+    // });
+
+    // //Для получения данных об элементе с которым взаимодействуем (координаты, событие)
+    // // он передается первым аргументом в коллбек функцию (название е или event или другое?)
+    // btn.addEventListener("mouseenter", (e)=>{ 
+    //     console.log(e);// при наведении получаем объект в консоль
+    // });
+
+    // btn.addEventListener("mouseenter", (e)=>{ 
+    //     console.log(e.target);// при наведении получаем на каком объекте сработало
+    //     e.target.remove(); // получаем элемент и удаляем его после наведения
+    // });
+
+    //Для удаления обработчика его нужно присвоить переменной или мы не сможем к нему обратится
+    let overlay = document.querySelector(".overlay");
+    // let i = 0;
+    // const targetElement = (e)=>{ 
+    //     console.log(e.target);
+    //     i++;
+    //     if(i==2){
+    //         btn.removeEventListener("click", targetElement);
+    //     }
+    // };
+    // btn.addEventListener("click", targetElement);
+    //     //Удаление btn.removeEventListener("click", targetElement);
+
+    //Всплытие событий - когда событие срабатывает сначала на вложенном элементе, а потом на родителе
+    const targetOverlay = (e)=>{ 
+        console.log(e.currentTarget); // Показывает на каком елементе произошло событие СЕЙЧАС
+        console.log(e.type);
+    };
+    // btn.addEventListener("click", targetOverlay);
+    // overlay.addEventListener("click", targetOverlay);
+
+    //Отмена стандартного поведения
+    const link = document.querySelector("a"); // получение елемента ссылки <a href="https://www.youtube.com/">https://www.youtube.com/</a>
+    link.addEventListener("click", function(event){
+        event.preventDefault();     // отмена перехода по ссылке, всегда прописываем вначале 
+        console.log(event.target);  // потом то что нужно сделать
     });
-    //3 Удаляем фильм при нажатии на кнопку корзинки которые создаются вместе с элементом фильма 
-    document.querySelectorAll(".delete").forEach((btn, i)=>{ //находим кнопки удаления через класс <div  class="delete"
-        btn.addEventListener("click", ()=> {
-            btn.parentElement.remove();
-            movieDB.movies.splice(i, 1); //удаляем 1 элемент из массива под номером i
-            createMovieList(films, parent); //заново перестраиваем список вызывая функцию внутри себя (Рекурсия)
+
+    // //Применение обработчика события к множеству элементов
+    const btns = document.querySelectorAll("button");
+    // btns.forEach(btn =>{
+    //     btn.addEventListener("click", targetOverlay);
+    // });
+
+    //Опции события (третий аргумент EventListener (capture / once/ passive/ mozSystemGroup))
+    btns.forEach(btn =>{
+        btn.addEventListener("click", targetOverlay, {once:true});
+    });
+
+}
+
+
+{//  029    ====  NAVIGATION IN DOM, DATA ATTRIBUTES, FOROF преимущества  ====
+
+    console.log(document.body); //- получаем боди
+    console.log(document.documentElement); //- получаем ХТМЛ
+    console.log(document.body.childNodes); //- псевдомассив узлов(нод) боди - 
+    аналога с Элементами нету иногда его создают вручную перебором фороф потому что в нем есть брейк и континье
+    for(let node of document.body.childNodes){
+        if(node.nodeName == "#text"){ // пропускаем узлы содержащие в названии #text
+            continue;              
+        }
+        console.log(node);
+    }
+
+    console.log(document.body.firstChild); //первая Нода
+    console.log(document.body.firstElementChild); // первый Элемент
+    console.log(document.body.lastChild);// последняя Нода
+    console.log(document.querySelector("#current").parentNode); // получаем ноду по классу и обращаемя к его родителю
+    console.log(document.querySelector("#current").parentNode);// получаем ноду родителя еще на уровень выше
+    console.log(document.querySelector("#current").parentElement); // получаем ЭЛЕМЕНТ
+
+    !!! НОДА - узел, отличается от получения элемента тем что может быть просто перенос на новыю строку, а не элемент
+    data элементы <li data-current="3">3</li> используем вместо id
+    console.log(document.querySelector("[data-current='3']"));//получить элем по дата аттрибуту !комбинация кавычек
+    console.log(document.querySelector("[data-current='3']").nextSibling); //Следующая нода 
+    console.log(document.querySelector("[data-current='3']").previousSibling); //Предыдущая нода
+    console.log(document.querySelector("[data-current='3']").nextElementSibling); // Следующий элемент
+    console.log(document.querySelector("[data-current='3']").nextSibling);
+
+}
+
+
+{//  030    ====  PRACTICE USE eventListeners  ====
+        
+        'use strict';
+
+    document.addEventListener('DOMContentLoaded', () =>{ // - скрипт начнет работу при полной загрузке ДОМ дерева
+
+        const movieDB = {
+            movies: [
+                "Логан",
+                "Лига справедливости",
+                "Ла-ла лэнд",
+                "Одержимость",
+                "Скотт Пилигрим против..."
+            ]
+        };
+        
+        //1 Удалить все рекламные блоки со страницы (правая часть сайта)
+        let reklama =  document.querySelectorAll('.promo__adv img');
+            //    reklama.forEach(item=>{
+            //        item.remove();
+            //      });
+        //2 Изменить жанр фильма, поменять "комедия" на "драма"
+        let genre = document.querySelector(".promo__genre");
+        // genre.textContent = "Драма";
+        //3 Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
+        //Реализовать только при помощи JS
+        let bg = document.querySelector(".promo__bg");
+        // bg.style.backgroundImage =  "url('img/bg.jpg')";//Прописываем внутры другие кавычки что бы избежать конфликта
+        //4  Список фильмов на странице сформировать на основании данных из этого JS файла.
+        //Отсортировать их по алфавиту 
+        let movieList =  document.querySelector(".promo__interactive-list"); // Селктор один что бы получить доступ к родителю списка и его методу
+        // movieList.innerHTML = ""; //Очистили список на странице
+        // movieDB.movies.sort(); // сортируем по алфавиту
+        // movieDB.movies.forEach((film, i) =>{    //a=a+1 или a+=1;
+        //         movieList.innerHTML += ` 
+        //                 <li class="promo__interactive-item">№${i+1} ${film}
+        //                     <div class="delete"></div>
+        //                 </li>
+        //         `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
+        // });
+
+    //30 Practice
+    // После введения текста в форму и нажатия кнопки 'Подтвердить'- добавляется новый фильм в список 
+    //без перезагрузки страницы. Новый фильм должен добавиться в movieDB.movies. Для получения значения из
+    // инпут  обращаемся  input.value.
+    let addForm = document.querySelector("form.add"); //<form class="add">
+    let addInput = addForm.querySelector(".adding__input"); // в теге form с классом add ищем класс <input class="adding__input"
+    let checkbox = addForm.querySelector("[type=checkbox]");  // ищем по аттрибуту <input type="checkbox">
+
+    addForm.addEventListener('submit', (event)=>{
+        event.preventDefault();
+
+        let newMovie = addInput.value;
+        let favorite = checkbox.checked; // обращаемся к чекбоксу что б он вернул тру или фолсе галочка отмечена или нет
+        
+        if(newMovie) {  // Проверка на пустую строку
+        if(newMovie.length > 21){
+            newMovie = `${newMovie.substring(0, 22)}...`; //проверяем на длинну символом и больше 21 знака добавляем троеточие
+        }
+        if(favorite){
+            console.log("Добавляем любимый фильм");
+        }
+            movieDB.movies.push(newMovie);
+            sortArr(movieDB.movies); //заново сортируем список
+            
+            createMovieList(movieDB.movies, movieList);
+        }
+    
+        event.target.reset(); // удаляем текст из формы (addForm заменили на event.target разницы нету)
+    });
+
+    //создаем функцию для вывода списка и добавляем аргументы что бы она вызывалась только при нажатии
+    function createMovieList(films, parent){
+        parent.innerHTML = ""; //Очистили список на странице
+        sortArr(films);
+
+        films.forEach((film, i) =>{    //a=a+1 или a+=1;
+            parent.innerHTML += ` 
+                        <li class="promo__interactive-item">№${i+1} ${film}
+                            <div class="delete"></div>
+                        </li>
+                `; 
         });
+        //3 Удаляем фильм при нажатии на кнопку корзинки которые создаются вместе с элементом фильма 
+        document.querySelectorAll(".delete").forEach((btn, i)=>{ //находим кнопки удаления через класс <div  class="delete"
+            btn.addEventListener("click", ()=> {
+                btn.parentElement.remove();
+                movieDB.movies.splice(i, 1); //удаляем 1 элемент из массива под номером i
+                createMovieList(films, parent); //заново перестраиваем список вызывая функцию внутри себя (Рекурсия)
+            });
+        });
+    }  
+
+    let deleteAdv = (arr)=>{
+    arr.forEach(item=>{
+        item.remove();
     });
-}  
+    };
 
-let deleteAdv = (arr)=>{
-arr.forEach(item=>{
-    item.remove();
-  });
-};
+    let makeChanges = () =>{
+        genre.textContent = "Драма";
+        bg.style.backgroundImage =  "url('img/bg.jpg')";
+    };
 
-let makeChanges = () =>{
-    genre.textContent = "Драма";
-    bg.style.backgroundImage =  "url('img/bg.jpg')";
-};
+    let sortArr = (arr) =>{
+        arr.sort();
+    };
 
-let sortArr = (arr) =>{
-    arr.sort();
-};
+    createMovieList(movieDB.movies, movieList); //вызываем первый раз для построения списка
+    makeChanges();
+    deleteAdv(reklama);
 
-createMovieList(movieDB.movies, movieList); //вызываем первый раз для построения списка
-makeChanges();
-deleteAdv(reklama);
+    });
 
-});
 }
 
 
-{//032 Async, defer, dynamic scripts
+{//  032    ====  Async, defer, DYNAMIC scripts  ====
 
-//<script defer src="js/main.js"></script>
-//defer - этот аттрибут сообщает браузеру что он должен продолжать обрабатывать страницу
-// и загружать скрипт в фоновом режиме, а затем запустить скрипт когда загрузка DOM будет выполнена
-//скрипты с defer никогда не блокируют загрузку страници. Скрипты с defer выполняются последовательно
-//поэтому есть недостаток если впереди маленького скрипта стоит большой, маленький будет ждать выполнения большого
+    <script defer src="js/main.js"></script>
+    defer - этот аттрибут сообщает браузеру что он должен продолжать обрабатывать страницу
+    и загружать скрипт в фоновом режиме, а затем запустить скрипт когда загрузка DOM будет выполнена
+    скрипты с defer никогда не блокируют загрузку страници. Скрипты с defer выполняются последовательно
+    поэтому есть недостаток если впереди маленького скрипта стоит большой, маленький будет ждать выполнения большого
 
-//<script async src="js/main.js"></script>
-// async - запускается как только он будет загружен не ждет полного построения DOM модели
-//используется для подвязки скриптов которые не зависят от DOM или другого функционала сайта(Метрики и счетчики)
+    <script async src="js/main.js"></script>
+    async - запускается как только он будет загружен не ждет полного построения DOM модели
+    используется для подвязки скриптов которые не зависят от DOM или другого функционала сайта(Метрики и счетчики)
 
-//Динамически загружаемый скрипт ведет себя как async(выролняется сразу), пример формирования скрипта в другом скрипте
-// const script = document.createElement("script"); //создаем елемент
-// script.src = "js/test.js";                       //задаем атриббут сорс
-// document.body.append(script);             //присоединяем к боди(помещается в конец) (замасчиваем на страницу) и тут же он выполняется
+    Динамически загружаемый скрипт ведет себя как async(выролняется сразу), пример формирования скрипта в другом скрипте
+    const script = document.createElement("script"); //создаем елемент
+    script.src = "js/test.js";                       //задаем атриббут сорс
+    document.body.append(script);             //присоединяем к боди(помещается в конец) (замасчиваем на страницу) и тут же он выполняется
 
-// // можно отменить асинхронное поведение скрипта
-// function loadScript(src){
-//     const script = document.createElement("script");
-//     script.src = src;
-//     script.async = false;
-//     document.body.append(script);
-// }
-// loadScript("js/test.js"); //будут выполнятся последовательно
-// loadScript("js/some.js");
+    // можно отменить асинхронное поведение скрипта
+    function loadScript(src){
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.body.append(script);
+    }
+    loadScript("js/test.js"); //будут выполнятся последовательно
+    loadScript("js/some.js");
+
 }
+
 
 
 //================================================ В РАБОТЕ =====================================================================
 
-{//002 Classlist м делегирование событий
-    const btns = document.querySelectorAll("button");
-//console.log(btns[0].classList.length); // консоль показала 2 класса <button class="blue some"></button>
-// console.log(btns[0].classList.item(0));   // обращаемся к первому классу 'blue', () - скобки нужны
-// console.log(btns[0].classList.item(1));     // "some" - второй класс
-// console.log(btns[0].classList.add("red", "green")); //<button class="blue some red"></button> добавление
-// console.log(btns[0].classList.remove("blue")); //удаление класса, можно добалять и удалять несколько сразу
-// console.log(btns[0].classList.toggle("blue")); // если класс есть на элем. его удалит, если нету добавит
+{//  002    ====  Classlist и делегирование событий  ====
 
-// //для использования класса в условии применяется
-// if (btns[0].classList.contains('red')){ //проверяем содержит ли элемент класс red 
-//     console.log("red");
-// }
+        const btns = document.querySelectorAll("button");
+    //console.log(btns[0].classList.length); // консоль показала 2 класса <button class="blue some"></button>
+    // console.log(btns[0].classList.item(0));   // обращаемся к первому классу 'blue', () - скобки нужны
+    // console.log(btns[0].classList.item(1));     // "some" - второй класс
+    // console.log(btns[0].classList.add("red", "green")); //<button class="blue some red"></button> добавление
+    // console.log(btns[0].classList.remove("blue")); //удаление класса, можно добалять и удалять несколько сразу
+    // console.log(btns[0].classList.toggle("blue")); // если класс есть на элем. его удалит, если нету добавит
 
-//
-// btns[0].addEventListener("click", ()=>{
-//     // if(!btns[1].classList.contains("red")){ //проверяем отсутствие у второй кнопки класса red
-//     //     btns[1].classList.add("red");       // добавим класс
-//     // } else{
-//     //     btns[1].classList.remove("red");    //если класс есть то удалим
-//     // }
-// //можно использовать toggle, но иногда нужно вручную проверить на класс
-// btns[1].classList.toggle("red");
-// });
+    // //для использования класса в условии применяется
+    // if (btns[0].classList.contains('red')){ //проверяем содержит ли элемент класс red 
+    //     console.log("red");
+    // }
 
-//устаревший метод className выводит классы одной строкой и потом нужно с этой строкой
-//взаимодействовать, classList выводит псевдомассивом
-//console.log(btns[0].className);
+    //
+    // btns[0].addEventListener("click", ()=>{
+    //     // if(!btns[1].classList.contains("red")){ //проверяем отсутствие у второй кнопки класса red
+    //     //     btns[1].classList.add("red");       // добавим класс
+    //     // } else{
+    //     //     btns[1].classList.remove("red");    //если класс есть то удалим
+    //     // }
+    // //можно использовать toggle, но иногда нужно вручную проверить на класс
+    // btns[1].classList.toggle("red");
+    // });
 
-// Делегирование событий - используется для назначения одного события на несколько элементов
-//даже если они созданы без нас(динамически). Назначаем обр. события на родителя элементов а потом
-//проверяем на что был клик и сравниваем с заданными параметрами
-const wrapper = document.querySelector(".btn-block"); //родитель кнопок <div id="first" class="btn-block">
+    //устаревший метод className выводит классы одной строкой и потом нужно с этой строкой
+    //взаимодействовать, classList выводит псевдомассивом
+    //console.log(btns[0].className);
 
-wrapper.addEventListener('click', function(event){
-    if(event.target && event.target.tagName == "BUTTON"){//проверяем на существование тега и на равенство его свойства строке "BUTTON"
-      //сравнивать можно с nodeName и classList        if(event.target && event.target.classList.contains("blue"))   
-      //продвинутое сравнение   if(event.target && event.target.matches("button.red"))     совпадение тега баттон у которого есть класс ред                               
-         console.log("Hello!");
-    }
-  });
+    // Делегирование событий - используется для назначения одного события на несколько элементов
+    //даже если они созданы без нас(динамически). Назначаем обр. события на родителя элементов а потом
+    //проверяем на что был клик и сравниваем с заданными параметрами
+    const wrapper = document.querySelector(".btn-block"); //родитель кнопок <div id="first" class="btn-block">
 
-  const btn = document.createElement('button'); //создаем элемент
-  btn.classList.add('red'); // добавляем ей класс ред
-  wrapper.append(btn);      //прикрепляем в элемент wrapper
+    wrapper.addEventListener('click', function(event){
+        if(event.target && event.target.tagName == "BUTTON"){//проверяем на существование тега и на равенство его свойства строке "BUTTON"
+        //сравнивать можно с nodeName и classList        if(event.target && event.target.classList.contains("blue"))   
+        //продвинутое сравнение   if(event.target && event.target.matches("button.red"))     совпадение тега баттон у которого есть класс ред                               
+            console.log("Hello!");
+        }
+    });
+
+    const btn = document.createElement('button'); //создаем элемент
+    btn.classList.add('red'); // добавляем ей класс ред
+    wrapper.append(btn);      //прикрепляем в элемент wrapper
+
 }
 
-{//003 Создание Табов (вкладок)
+
+{//  003    ====  Создание Табов (вкладок)  ====
+
     "use strict";
     //Задание - при нажатии на определенную кнопку выводить изображение и описание для нее
     window.addEventListener("DOMContentLoaded", ()=>{
@@ -1204,9 +1224,12 @@ wrapper.addEventListener('click', function(event){
         //.fade{animation-name: fade;animation-duration: 1.5s;}@keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}
     
     });
+
 }
 
-{//004 Время выполнения скриптов, setTimeout & setInterval
+
+{//  004    ====  Время выполнения скриптов, setTimeout & setInterval  ====
+
     "use strict";
     // const timerId = setTimeout(function(){
     //     console.log("Hello");
@@ -1270,9 +1293,12 @@ wrapper.addEventListener('click', function(event){
     }
     
     btn.addEventListener("click", myAnimation);
+
 }
 
-{//005 Date
+
+{//  005    ====  Date  ====
+
     "use strict";
 
     //const now = new Date();
@@ -1309,9 +1335,12 @@ wrapper.addEventListener('click', function(event){
     
     let end = new Date();
     alert(`Цикл выполнился за ${end - start} миллисекунд`);
+
 }
 
-{//006 Timer обратного отсчета
+
+{//  006    ====  Timer обратного отсчета  ====
+
     "use strict";
     const deadLine = "2022-01-20"; //Строкой задаем время окончания, такие строки получают еще из инпута на сайтах
     
@@ -1391,9 +1420,12 @@ wrapper.addEventListener('click', function(event){
     
     //Два бага нужно исправить 1) - если часов и минут меньше 10 то нужно подставлять 0 (09), 2) - при обновлении страницы таймер
     //запускается только через секунду и мы видим таймер из верстки
+
 }
 
-{//007 Параметры документа, окна (document/window/screen)
+
+{//  007    ====  Параметры документа, окна (document/window/screen)  ====
+
     'use strict';
     const box = document.querySelector(".box");
     
@@ -1438,11 +1470,13 @@ wrapper.addEventListener('click', function(event){
     //scrollTop/csrollLeft можно изменять ВРУЧНУЮ в консоли а другие нельзя, таким образом можно сделать стрелочку для быстрого
     //перехода, есть еще методы window.scrollBy(0, 400) - скролит на 400 относительно текущего положения и 
     //window.scrollTo(0, 400) - скролит на 400 относительно всей страницы. 0 - положение по горизонтали
+
 }
 
-{//008 Создание модального окна
-    "use strict";
 
+{//  008    ====  Создание модального окна  ====
+
+    "use strict";
     //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
     //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
     //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
@@ -1534,11 +1568,13 @@ wrapper.addEventListener('click', function(event){
         }
     });
     //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+
 }
 
-{//009 Модификация модального окна
-    "use strict";
 
+{//  009    ====  Модификация модального окна  ====
+
+    "use strict";
     //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
     //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
     //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
@@ -1614,7 +1650,9 @@ wrapper.addEventListener('click', function(event){
     
 }
 
-{//010 Функции конструкторы
+
+{//  010    ====  Функции конструкторы  ====
+
     "use strict";
     //Функция - объект и по идее в нее можно записать какие то методы и свойства
     
@@ -1666,9 +1704,12 @@ wrapper.addEventListener('click', function(event){
             console.log(`Пользователь ${this.name} ушел`)
         }
     }
+
 }
 
-{//011 Контекст вызова функции this.
+
+{//  011    ====  Контекст вызова функции this   ====
+
     "use strict";
     //контекст - то что окружает функцию и в каких условиях она вызывается
     //Функция может вызыватся 4мя способами и в каждом контекст вызова отличается
@@ -1809,11 +1850,12 @@ wrapper.addEventListener('click', function(event){
     //Запись стрелочной ф. можно сократить если тело функции помещается в одну строку, убираем скобки 
     const double = (a) => a * 2; // и return(c return будет ошибка) которое подставляется автоматически
     //а если аргумент один то скобки у него тоже можно сократить  const double = a => a * 2;
-    
-    
+        
 }
 
-{//012 Classes (ES6)
+
+{//  012    ====  Classes (ES6)   ====
+
     "use strict";
     //Классы - красиваяобертка ф. конструкторов (синтаксический сахар)
     //название класса ВСЕГДА с БОЛЬШОЙ буквы
@@ -1854,11 +1896,13 @@ wrapper.addEventListener('click', function(event){
     const div = new ColoredRectangleWithText(25, 10, "Hello", "red");
     div.showMyProps(); // Текст: Hello, цвет red
     console.log(div.calcArea()); //250
+
 }
 
-{//013 Use Classes in real work (шаблонизация, создание єлементов на странице через классы)
-    "use strict";
 
+{//  013    ====  Use Classes in real work (шаблонизация, создание єлементов на странице через классы)
+
+    "use strict";
     //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
     //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
     //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
@@ -2018,7 +2062,9 @@ wrapper.addEventListener('click', function(event){
                     <div class="menu__item"></div> */
 }
 
-{//014 Rest оператор и параметры по умолчанию (ES6)
+
+{//  014    ====  Rest оператор и параметры по умолчанию (ES6)   ====
+
     "use strict";
     //Spread - оператор разворота, берет сущность и раскладывает на отдельные элементы
     //Rest - объединяет отдельные элементы в один массив, обратен spread синтаксис такой же но в других условиях.
@@ -2044,94 +2090,101 @@ wrapper.addEventListener('click', function(event){
     
     //Переходим в файл со скриптом о карточках
     //=========  014 используем rest оператор =============
-//В методе render мы создаем лишний div, что бы от этого избавится нужно класс "menu__item" присвоить этому div 
-//но что бы нам присвоить еще классы этому div которые могут появится в будущем, можно их задать через rest
-class MenuCard{
-    constructor(src, alt, title, descr, price, parentSelector, ...classes){ //alt - будет показываться если картинки нету
-        this.src = src;
-        this.alt = alt;
-        this.title = title;
-        this.descr = descr;
-        this.price = price;
-        this.classes = classes;
-        this.parent = document.querySelector(parentSelector);
-        this.transfer = 28; 
-        this.changeToUAH(); 
-    }
-
-    changeToUAH() { 
-        this.price = this.price * this.transfer;
-    }
-
-    render() { //метод для формирования верстки. 
-        const element = document.createElement("div"); 
-        //Задаем параметр класса по умолчанию, в случае если его не будет.Проверку выполняе на количество элементов, так как rest
-        //все равно сформирует пустой массив который в условии будет интерпретироваться как true. Также ведут себя qeurySelectorAll,
-        //getElementsByClassName и т.д. когда мы пытаемся получить эл. со страницы и их не находит, формируется пустой массив
-        if(this.classes.length === 0) {
-            this.element = "menu__item"; //присваиваем класс в пустой массив для возможной дальнейшей работы с ним
-            element.classList.add("menu__item");
-        } else {
-             //перебираем массив выдергиваем каждое название класса и присваи ваем его как класс класслисту элемента
-            this.classes.forEach(className => element.classList.add(className)); 
+    //В методе render мы создаем лишний div, что бы от этого избавится нужно класс "menu__item" присвоить этому div 
+    //но что бы нам присвоить еще классы этому div которые могут появится в будущем, можно их задать через rest
+    class MenuCard{
+        constructor(src, alt, title, descr, price, parentSelector, ...classes){ //alt - будет показываться если картинки нету
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.descr = descr;
+            this.price = price;
+            this.classes = classes;
+            this.parent = document.querySelector(parentSelector);
+            this.transfer = 28; 
+            this.changeToUAH(); 
         }
-       
-        //убираем <div class="menu__item">, и присваивам его при задании новой карточки последним аргументом
-        //Записываем без точки потому что присвоние через classList
-        element.innerHTML = `
-                <img src=${this.src} alt=${this.alt}>
-                <h3 class="menu__item-subtitle">${this.title}</h3>
-                <div class="menu__item-descr">${this.descr}</div>
-                <div class="menu__item-divider"></div>
-                <div class="menu__item-price">
-                    <div class="menu__item-cost">Цена:</div>
-                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
-                </div>
-        `;
-        this.parent.append(element);
+
+        changeToUAH() { 
+            this.price = this.price * this.transfer;
+        }
+
+        render() { //метод для формирования верстки. 
+            const element = document.createElement("div"); 
+            //Задаем параметр класса по умолчанию, в случае если его не будет.Проверку выполняе на количество элементов, так как rest
+            //все равно сформирует пустой массив который в условии будет интерпретироваться как true. Также ведут себя qeurySelectorAll,
+            //getElementsByClassName и т.д. когда мы пытаемся получить эл. со страницы и их не находит, формируется пустой массив
+            if(this.classes.length === 0) {
+                this.element = "menu__item"; //присваиваем класс в пустой массив для возможной дальнейшей работы с ним
+                element.classList.add("menu__item");
+            } else {
+                //перебираем массив выдергиваем каждое название класса и присваи ваем его как класс класслисту элемента
+                this.classes.forEach(className => element.classList.add(className)); 
+            }
+        
+            //убираем <div class="menu__item">, и присваивам его при задании новой карточки последним аргументом
+            //Записываем без точки потому что присвоние через classList
+            element.innerHTML = `
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>
+            `;
+            this.parent.append(element);
+        }
     }
+
+    new MenuCard(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"”',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        9,
+        ".menu .container",
+    ).render();
+    //заменяем карточки которые были в верстке и удаляем их оттуда
+    new MenuCard(
+        "img/tabs/elite.jpg",
+        "elite",
+        'меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        14,
+        ".menu .container",
+        "menu__item"
+    ).render();
+
+    new MenuCard(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        12,
+        ".menu .container",
+        "menu__item"
+    ).render();
+
 }
 
-new MenuCard(
-    "img/tabs/vegy.jpg",
-    "vegy",
-    'Меню "Фитнес"”',
-    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-    9,
-    ".menu .container",
-).render();
-//заменяем карточки которые были в верстке и удаляем их оттуда
-new MenuCard(
-    "img/tabs/elite.jpg",
-    "elite",
-    'меню “Премиум”',
-    'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-    14,
-    ".menu .container",
-    "menu__item"
-).render();
 
-new MenuCard(
-    "img/tabs/post.jpg",
-    "post",
-    'Меню "Постное"',
-    'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-    12,
-    ".menu .container",
-    "menu__item"
-).render();
-}
 
 //=============================================== ПРОДВИНУТЫЙ ==================================================================
 
-{//001 Local servers
-//Разновидности серверов: Простые - выполняют одну задачу или несколько простых(LiveServer в VSCode, http server, JSON server),
-// Комплексные - выполняют всё
-//Самые популярные HTTP запросы  Get и Post. Простые сервера принимают только Get запросы.
-//AJAX серверная технелогоия позволяет отправлять Гет и Пост запросы без перезагрузки страницы
+{//  001    ====  Local servers  ====
+
+    //Разновидности серверов: Простые - выполняют одну задачу или несколько простых(LiveServer в VSCode, http server, JSON server),
+    // Комплексные - выполняют всё
+    //Самые популярные HTTP запросы  Get и Post. Простые сервера принимают только Get запросы.
+    //AJAX серверная технелогоия позволяет отправлять Гет и Пост запросы без перезагрузки страницы
+
 }
 
-{//002 JSON, глубокое клонирование объектов
+
+{//  002    ====  JSON, глубокое клонирование объектов  ====
+
     "use strict";
     //JSON текстовый формат обмена данных. В файлах с расширениями JSON можно хранить данные в формате ключ - значение.
     //Главное правило - все строки должны быть в двойных кавычках
@@ -2171,9 +2224,12 @@ new MenuCard(
     clone.parents.mom = "Ann" ;
     console.log(persone);
     console.log(clone);
+
 }
 
-{//003 AJAX и общение с сервером CALC (Converter)
+
+{//  003    ====  AJAX и общение с сервером CALC (Converter)  ====
+
     "use strict";
     //AJAX (Asynchronous Javascript and XML) позволяет обновлять часть контента страницы, без полной перезагрузки, экономя траффик
     //Создадим конвертер валю где курс будет приходить от сервера по требованию
@@ -2245,122 +2301,128 @@ new MenuCard(
             }
         });
     });
+
 }
 
-{//004 Реализация скрипта ОТПРАВКИ данных на сервер (POST) XML http request
-//Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
-//Задача собрать данные из форм  Имя и Телефон в двух местах(на сайте и в модальном окне) и отправить на сервер при нажатии кнопки
-//Для контроля правильной отработки бэкенда создаем в корне проэкта файл server.php и запишем <?php echo var_dump($_POST);
-//Эта комманда берет данные которые пришли из клиента ( массив _POST ) превращает в строку и показывает обратно на клиенте(ответ сервера, responce)
 
-//формы две (имя, телефон) поэтому функция отправки будет повторятся, что бы не дублировать два обработчика, обернем
-//в функцию для последующего вызова. Тут еще используем XML hhtp request, в следующих уроках будет более современный метод
+{//  004    ====  Реализация скрипта ОТПРАВКИ данных на сервер (POST) XML http request  ====
 
-//получаем все формы по тегу
-const forms = document.querySelectorAll('form');
+    //Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
+    //Задача собрать данные из форм  Имя и Телефон в двух местах(на сайте и в модальном окне) и отправить на сервер при нажатии кнопки
+    //Для контроля правильной отработки бэкенда создаем в корне проэкта файл server.php и запишем <?php echo var_dump($_POST);
+    //Эта комманда берет данные которые пришли из клиента ( массив _POST ) превращает в строку и показывает обратно на клиенте(ответ сервера, responce)
 
-//Создаем объект для вывода текстовых сообщений пользователю о ходе запроса
-const message = {
-    loading: 'Загрузка',
-    success: 'Спасибо! До связи',
-    failure: ' Что-то пошло не так...'
-};
+    //формы две (имя, телефон) поэтому функция отправки будет повторятся, что бы не дублировать два обработчика, обернем
+    //в функцию для последующего вызова. Тут еще используем XML hhtp request, в следующих уроках будет более современный метод
 
-//берем все form и для каждой подвязываем функцию postData
-form.forEach(item => {
-    postData(item);
-});
+    //получаем все формы по тегу
+    const forms = document.querySelectorAll('form');
 
+    //Создаем объект для вывода текстовых сообщений пользователю о ходе запроса
+    const message = {
+        loading: 'Загрузка',
+        success: 'Спасибо! До связи',
+        failure: ' Что-то пошло не так...'
+    };
 
-//Функция для постинга данных
-function postData(form) { //принимаем аргумент form для удобства навешивания на него обработчика события submit
-    form.addEventListener('submit', (e) => {  // submit срабатывает по Enter или button с type submit. если в верстке кнопка задана
-                                            //тегом <button - у нее автоматически установлен type submit
-        e.preventDefault(); // принимаем аргумент е - события, что бы отменить стандартное повередение - перезагрузку страницы
-        
-        //Создаем переменную для вывода пользователю сообщений
-        const statusMessage = document.createElement('div');
-        statusMessage.classList.add('status'); //добавляем класс status
-        statusMessage.textContent = message.loading;
-        form.append(statusMessage); // Прикрепляем этот див с сообщением к form для отображения на странице
-
-        const req = new XMLHttpRequest(); //создаем объект запроса
-        req.open('POST', 'server.php'); // вызываем метод open для настройки запроса
-
-        //как получить все данные введенные пользователем и отправить на сервер. Можно вручную. взять форму, взять все инпуты
-        //которые есть внутри, взять их value, перебрать, сформировать объект, но это очень нерационально потому что есть готовые
-        //механизмы, и самый простой способ подготовить данные для отправки из формы использовать объект - formData
-        //не всегда нужно передавать в формате JSON, зависит от поддержки сервера или программиста бэкенда
-        //рассмотрим formData и второй формат JSON
-
-        // Если работаем с JSON, FormData спецыфический объект который просто превратить в JSON не получится, есть спецю прием
-        req.setRequestHeader('Content-type', 'application/json');
-        //Для этого создаем пустой объект и через переюор FormData через forEach запушим в новый объект значения
-        const object = {};
-        formData.forEach(function(value, key){
-            object[key] = value;
-        });
-        //Теперь используем конвертацию в json и помещаем его в  req.send(json);
-        const json = JSON.stringify(object);
-
-        //если передаем через XMLHttpRequest
-        //req.setRequestHeader('Content-type', 'multipart/form-data'); // multipart/form-data - используем что бы работал FormData
-                                                                    //согласно описанию FormData, но есть ***ньюанс - смотр ниже!!!
-
-        const formData = new FormData(form); // формирует объект ключ-значение из полей input/option/textarea, но только если 
-                                            // у них прописан тег name, иначе не найдет эти значения.(name="name", name="phone")
-        req.send(formData); // так как мы отправляем данные то есть body - formData
-
-        //Если работаем с JSON то 
-        //req.send(json);
-
-        req.addEventListener('load', () => {
-            if (req.status === 200) {
-                console.log(req.response);
-                statusMessage.textContent = message.success;
-                form.reset(); // очищаем форму
-                setTimeout(() =>{
-                    statusMessage.remove()   // удаляем блок со страницы
-                }, 2000);
-            }else{
-                statusMessage.textContent = message.failure;
-                }
-        });
+    //берем все form и для каждой подвязываем функцию postData
+    form.forEach(item => {
+        postData(item);
     });
-}
-//Что бы изменения сохраненные в коде применились при работе с сервером, нужно каждый раз сбрасывать кеш. shift+f5
-// После заполнения полей и нажатия кнопки отправить, данные ушли - смотрим по вкладке Network, статус сервера -200 ОК
-// нам написало 'Спасибо! До связи' но в консоль получили пустой массив, это случилось из-за заголовка  multipart/form-data
-// Когда используем связку XMLHttpRequest(), Объекта и FormData - заголовок устанавливать не нужно, он устанавливается
-//автоматически, поэтому весь заголовок req.setRequestHeader('Content-type', 'multipart/form-data'); нам не нужно прописывать
-//поэтому закомментируем его и все будет отрабатывать хорошо. 
-//Если нужно отправлять данные в JSON тогда прописываем req.setRequestHeader('Content-type', 'application/json');
-//*** Ньюанс PHP нативно не умеет работать с данными JSON, чаще всего такие данные отправляют на сервера Node.JS
-//Но можно вручную прописать совместимость с PHP в файле допишем строку 
-//<?php echo 
-//$_POST = json_decode(file_get_contents("php://input), true);
-//var_dump($_POST);
+
+
+    //Функция для постинга данных
+    function postData(form) { //принимаем аргумент form для удобства навешивания на него обработчика события submit
+        form.addEventListener('submit', (e) => {  // submit срабатывает по Enter или button с type submit. если в верстке кнопка задана
+                                                //тегом <button - у нее автоматически установлен type submit
+            e.preventDefault(); // принимаем аргумент е - события, что бы отменить стандартное повередение - перезагрузку страницы
+            
+            //Создаем переменную для вывода пользователю сообщений
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status'); //добавляем класс status
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage); // Прикрепляем этот див с сообщением к form для отображения на странице
+
+            const req = new XMLHttpRequest(); //создаем объект запроса
+            req.open('POST', 'server.php'); // вызываем метод open для настройки запроса
+
+            //как получить все данные введенные пользователем и отправить на сервер. Можно вручную. взять форму, взять все инпуты
+            //которые есть внутри, взять их value, перебрать, сформировать объект, но это очень нерационально потому что есть готовые
+            //механизмы, и самый простой способ подготовить данные для отправки из формы использовать объект - formData
+            //не всегда нужно передавать в формате JSON, зависит от поддержки сервера или программиста бэкенда
+            //рассмотрим formData и второй формат JSON
+
+            // Если работаем с JSON, FormData спецыфический объект который просто превратить в JSON не получится, есть спецю прием
+            req.setRequestHeader('Content-type', 'application/json');
+            //Для этого создаем пустой объект и через переюор FormData через forEach запушим в новый объект значения
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
+            //Теперь используем конвертацию в json и помещаем его в  req.send(json);
+            const json = JSON.stringify(object);
+
+            //если передаем через XMLHttpRequest
+            //req.setRequestHeader('Content-type', 'multipart/form-data'); // multipart/form-data - используем что бы работал FormData
+                                                                        //согласно описанию FormData, но есть ***ньюанс - смотр ниже!!!
+
+            const formData = new FormData(form); // формирует объект ключ-значение из полей input/option/textarea, но только если 
+                                                // у них прописан тег name, иначе не найдет эти значения.(name="name", name="phone")
+            req.send(formData); // так как мы отправляем данные то есть body - formData
+
+            //Если работаем с JSON то 
+            //req.send(json);
+
+            req.addEventListener('load', () => {
+                if (req.status === 200) {
+                    console.log(req.response);
+                    statusMessage.textContent = message.success;
+                    form.reset(); // очищаем форму
+                    setTimeout(() =>{
+                        statusMessage.remove()   // удаляем блок со страницы
+                    }, 2000);
+                }else{
+                    statusMessage.textContent = message.failure;
+                    }
+            });
+        });
+    }
+    //Что бы изменения сохраненные в коде применились при работе с сервером, нужно каждый раз сбрасывать кеш. shift+f5
+    // После заполнения полей и нажатия кнопки отправить, данные ушли - смотрим по вкладке Network, статус сервера -200 ОК
+    // нам написало 'Спасибо! До связи' но в консоль получили пустой массив, это случилось из-за заголовка  multipart/form-data
+    // Когда используем связку XMLHttpRequest(), Объекта и FormData - заголовок устанавливать не нужно, он устанавливается
+    //автоматически, поэтому весь заголовок req.setRequestHeader('Content-type', 'multipart/form-data'); нам не нужно прописывать
+    //поэтому закомментируем его и все будет отрабатывать хорошо. 
+    //Если нужно отправлять данные в JSON тогда прописываем req.setRequestHeader('Content-type', 'application/json');
+    //*** Ньюанс PHP нативно не умеет работать с данными JSON, чаще всего такие данные отправляют на сервера Node.JS
+    //Но можно вручную прописать совместимость с PHP в файле допишем строку 
+    //<?php echo 
+    //$_POST = json_decode(file_get_contents("php://input), true);
+    //var_dump($_POST);
+
 }
 
-{//005 Красивое оповещение пользователя
-//Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
-//============================ 005 Красивое оповещение пользователя
-//Прикручиваем спиннер в течении отправки запроса на сервер, а после успешного выполнения появление нового модального окна с текстом
-//Если запрос неудачный то будет другое сообщение. Модальное окно можно сделать новое, а можно использовать существующее.
-//Используем существующее и в нем заменим <div class="modal__dialog"> для изменения контента окна. Стили действуют прежние
-{/* <div class="modal">
-        <div class="modal__dialog">
-            <div class="modal__content">
-                <form action="#">
-                    <div data-close class="modal__close">&times;</div>
-                    <div class="modal__title">Мы свяжемся с вами как можно быстрее!</div>
-                    <input required placeholder="Ваше имя" name="name" type="text" class="modal__input">
-                    <input required placeholder="Ваш номер телефона" name="phone" type="phone" class="modal__input">
-                    <button class="btn btn_dark btn_min">Перезвонить мне</button>
-                </form>
+
+{//  005    ====  Красивое оповещение пользователя  ====
+
+    //Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
+    //============================ 005 Красивое оповещение пользователя
+    //Прикручиваем спиннер в течении отправки запроса на сервер, а после успешного выполнения появление нового модального окна с текстом
+    //Если запрос неудачный то будет другое сообщение. Модальное окно можно сделать новое, а можно использовать существующее.
+    //Используем существующее и в нем заменим <div class="modal__dialog"> для изменения контента окна. Стили действуют прежние
+    {/* <div class="modal">
+            <div class="modal__dialog">
+                <div class="modal__content">
+                    <form action="#">
+                        <div data-close class="modal__close">&times;</div>
+                        <div class="modal__title">Мы свяжемся с вами как можно быстрее!</div>
+                        <input required placeholder="Ваше имя" name="name" type="text" class="modal__input">
+                        <input required placeholder="Ваш номер телефона" name="phone" type="phone" class="modal__input">
+                        <button class="btn btn_dark btn_min">Перезвонить мне</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div> */}
+        </div> */}
 
     function showThanksModal(message) {
         const prevModalDialog = document.querySelector('.modal__dialog');
@@ -2482,1005 +2544,1018 @@ function postData(form) { //принимаем аргумент form для уд
     //можно избежать если вместо аппенда  form.append(statusMessage) присоединять спиннер после формы
             //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма используем insertAdjacentElement послеформы
             // form.insertAdjacentElement('afterend', statusMessage);
+            
 }
 
-{//006 Promise
-"use strict";
-//Позволяет удобно работать с асинхронными операциями(timeOut или запросы на сервер). При выполнении клика хотим что бы только
-// в этом случае выполнялся заданный код, тогда мы используем коллбек фунции. ПРИМЕР :Когда делаем запрос на сервер получаем
-//данные, выполняем с ними какие то действия и снова отправляем на сервер что бы получить следующие данные и снова с ними произвести
-//какие то операции. Цепочка действий зависит от предыдущих результатов (выполняем действие только после успешного выполнения 
-// предыдущих действий). Для такого кода можно написать много функций обратного вызова что превратится в большой нечитабельный код,
-// его также иногда называются call back hell.  Promise заменяет большой код с функциями обратного вызова.
 
-// Promise после reject/resolve – неизменны. после вызова resolve/reject промис уже не может «передумать».
-// Когда промис переходит в состояние «выполнен» – с результатом (resolve) или ошибкой (reject) – это навсегда.
-// Последующие вызовы resolve/reject будут просто проигнорированы.
+{//  006    ====  Promise  ====
 
+    "use strict";
+    //Позволяет удобно работать с асинхронными операциями(timeOut или запросы на сервер). При выполнении клика хотим что бы только
+    // в этом случае выполнялся заданный код, тогда мы используем коллбек фунции. ПРИМЕР :Когда делаем запрос на сервер получаем
+    //данные, выполняем с ними какие то действия и снова отправляем на сервер что бы получить следующие данные и снова с ними произвести
+    //какие то операции. Цепочка действий зависит от предыдущих результатов (выполняем действие только после успешного выполнения 
+    // предыдущих действий). Для такого кода можно написать много функций обратного вызова что превратится в большой нечитабельный код,
+    // его также иногда называются call back hell.  Promise заменяет большой код с функциями обратного вызова.
 
-
-// НЕБОЛЬШОЙ ПРИМЕР (вместо setTimeot  будут запросы к серверу)
-// console.log('Запрос данных...');
-
-// setTimeout(() => {
-//     console.log('Подготовка данных...');
-
-//     const product = {
-//         name: 'TV',
-//         price: 2000
-//     };
-
-//     setTimeout(() => {
-//         product.status = 'Ordered';
-//         console.log(product);
-//     }, 2000);
-// }, 2000);
+    // Promise после reject/resolve – неизменны. после вызова resolve/reject промис уже не может «передумать».
+    // Когда промис переходит в состояние «выполнен» – с результатом (resolve) или ошибкой (reject) – это навсегда.
+    // Последующие вызовы resolve/reject будут просто проигнорированы.
 
 
-    console.log('Запрос данных...');
 
-//создаем новый промис с коллбек функцией внутри обычно принимает 2 аргумента function(resolve, reject). resolve, reject - функции
-//которые мы сами сможем передавать. resolve - означает что то выполнилось правильно, reject - что то пошло не так, 
-//обещание не выполнилось. Сеттаймут с  product.status - заменяем на resolve, потому что он выполнится только в случае выполнения
-//предыдущего кода
-        const req = new Promise(function(resolve, reject) {
-            setTimeout(() => {
-                console.log('Подготовка данных...');
-            
-                const product = {
-                    name: 'TV',
-                    price: 2000
-                };
-            
-                resolve(product);
-            }, 2000);
-        }); 
+    // НЕБОЛЬШОЙ ПРИМЕР (вместо setTimeot  будут запросы к серверу)
+    // console.log('Запрос данных...');
 
-//vscode подсказывает что есть методы req (catch, then, finally). then - запускает функцию в случае положительного выполнения
-//предыдущего кода, будет вызыватся из места где resolve впредыдущем коде. В этом коде product не существует, поэтому его
-//нужно вернуть из предыдущей функции, вписав аргументом в resolve(product) и req.then((product)
-// req.then((product) => {
-//     setTimeout(() => {
-//         product.status = 'Ordered';
-//         console.log(product);
-//     }, 2000);
-// });
-    
-    
-//Для дальнейших действий с кодом req.then оборачиваем его в промис как и предыдущий(исходный код) 
-// req.then((product) => {
-//     const req2 = new Promise((resolve, reject) => {
-//         setTimeout(() => {
-//             product.status = 'Ordered';
-//             resolve(product);
-//         }, 2000);
-//     });
-//
-//     req2.then(data => {
-//         console.log(data);
-//     });
-// });
-//
+    // setTimeout(() => {
+    //     console.log('Подготовка данных...');
 
-//***Если код не обернуть в новый промис то второе обращение then будет обращаться к первому промису и будет выполнятся не 
-//после второго, а совместно с первым tnen ***  МОЙ ПРИМЕР
-// const prom = new Promise((resolve, reject) => {
-//     let x = 5*2;
-//     setTimeout(() => {
-//        
-//         console.log(x);
-//         resolve(x);
-//     }, 2_000);
-//    
-// });
-// prom.then((x) => {
-//      setTimeout(() => {
-//       x = x + 2;
-//         console.log(x);
-//         return x;
-//     }, 2_000);
-// });
-// prom.then((x2) => {
-//     setTimeout(() => {
-//     x2 = x2 + 4;
-//         console.log(x2);
-//         return x2;
-//     }, 2_000);
-// });
-//Тут я ожидал увидеть  в консоли 10 12 16 через каждые 2 секунды, но по факту 10 12 14 - 12 и 14 выполняются одновременно и
-//используют данные которые отдает resolve. Для того что бы отдать данные дальше и нужно создавать новый промис.
-// const prom = new Promise((resolve, reject) => {
-//     let x = 5*2;
-//     setTimeout(() => {
-//       
-//         console.log(x);
-//         resolve(x);
-//     }, 2_000);
-//  
-// });
-//
-// prom.then((x) => {
-//     const prom2 = new Promise((resolve) =>{
-//         setTimeout(() => {
-//             let  x2 = x + 2;
-//               console.log(x2);
-//               resolve(x2);
-//           }, 2_000);
-//     });
-//
-//     prom2.then((x2) => {
-//    
-//         setTimeout(() => {
-//         let    x3 = x2 + 4;
-//             console.log(x3);
-//         }, 2_000);
-//     });
-// }); 
-//*** Но второй then обращается к prom2.then внутри предыдущего then потому что глобально нового промиса не существует
-//он существует в prom.then - первом then. И для дальнейшего вызова снова нужно создавать новый рпомис prom3, это
-//неудобно и накладывает ограничения, поэтому в коде ниже мы будет ВОЗВРАЩАТЬ новый промис для последующего взаимодействия
-//с then  и для того что бы не создавать каждый раз новый промис и называть его. После первого resolve, дальнейшая 
-//передача данных осуществляется через return
-//*** На завершённых промисах обработчики запускаются сразу
-//Если промис в состоянии ожидания, обработчики в .then/catch/finally будут ждать его. Однако, если промис уже завершён, 
-//то обработчики выполнятся сразу. Что бы таймауты работали правильно нужно каждый раз вызывать новый промис
-// const prom = new Promise((resolve, reject) => {
-//     let x = 5*2;
-//     setTimeout(() => {
-//         console.log(x);
-//         resolve(x);
-//     }, 1_000);
-//    
-// });
-//
-// prom.then(x => {
-//     return new Promise((resolve, reject) =>{
-//         setTimeout(() => {
-//             x = x + 2;
-//             console.log(x);
-//             resolve(x);
-//           }, 1_000);
-//     });
-// }).then(x => {
-//     return new Promise((resolve, reject) =>{
-//     x = x + 4;
-//     setTimeout(() => {console.log(x); resolve(x);}, 1_000);
-//     //return x;
-//     });
-// }).then(x => {
-//     return new Promise((resolve, reject) =>{
-//      x = x + 5; 
-//      setTimeout(() => {console.log(x); resolve(x);}, 1_000);
-//      //return x;
-//      });
-// }).then(x => {
-//     return new Promise((resolve, reject) =>{
-//     x = x + 5;
-//     setTimeout(() => {console.log(x); resolve(x);}, 1_000);
-//     //return x;
-//     });
-// }).catch(() =>{
-//     new Error("…");
-// }).finally(() => {console.log(`Job's done`)});
+    //     const product = {
+    //         name: 'TV',
+    //         price: 2000
+    //     };
+
+    //     setTimeout(() => {
+    //         product.status = 'Ordered';
+    //         console.log(product);
+    //     }, 2000);
+    // }, 2000);
 
 
-//По сравнению с обычными колбеками преимуществом промисов является то что мы можем возвращать промис из then по цепочке.
-//Когда одна операция выполнится, выполним следующую, и т.д. сокращая написание функции вот так
-// req.then(product => {
-//     return new Promise((resolve, reject) => {
-//         setTimeout(() => {
-//             product.status = 'Ordered';
-//             resolve(product);
-//         }, 2000);
-//     });
-// }).then(data => {
-//     data.modify = true;
-//     return data;
-// }).then((prevData) => {
-//     console.log(prevData);
-// });
+        console.log('Запрос данных...');
 
-//***МОЙ ПРИМЕР*** setTimeout работает нормально только в паре с resolve. Если в then уже идет return, из тайм аута он не вернет 
-//значение, его нужно использовать вне таймаута, наверное из-за этого все итерации с then и  return после первого выполняются
-//мгновенно. В консоль получаем 10 12 16 21 26. 10 12 - с интервалом 2 скунды и еще через 2 секунды  сразу 3 числа 16 21 26
-// const prom = new Promise((resolve, reject) => {
-//     let x = 5*2;
-//     setTimeout(() => {
-//        
-//         console.log(x);
-//         resolve(x);
-//     }, 2_000);
-//    
-// });
-//
-// prom.then(x => {
-//     return new Promise((resolve) =>{
-//         setTimeout(() => {
-//             x = x + 2;
-//             console.log(x);
-//             resolve(x);
-//           }, 2_000);
-//     });
-// }).then(x => {
-//     x = x + 4;
-//     setTimeout(() => {console.log(x);}, 3_000);
-//     return x;
-// }).then(x => {
-//      x = x + 5; 
-//     setTimeout(() => {console.log(x);}, 3_000);
-//     return x;
-// }).then(x => {
-//     x = x + 5;
-//     setTimeout(() => {console.log(x);}, 3_000);
-// });
-    
-
-
-//При помощи reject обрабатывается невыполнение кода из-за ссылки на несуществующий файл при его запросе, не существующий сервер,
-// падение сервера и его ответ - ошибка. Метод catch обычно идет в конце. При ошибке все then пропускаются и выполнение кода
-//переходит на catch. (При возникновении ошибки – она отправляется в ближайший обработчик onRejected.)
-        req.then(product => {
-            return new Promise((resolve, reject) => {
+    //создаем новый промис с коллбек функцией внутри обычно принимает 2 аргумента function(resolve, reject). resolve, reject - функции
+    //которые мы сами сможем передавать. resolve - означает что то выполнилось правильно, reject - что то пошло не так, 
+    //обещание не выполнилось. Сеттаймут с  product.status - заменяем на resolve, потому что он выполнится только в случае выполнения
+    //предыдущего кода
+            const req = new Promise(function(resolve, reject) {
                 setTimeout(() => {
-                    product.status = 'Ordered';
+                    console.log('Подготовка данных...');
+                
+                    const product = {
+                        name: 'TV',
+                        price: 2000
+                    };
+                
                     resolve(product);
                 }, 2000);
+            }); 
+
+    //vscode подсказывает что есть методы req (catch, then, finally). then - запускает функцию в случае положительного выполнения
+    //предыдущего кода, будет вызыватся из места где resolve впредыдущем коде. В этом коде product не существует, поэтому его
+    //нужно вернуть из предыдущей функции, вписав аргументом в resolve(product) и req.then((product)
+    // req.then((product) => {
+    //     setTimeout(() => {
+    //         product.status = 'Ordered';
+    //         console.log(product);
+    //     }, 2000);
+    // });
+        
+        
+    //Для дальнейших действий с кодом req.then оборачиваем его в промис как и предыдущий(исходный код) 
+    // req.then((product) => {
+    //     const req2 = new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             product.status = 'Ordered';
+    //             resolve(product);
+    //         }, 2000);
+    //     });
+    //
+    //     req2.then(data => {
+    //         console.log(data);
+    //     });
+    // });
+    //
+
+    //***Если код не обернуть в новый промис то второе обращение then будет обращаться к первому промису и будет выполнятся не 
+    //после второго, а совместно с первым tnen ***  МОЙ ПРИМЕР
+    // const prom = new Promise((resolve, reject) => {
+    //     let x = 5*2;
+    //     setTimeout(() => {
+    //        
+    //         console.log(x);
+    //         resolve(x);
+    //     }, 2_000);
+    //    
+    // });
+    // prom.then((x) => {
+    //      setTimeout(() => {
+    //       x = x + 2;
+    //         console.log(x);
+    //         return x;
+    //     }, 2_000);
+    // });
+    // prom.then((x2) => {
+    //     setTimeout(() => {
+    //     x2 = x2 + 4;
+    //         console.log(x2);
+    //         return x2;
+    //     }, 2_000);
+    // });
+    //Тут я ожидал увидеть  в консоли 10 12 16 через каждые 2 секунды, но по факту 10 12 14 - 12 и 14 выполняются одновременно и
+    //используют данные которые отдает resolve. Для того что бы отдать данные дальше и нужно создавать новый промис.
+    // const prom = new Promise((resolve, reject) => {
+    //     let x = 5*2;
+    //     setTimeout(() => {
+    //       
+    //         console.log(x);
+    //         resolve(x);
+    //     }, 2_000);
+    //  
+    // });
+    //
+    // prom.then((x) => {
+    //     const prom2 = new Promise((resolve) =>{
+    //         setTimeout(() => {
+    //             let  x2 = x + 2;
+    //               console.log(x2);
+    //               resolve(x2);
+    //           }, 2_000);
+    //     });
+    //
+    //     prom2.then((x2) => {
+    //    
+    //         setTimeout(() => {
+    //         let    x3 = x2 + 4;
+    //             console.log(x3);
+    //         }, 2_000);
+    //     });
+    // }); 
+    //*** Но второй then обращается к prom2.then внутри предыдущего then потому что глобально нового промиса не существует
+    //он существует в prom.then - первом then. И для дальнейшего вызова снова нужно создавать новый рпомис prom3, это
+    //неудобно и накладывает ограничения, поэтому в коде ниже мы будет ВОЗВРАЩАТЬ новый промис для последующего взаимодействия
+    //с then  и для того что бы не создавать каждый раз новый промис и называть его. После первого resolve, дальнейшая 
+    //передача данных осуществляется через return
+    //*** На завершённых промисах обработчики запускаются сразу
+    //Если промис в состоянии ожидания, обработчики в .then/catch/finally будут ждать его. Однако, если промис уже завершён, 
+    //то обработчики выполнятся сразу. Что бы таймауты работали правильно нужно каждый раз вызывать новый промис
+    // const prom = new Promise((resolve, reject) => {
+    //     let x = 5*2;
+    //     setTimeout(() => {
+    //         console.log(x);
+    //         resolve(x);
+    //     }, 1_000);
+    //    
+    // });
+    //
+    // prom.then(x => {
+    //     return new Promise((resolve, reject) =>{
+    //         setTimeout(() => {
+    //             x = x + 2;
+    //             console.log(x);
+    //             resolve(x);
+    //           }, 1_000);
+    //     });
+    // }).then(x => {
+    //     return new Promise((resolve, reject) =>{
+    //     x = x + 4;
+    //     setTimeout(() => {console.log(x); resolve(x);}, 1_000);
+    //     //return x;
+    //     });
+    // }).then(x => {
+    //     return new Promise((resolve, reject) =>{
+    //      x = x + 5; 
+    //      setTimeout(() => {console.log(x); resolve(x);}, 1_000);
+    //      //return x;
+    //      });
+    // }).then(x => {
+    //     return new Promise((resolve, reject) =>{
+    //     x = x + 5;
+    //     setTimeout(() => {console.log(x); resolve(x);}, 1_000);
+    //     //return x;
+    //     });
+    // }).catch(() =>{
+    //     new Error("…");
+    // }).finally(() => {console.log(`Job's done`)});
+
+
+    //По сравнению с обычными колбеками преимуществом промисов является то что мы можем возвращать промис из then по цепочке.
+    //Когда одна операция выполнится, выполним следующую, и т.д. сокращая написание функции вот так
+    // req.then(product => {
+    //     return new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             product.status = 'Ordered';
+    //             resolve(product);
+    //         }, 2000);
+    //     });
+    // }).then(data => {
+    //     data.modify = true;
+    //     return data;
+    // }).then((prevData) => {
+    //     console.log(prevData);
+    // });
+
+    //***МОЙ ПРИМЕР*** setTimeout работает нормально только в паре с resolve. Если в then уже идет return, из тайм аута он не вернет 
+    //значение, его нужно использовать вне таймаута, наверное из-за этого все итерации с then и  return после первого выполняются
+    //мгновенно. В консоль получаем 10 12 16 21 26. 10 12 - с интервалом 2 скунды и еще через 2 секунды  сразу 3 числа 16 21 26
+    // const prom = new Promise((resolve, reject) => {
+    //     let x = 5*2;
+    //     setTimeout(() => {
+    //        
+    //         console.log(x);
+    //         resolve(x);
+    //     }, 2_000);
+    //    
+    // });
+    //
+    // prom.then(x => {
+    //     return new Promise((resolve) =>{
+    //         setTimeout(() => {
+    //             x = x + 2;
+    //             console.log(x);
+    //             resolve(x);
+    //           }, 2_000);
+    //     });
+    // }).then(x => {
+    //     x = x + 4;
+    //     setTimeout(() => {console.log(x);}, 3_000);
+    //     return x;
+    // }).then(x => {
+    //      x = x + 5; 
+    //     setTimeout(() => {console.log(x);}, 3_000);
+    //     return x;
+    // }).then(x => {
+    //     x = x + 5;
+    //     setTimeout(() => {console.log(x);}, 3_000);
+    // });
+        
+
+
+    //При помощи reject обрабатывается невыполнение кода из-за ссылки на несуществующий файл при его запросе, не существующий сервер,
+    // падение сервера и его ответ - ошибка. Метод catch обычно идет в конце. При ошибке все then пропускаются и выполнение кода
+    //переходит на catch. (При возникновении ошибки – она отправляется в ближайший обработчик onRejected.)
+            req.then(product => {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        product.status = 'Ordered';
+                        resolve(product);
+                    }, 2000);
+                });
+            }).then(data => {
+                data.modify = true;
+                return data;
+            }).then((prevData) => {
+                console.log(prevData);
+            }).catch(() => {
+                console.error('Произошла ошибка');
+            }).finally(() => {
+                console.log('Finally');
             });
-        }).then(data => {
-            data.modify = true;
-            return data;
-        }).then((prevData) => {
-            console.log(prevData);
-        }).catch(() => {
-            console.error('Произошла ошибка');
-        }).finally(() => {
-            console.log('Finally');
+    // Блок finally всегда в конце - позволяет выполнить действия не зависимо от успеха выполнения кода. Используется например для
+    //очистки формы от старых данных по завершении работы кода
+
+    //Пример с learn.javascript.ru/promise
+    // 'use strict';
+    // httpGet('/article/promise/userNoGithub.json')
+    // .then(JSON.parse)
+    // .then(user => httpGet(`https://api.github.com/users/${user.name}`))
+    // .then(
+    //     JSON.parse,
+    //     function githubError(error) {
+    //     if (error.code == 404) {
+    //         return {name: "NoGithub", avatar_url: '/article/promise/anon.png'};
+    //     } else {
+    //         throw error;
+    //     }
+    //     }
+    // )
+    // .then(function showAvatar(githubUser) {
+    //     let img = new Image();
+    //     img.src = githubUser.avatar_url;
+    //     img.className = "promise-avatar-example";
+    //     document.body.appendChild(img);
+    //     setTimeout(() => img.remove(), 3000);
+    // })
+    // .catch(function genericError(error) {
+    //     alert(error); // Error: Not Found
+    // });
+
+        
+    // Промисификация – это когда берут асинхронную функциональность и делают для неё обёртку, возвращающую промис.
+    // После промисификации использование функциональности зачастую становится гораздо удобнее.
+    // В качестве примера сделаем такую обёртку для запросов при помощи XMLHttpRequest.
+    // Функция httpGet(url) будет возвращать промис, который при успешной загрузке данных с url будет переходить в
+    // fulfilled с этими данными, а при ошибке – в rejected с информацией об ошибке:      
+
+    //Пример с learn.javascript.ru/promise    
+    // function httpGet(url) {
+    //     return new Promise(function(resolve, reject) {
+        
+    //       var xhr = new XMLHttpRequest();
+    //       xhr.open('GET', url, true);
+        
+    //       xhr.onload = function() {
+    //         if (this.status == 200) {
+    //           resolve(this.response);
+    //         } else {
+    //           var error = new Error(this.statusText);
+    //           error.code = this.status;
+    //           reject(error);
+    //         }
+    //       };
+        
+    //       xhr.onerror = function() {
+    //         reject(new Error("Network Error"));
+    //       };
+        
+    //       xhr.send();
+    //     });
+    //   }   
+
+    //Использование:
+    //     httpGet("/article/promise/user.json")
+    //   .then(
+    //     response => alert(`Fulfilled: ${response}`),
+    //     error => alert(`Rejected: ${error}`)
+    //   );
+
+
+    //Рассмотрим методы all и race - принимают аргументом массив с промисами
+
+    // Эта функция запускается принимает аргумент time(колю времени) возвращает Promise который зарезолвится через время time
+    //Эту функцию используют для запуска одинаковых операций через разные промежутки времени
+    const test = time => {
+        return new Promise(resolve => { // ***Очень редко бывает второй аргумент reject не нужен, тогда мы его не передаем
+            setTimeout(() => resolve(), time); //resolve выполнится через time
         });
-// Блок finally всегда в конце - позволяет выполнить действия не зависимо от успеха выполнения кода. Используется например для
-//очистки формы от старых данных по завершении работы кода
+    };
 
-//Пример с learn.javascript.ru/promise
-// 'use strict';
-// httpGet('/article/promise/userNoGithub.json')
-// .then(JSON.parse)
-// .then(user => httpGet(`https://api.github.com/users/${user.name}`))
-// .then(
-//     JSON.parse,
-//     function githubError(error) {
-//     if (error.code == 404) {
-//         return {name: "NoGithub", avatar_url: '/article/promise/anon.png'};
-//     } else {
-//         throw error;
-//     }
-//     }
-// )
-// .then(function showAvatar(githubUser) {
-//     let img = new Image();
-//     img.src = githubUser.avatar_url;
-//     img.className = "promise-avatar-example";
-//     document.body.appendChild(img);
-//     setTimeout(() => img.remove(), 3000);
-// })
-// .catch(function genericError(error) {
-//     alert(error); // Error: Not Found
-// });
+    test(1000).then(() => console.log('1000 ms')); // - console.log - через then для того что бы увидеть результат
+    test(2000).then(() => console.log('2000 ms'));
+    test(3000).then(() => console.log('3000 ms'));
 
-    
-// Промисификация – это когда берут асинхронную функциональность и делают для неё обёртку, возвращающую промис.
-// После промисификации использование функциональности зачастую становится гораздо удобнее.
-// В качестве примера сделаем такую обёртку для запросов при помощи XMLHttpRequest.
-// Функция httpGet(url) будет возвращать промис, который при успешной загрузке данных с url будет переходить в
-// fulfilled с этими данными, а при ошибке – в rejected с информацией об ошибке:      
-
-//Пример с learn.javascript.ru/promise    
-// function httpGet(url) {
-//     return new Promise(function(resolve, reject) {
-    
-//       var xhr = new XMLHttpRequest();
-//       xhr.open('GET', url, true);
-    
-//       xhr.onload = function() {
-//         if (this.status == 200) {
-//           resolve(this.response);
-//         } else {
-//           var error = new Error(this.statusText);
-//           error.code = this.status;
-//           reject(error);
-//         }
-//       };
-    
-//       xhr.onerror = function() {
-//         reject(new Error("Network Error"));
-//       };
-    
-//       xhr.send();
-//     });
-//   }   
-
-//Использование:
-//     httpGet("/article/promise/user.json")
-//   .then(
-//     response => alert(`Fulfilled: ${response}`),
-//     error => alert(`Rejected: ${error}`)
-//   );
-
-
-//Рассмотрим методы all и race - принимают аргументом массив с промисами
-
-// Эта функция запускается принимает аргумент time(колю времени) возвращает Promise который зарезолвится через время time
-//Эту функцию используют для запуска одинаковых операций через разные промежутки времени
-const test = time => {
-    return new Promise(resolve => { // ***Очень редко бывает второй аргумент reject не нужен, тогда мы его не передаем
-        setTimeout(() => resolve(), time); //resolve выполнится через time
+    // all получает массив (или другой итерируемый объект) промисов и возвращает промис, который ждёт, 
+    //пока все переданные промисы завершатся, и переходит в состояние «выполнено» с массивом их результатов.
+    //Промисы вернут результат который можем обработать через then. Этот метод служит для того что бы точно убедится что все
+    //промисы выполнились. Например запрашиваем 4 картинки из разных серверов, и что бы одновременно их показать ждем пока 
+    //все промисы выполнятся. Ориентируемся на промис который выполнится последним. Если какой-то из промисов завершился с ошибкой,
+    // то результатом Promise.all будет эта ошибка. При этом остальные промисы игнорируются.
+    Promise.all([test(1000), test(2000), test(3000)]).then(() => {
+        console.log('All');
     });
-};
+    //Можно дописать catch для обработки ошибки
 
-test(1000).then(() => console.log('1000 ms')); // - console.log - через then для того что бы увидеть результат
-test(2000).then(() => console.log('2000 ms'));
-test(3000).then(() => console.log('3000 ms'));
+    // Пример с learn.javascript.ru/promise
+    // Promise.all([
+    //     httpGet('/article/promise/user.json'),
+    //     httpGet('/article/promise/guest.json'),
+    //     httpGet('/article/promise/no-such-page.json') // (нет такой страницы)
+    //   ]).then(
+    //     result => alert("не сработает"),
+    //     error => alert("Ошибка: " + error.message) // Ошибка: Not Found
+    //   )
 
-// all получает массив (или другой итерируемый объект) промисов и возвращает промис, который ждёт, 
-//пока все переданные промисы завершатся, и переходит в состояние «выполнено» с массивом их результатов.
-//Промисы вернут результат который можем обработать через then. Этот метод служит для того что бы точно убедится что все
-//промисы выполнились. Например запрашиваем 4 картинки из разных серверов, и что бы одновременно их показать ждем пока 
-//все промисы выполнятся. Ориентируемся на промис который выполнится последним. Если какой-то из промисов завершился с ошибкой,
-// то результатом Promise.all будет эта ошибка. При этом остальные промисы игнорируются.
-Promise.all([test(1000), test(2000), test(3000)]).then(() => {
-    console.log('All');
-});
-//Можно дописать catch для обработки ошибки
+        
+    // race  - в отличие от all, результатом будет только первый успешно выполнившийся промис из списка. Остальные игнорируются.
+    //этот метод начнет выполнятся как только выполнится самый первый промис из массива
+    Promise.race([test(1000), test(2000), test(3000)]).then(() => {
+        console.log('Race');
+    });
+    // 1000 ms
+    // Race
+    // 2000 ms
+    // 3000 ms
+    // All
 
-// Пример с learn.javascript.ru/promise
-// Promise.all([
-//     httpGet('/article/promise/user.json'),
-//     httpGet('/article/promise/guest.json'),
-//     httpGet('/article/promise/no-such-page.json') // (нет такой страницы)
-//   ]).then(
-//     result => alert("не сработает"),
-//     error => alert("Ошибка: " + error.message) // Ошибка: Not Found
-//   )
-
-    
-// race  - в отличие от all, результатом будет только первый успешно выполнившийся промис из списка. Остальные игнорируются.
-//этот метод начнет выполнятся как только выполнится самый первый промис из массива
-Promise.race([test(1000), test(2000), test(3000)]).then(() => {
-    console.log('Race');
-});
-// 1000 ms
-// Race
-// 2000 ms
-// 3000 ms
-// All
-
-//     Пример с learn.javascript.ru/promise
-//     Promise.race([
-//         httpGet('/article/promise/user.json'),
-//         httpGet('/article/promise/guest.json')
-//       ]).then(firstResult => {
-//         firstResult = JSON.parse(firstResult);
-//         alert( firstResult.name ); // iliakan или guest, смотря что загрузится раньше
-//       });
+    //     Пример с learn.javascript.ru/promise
+    //     Promise.race([
+    //         httpGet('/article/promise/user.json'),
+    //         httpGet('/article/promise/guest.json')
+    //       ]).then(firstResult => {
+    //         firstResult = JSON.parse(firstResult);
+    //         alert( firstResult.name ); // iliakan или guest, смотря что загрузится раньше
+    //       });
 
 
-// ИТОГО
-// Промис – это специальный объект, который хранит своё состояние, текущий результат (если есть) и колбэки.
+    // ИТОГО
+    // Промис – это специальный объект, который хранит своё состояние, текущий результат (если есть) и колбэки.
 
-// При создании new Promise((resolve, reject) => ...) автоматически запускается функция-аргумент, 
-//которая должна вызвать resolve(result) при успешном выполнении и reject(error) – при ошибке.
+    // При создании new Promise((resolve, reject) => ...) автоматически запускается функция-аргумент, 
+    //которая должна вызвать resolve(result) при успешном выполнении и reject(error) – при ошибке.
 
-// Аргумент resolve/reject (только первый, остальные игнорируются) передаётся обработчикам на этом промисе.
+    // Аргумент resolve/reject (только первый, остальные игнорируются) передаётся обработчикам на этом промисе.
 
-// Обработчики назначаются вызовом .then/catch.
+    // Обработчики назначаются вызовом .then/catch.
 
-// Для передачи результата от одного обработчика к другому используется чейнинг.
+    // Для передачи результата от одного обработчика к другому используется чейнинг.
 
-// У промисов есть некоторые ограничения. В частности, стандарт не предусматривает какой-то метод для «отмены» промиса, 
-//хотя в ряде ситуаций (http-запросы) это было бы довольно удобно. Возможно, он появится в следующей версии стандарта JavaScript.
+    // У промисов есть некоторые ограничения. В частности, стандарт не предусматривает какой-то метод для «отмены» промиса, 
+    //хотя в ряде ситуаций (http-запросы) это было бы довольно удобно. Возможно, он появится в следующей версии стандарта JavaScript.
 
-// В современной JavaScript-разработке сложные цепочки с промисами используются редко, так как они куда проще 
-//описываются при помощи генераторов с библиотекой co, которые рассмотрены в соответствующей главе. Можно сказать, 
-//что промисы лежат в основе более продвинутых способов асинхронной разработки.
+    // В современной JavaScript-разработке сложные цепочки с промисами используются редко, так как они куда проще 
+    //описываются при помощи генераторов с библиотекой co, которые рассмотрены в соответствующей главе. Можно сказать, 
+    //что промисы лежат в основе более продвинутых способов асинхронной разработки.
 
-//***Функция для выполнения действия через заданное количество времени на промисе
-// function delay(ms) {
-//     return new Promise(resolve => setTimeout(resolve, ms));
-//   }
-//   delay(1000).then(() => console.log('выполнилось через 1 секунду'));
-//   delay(2000).then(() => console.log('выполнилось через 2 секунду'));
-//   delay(3000).then(() => console.log('выполнилось через 3 секунду'));
-//Заметьте, что resolve вызывается без аргументов. Мы не возвращаем из delay ничего, просто гарантируем задержку.
+    //***Функция для выполнения действия через заданное количество времени на промисе
+    // function delay(ms) {
+    //     return new Promise(resolve => setTimeout(resolve, ms));
+    //   }
+    //   delay(1000).then(() => console.log('выполнилось через 1 секунду'));
+    //   delay(2000).then(() => console.log('выполнилось через 2 секунду'));
+    //   delay(3000).then(() => console.log('выполнилось через 3 секунду'));
+    //Заметьте, что resolve вызывается без аргументов. Мы не возвращаем из delay ничего, просто гарантируем задержку.
+
 }
 
-{//Цепочка промисов https://learn.javascript.ru/promise-chaining
+
+{//      ====  Цепочка промисов https://learn.javascript.ru/promise-chaining  ====
     
-// Давайте вернёмся к ситуации из главы Введение: колбэки: у нас есть последовательность асинхронных задач, которые должны
-// быть выполнены одна за другой. Например, речь может идти о загрузке скриптов. Как же грамотно реализовать это в коде?
+    // Давайте вернёмся к ситуации из главы Введение: колбэки: у нас есть последовательность асинхронных задач, которые должны
+    // быть выполнены одна за другой. Например, речь может идти о загрузке скриптов. Как же грамотно реализовать это в коде?
 
-// Промисы предоставляют несколько способов решения подобной задачи.
+    // Промисы предоставляют несколько способов решения подобной задачи.
 
-// В этой главе мы разберём цепочку промисов.
+    // В этой главе мы разберём цепочку промисов.
 
-// Она выглядит вот так:
+    // Она выглядит вот так:
+        
+    new Promise(function(resolve, reject) {
+
+        setTimeout(() => resolve(1), 1000); // (*)
+
+    }).then(function(result) { // (**)
+
+        alert(result); // 1
+        return result * 2;
+
+    }).then(function(result) { // (***)
+
+        alert(result); // 2
+        return result * 2;
+
+    }).then(function(result) {
+
+        alert(result); // 4
+        return result * 2;
+
+    });
+    // Идея состоит в том, что результат первого промиса передаётся по цепочке обработчиков .then.
+
+    // Поток выполнения такой:
+
+    // Начальный промис успешно выполняется через 1 секунду (*),
+    // Затем вызывается обработчик в .then (**).
+    // Возвращаемое им значение передаётся дальше в следующий обработчик .then (***)
+    // …и так далее.
+    // В итоге результат передаётся по цепочке обработчиков, и мы видим несколько alert подряд, которые выводят: 1 → 2 → 4.
+
+
+    // Всё это работает, потому что вызов promise.then тоже возвращает промис, так что мы можем вызвать на нём следующий .then.
+
+    // Когда обработчик возвращает какое-то значение, то оно становится результатом выполнения соответствующего промиса и передаётся в 
+    //следующий .then.
+
+    // Классическая ошибка новичков: технически возможно добавить много обработчиков .then к единственному промису. Но это не цепочка.
+
+    // Например:
+
+    let promise = new Promise(function(resolve, reject) {
+        setTimeout(() => resolve(1), 1000);
+    });
+
+    promise.then(function(result) {
+        alert(result); // 1
+        return result * 2;
+    });
+
+    promise.then(function(result) {
+        alert(result); // 1
+        return result * 2;
+    });
+
+    promise.then(function(result) {
+        alert(result); // 1
+        return result * 2;
+    });
+
+    // Мы добавили несколько обработчиков к одному промису. Они не передают друг другу результаты своего выполнения, а действуют 
+    //независимо.
+
+    // Все обработчики .then на одном и том же промисе получают одно и то же значение – результат выполнения того же самого промиса.
+    //Таким образом, в коде выше все alert показывают одно и то же: 1.
+
+    // На практике весьма редко требуется назначать несколько обработчиков одному промису. А вот цепочка промисов используется куда
+    // чаще.
+
+    // Возвращаем промисы
+    // Обработчик handler, переданный в .then(handler), может вернуть промис.
+
+    // В этом случае дальнейшие обработчики ожидают, пока он выполнится, и затем получают его результат.
+
+    // Например:
+        
+    new Promise(function(resolve, reject) {
+
+        setTimeout(() => resolve(1), 1000);
+
+    }).then(function(result) {
+
+        alert(result); // 1
+
+        return new Promise((resolve, reject) => { // (*)
+        setTimeout(() => resolve(result * 2), 1000);
+        });
+
+    }).then(function(result) { // (**)
+
+        alert(result); // 2
+
+        return new Promise((resolve, reject) => {
+        setTimeout(() => resolve(result * 2), 1000);
+        });
+
+    }).then(function(result) {
+
+        alert(result); // 4
+
+    });
+    // Здесь первый .then показывает 1 и возвращает новый промис new Promise(…) в строке (*). Через одну секунду этот промис успешно
+    //  выполняется, и его результат (аргумент в resolve, то есть result * 2) передаётся обработчику в следующем .then. Он находится
+    //   в строке (**), показывает2 и делает то же самое.
+
+    // Таким образом, как и в предыдущем примере, выводятся 1 → 2 → 4, но сейчас между вызовами alert существует пауза в 1 секунду.
+
+    // Возвращая промисы, мы можем строить цепочки из асинхронных действий.
+
+    // Пример: loadScript
+    function loadScript(src) {
+        return new Promise(function(resolve, reject) {
+        let script = document.createElement('script');
+        script.src = src;
     
-new Promise(function(resolve, reject) {
-
-    setTimeout(() => resolve(1), 1000); // (*)
-
-}).then(function(result) { // (**)
-
-    alert(result); // 1
-    return result * 2;
-
-}).then(function(result) { // (***)
-
-    alert(result); // 2
-    return result * 2;
-
-}).then(function(result) {
-
-    alert(result); // 4
-    return result * 2;
-
-});
-// Идея состоит в том, что результат первого промиса передаётся по цепочке обработчиков .then.
-
-// Поток выполнения такой:
-
-// Начальный промис успешно выполняется через 1 секунду (*),
-// Затем вызывается обработчик в .then (**).
-// Возвращаемое им значение передаётся дальше в следующий обработчик .then (***)
-// …и так далее.
-// В итоге результат передаётся по цепочке обработчиков, и мы видим несколько alert подряд, которые выводят: 1 → 2 → 4.
-
-
-// Всё это работает, потому что вызов promise.then тоже возвращает промис, так что мы можем вызвать на нём следующий .then.
-
-// Когда обработчик возвращает какое-то значение, то оно становится результатом выполнения соответствующего промиса и передаётся в 
-//следующий .then.
-
-// Классическая ошибка новичков: технически возможно добавить много обработчиков .then к единственному промису. Но это не цепочка.
-
-// Например:
-
-let promise = new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(1), 1000);
-});
-
-promise.then(function(result) {
-    alert(result); // 1
-    return result * 2;
-});
-
-promise.then(function(result) {
-    alert(result); // 1
-    return result * 2;
-});
-
-promise.then(function(result) {
-    alert(result); // 1
-    return result * 2;
-});
-
-// Мы добавили несколько обработчиков к одному промису. Они не передают друг другу результаты своего выполнения, а действуют 
-//независимо.
-
-// Все обработчики .then на одном и том же промисе получают одно и то же значение – результат выполнения того же самого промиса.
-//Таким образом, в коде выше все alert показывают одно и то же: 1.
-
-// На практике весьма редко требуется назначать несколько обработчиков одному промису. А вот цепочка промисов используется куда
-// чаще.
-
-// Возвращаем промисы
-// Обработчик handler, переданный в .then(handler), может вернуть промис.
-
-// В этом случае дальнейшие обработчики ожидают, пока он выполнится, и затем получают его результат.
-
-// Например:
+        script.onload = () => resolve(script);
+        script.onerror = () => reject(new Error(`Ошибка загрузки скрипта ${src}`));
     
-new Promise(function(resolve, reject) {
+        document.head.append(script);
+        });
+    }
+    // Давайте используем эту возможность вместе с промисифицированной функцией loadScript, созданной нами в предыдущей главе, чтобы
+    // загружать скрипты по очереди, последовательно:
 
-    setTimeout(() => resolve(1), 1000);
-
-}).then(function(result) {
-
-    alert(result); // 1
-
-    return new Promise((resolve, reject) => { // (*)
-    setTimeout(() => resolve(result * 2), 1000);
-    });
-
-}).then(function(result) { // (**)
-
-    alert(result); // 2
-
-    return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(result * 2), 1000);
-    });
-
-}).then(function(result) {
-
-    alert(result); // 4
-
-});
-// Здесь первый .then показывает 1 и возвращает новый промис new Promise(…) в строке (*). Через одну секунду этот промис успешно
-//  выполняется, и его результат (аргумент в resolve, то есть result * 2) передаётся обработчику в следующем .then. Он находится
-//   в строке (**), показывает2 и делает то же самое.
-
-// Таким образом, как и в предыдущем примере, выводятся 1 → 2 → 4, но сейчас между вызовами alert существует пауза в 1 секунду.
-
-// Возвращая промисы, мы можем строить цепочки из асинхронных действий.
-
-// Пример: loadScript
-function loadScript(src) {
-    return new Promise(function(resolve, reject) {
-      let script = document.createElement('script');
-      script.src = src;
-  
-      script.onload = () => resolve(script);
-      script.onerror = () => reject(new Error(`Ошибка загрузки скрипта ${src}`));
-  
-      document.head.append(script);
-    });
-  }
-// Давайте используем эту возможность вместе с промисифицированной функцией loadScript, созданной нами в предыдущей главе, чтобы
-// загружать скрипты по очереди, последовательно:
-
-loadScript("/article/promise-chaining/one.js")
-    .then(function(script) {
-    return loadScript("/article/promise-chaining/two.js");
-    })
-    .then(function(script) {
-    return loadScript("/article/promise-chaining/three.js");
-    })
-    .then(function(script) {
-    // вызовем функции, объявленные в загружаемых скриптах,
-    // чтобы показать, что они действительно загрузились
-    one();
-    two();
-    three();
-    });
-// Этот же код можно переписать немного компактнее, используя стрелочные функции:
-
-loadScript("/article/promise-chaining/one.js")
-    .then(script => loadScript("/article/promise-chaining/two.js"))
-    .then(script => loadScript("/article/promise-chaining/three.js"))
-    .then(script => {
-    // скрипты загружены, мы можем использовать объявленные в них функции
-    one();
-    two();
-    three();
-    });
-// Здесь каждый вызов loadScript возвращает промис, и следующий обработчик в .then срабатывает, только когда этот промис завершается.
-//  Затем инициируется загрузка следующего скрипта и так далее. Таким образом, скрипты загружаются один за другим.
-
-// Мы можем добавить и другие асинхронные действия в цепочку. Обратите внимание, что наш код всё ещё «плоский», он «растёт» вниз,
-//  а не вправо. Нет никаких признаков «адской пирамиды вызовов».
-
-// Технически мы бы могли добавлять .then напрямую к каждому вызову loadScript, вот так:
-
-loadScript("/article/promise-chaining/one.js").then(script1 => {
-    loadScript("/article/promise-chaining/two.js").then(script2 => {
-    loadScript("/article/promise-chaining/three.js").then(script3 => {
-        // эта функция имеет доступ к переменным script1, script2 и script3
+    loadScript("/article/promise-chaining/one.js")
+        .then(function(script) {
+        return loadScript("/article/promise-chaining/two.js");
+        })
+        .then(function(script) {
+        return loadScript("/article/promise-chaining/three.js");
+        })
+        .then(function(script) {
+        // вызовем функции, объявленные в загружаемых скриптах,
+        // чтобы показать, что они действительно загрузились
         one();
         two();
         three();
-    });
-    });
-});
-// Этот код делает то же самое: последовательно загружает 3 скрипта. Но он «растёт вправо», так что возникает такая же проблема,
-//  как и с колбэками.
+        });
+    // Этот же код можно переписать немного компактнее, используя стрелочные функции:
 
-// Разработчики, которые не так давно начали использовать промисы, иногда не знают про цепочки и пишут код именно так, как
-//  показано выше. В целом, использование цепочек промисов предпочтительнее.
+    loadScript("/article/promise-chaining/one.js")
+        .then(script => loadScript("/article/promise-chaining/two.js"))
+        .then(script => loadScript("/article/promise-chaining/three.js"))
+        .then(script => {
+        // скрипты загружены, мы можем использовать объявленные в них функции
+        one();
+        two();
+        three();
+        });
+    // Здесь каждый вызов loadScript возвращает промис, и следующий обработчик в .then срабатывает, только когда этот промис завершается.
+    //  Затем инициируется загрузка следующего скрипта и так далее. Таким образом, скрипты загружаются один за другим.
 
-// Иногда всё же приемлемо добавлять .then напрямую, чтобы вложенная в него функция имела доступ к внешней области видимости.
-//  В примере выше самая глубоко вложенная функция обратного вызова имеет доступ ко всем переменным script1, script2, script3.
-//   Но это скорее исключение, чем правило.
+    // Мы можем добавить и другие асинхронные действия в цепочку. Обратите внимание, что наш код всё ещё «плоский», он «растёт» вниз,
+    //  а не вправо. Нет никаких признаков «адской пирамиды вызовов».
 
-// Thenable
-// Если быть более точными, обработчик может возвращать не именно промис, а любой объект, содержащий метод .then, такие объекты
-//  называют «thenable», и этот объект будет обработан как промис.
+    // Технически мы бы могли добавлять .then напрямую к каждому вызову loadScript, вот так:
 
-// Смысл в том, что сторонние библиотеки могут создавать свои собственные совместимые с промисами объекты. Они могут иметь свои
-//  наборы методов и при этом быть совместимыми со встроенными промисами, так как реализуют метод .then.
-
-// Вот пример такого объекта:
-
-class Thenable {
-    constructor(num) {
-    this.num = num;
-    }
-    then(resolve, reject) {
-    alert(resolve); // function() { native code }
-    // будет успешно выполнено с аргументом this.num*2 через 1 секунду
-    setTimeout(() => resolve(this.num * 2), 1000); // (**)
-    }
-}
-
-new Promise(resolve => resolve(1))
-    .then(result => {
-    return new Thenable(result); // (*)
-    })
-    .then(alert); // показывает 2 через 1000мс
-// JavaScript проверяет объект, возвращаемый из обработчика .then в строке (*): если у него имеется метод then, который можно
-//  вызвать, то этот метод вызывается, и в него передаются как аргументы встроенные функции resolve и reject, вызов одной из 
-//  которых потом ожидается. В примере выше происходит вызов resolve(2) через 1 секунду (**). Затем результат передаётся дальше
-//   по цепочке.
-
-// Это позволяет добавлять в цепочки промисов пользовательские объекты, не заставляя их наследовать от Promise.
-
-// Более сложный пример: fetch
-// Во фронтенд-разработке промисы часто используются, чтобы делать запросы по сети. Давайте рассмотрим один такой пример.
-
-// Мы будем использовать метод fetch, чтобы подгрузить информацию о пользователях с удалённого сервера. Этот метод имеет много
-//  опциональных параметров, разобранных в соответствующих разделах, но базовый синтаксис весьма прост:
-
-// let promise = fetch(url);
-// Этот код запрашивает по сети url и возвращает промис. Промис успешно выполняется и в свою очередь возвращает объект response
-//  после того, как удалённый сервер присылает заголовки ответа, но до того, как весь ответ сервера полностью загружен.
-
-// Чтобы прочитать полный ответ, надо вызвать метод response.text(): он тоже возвращает промис, который выполняется, когда данные
-//  полностью загружены с удалённого сервера, и возвращает эти данные.
-
-// Код ниже запрашивает файл user.json и загружает его содержимое с сервера:
-
-fetch('/article/promise-chaining/user.json')
-    // .then в коде ниже выполняется, когда удалённый сервер отвечает
-    .then(function(response) {
-    // response.text() возвращает новый промис,
-    // который выполняется и возвращает полный ответ сервера,
-    // когда он загрузится
-    return response.text();
-    })
-    .then(function(text) {
-    // ...и здесь содержимое полученного файла
-    alert(text); // {"name": "iliakan", isAdmin: true}
-    });
-// Есть также метод response.json(), который читает данные в формате JSON. Он больше подходит для нашего примера, так что
-//  давайте использовать его.
-
-// Мы также применим стрелочные функции для более компактной записи кода:
-
-// то же самое, что и раньше, только теперь response.json() читает данные в формате JSON
-fetch('/article/promise-chaining/user.json')
-    .then(response => response.json())
-    .then(user => alert(user.name)); // iliakan, получили имя пользователя
-// Теперь давайте что-нибудь сделаем с полученными данными о пользователе.
-
-// Например, мы можем послать запрос на GitHub, чтобы загрузить данные из профиля пользователя и показать его аватар:
-
-// Запрашиваем user.json
-fetch('/article/promise-chaining/user.json')
-    // Загружаем данные в формате json
-    .then(response => response.json())
-    // Делаем запрос к GitHub
-    .then(user => fetch(`https://api.github.com/users/${user.name}`))
-    // Загружаем ответ в формате json
-    .then(response => response.json())
-    // Показываем аватар (githubUser.avatar_url) в течение 3 секунд (возможно, с анимацией)
-    .then(githubUser => {
-    let img = document.createElement('img');
-    img.src = githubUser.avatar_url;
-    img.className = "promise-avatar-example";
-    document.body.append(img);
-
-    setTimeout(() => img.remove(), 3000); // (*)
-    });
-// Код работает, детали реализации отражены в комментариях. Однако в нём есть одна потенциальная проблема, 
-// с которой часто сталкиваются новички.
-
-// Посмотрите на строку (*): как мы можем предпринять какие-то действия после того, как аватар был показан и удалён? 
-// Например, мы бы хотели показывать форму редактирования пользователя или что-то ещё. Сейчас это невозможно.
-
-// Чтобы сделать наш код расширяемым, нам нужно возвращать ещё один промис, который выполняется после того, как 
-// завершается показ аватара.
-
-// Примерно так:
-
-fetch('/article/promise-chaining/user.json')
-    .then(response => response.json())
-    .then(user => fetch(`https://api.github.com/users/${user.name}`))
-    .then(response => response.json())
-    .then(githubUser => new Promise(function(resolve, reject) { // (*)
-    let img = document.createElement('img');
-    img.src = githubUser.avatar_url;
-    img.className = "promise-avatar-example";
-    document.body.append(img);
-
-    setTimeout(() => {
-        img.remove();
-        resolve(githubUser); // (**)
-    }, 3000);
-    }))
-    // срабатывает через 3 секунды
-    .then(githubUser => alert(`Закончили показ ${githubUser.name}`));
-// То есть, обработчик .then в строке (*) будет возвращать new Promise, который перейдёт в состояние «выполнен» только после того,
-//  как в setTimeout (**) будет вызвана resolve(githubUser).
-
-// Соответственно, следующий по цепочке .then будет ждать этого.
-
-// Как правило, все асинхронные действия должны возвращать промис.
-
-// Это позволяет планировать после него какие-то дополнительные действия. Даже если эта возможность не нужна прямо сейчас,
-//  она может понадобиться в будущем.
-
-// И, наконец, давайте разобьём написанный код на отдельные функции, пригодные для повторного использования:
-
-function loadJson(url) {
-    return fetch(url)
-    .then(response => response.json());
-}
-
-function loadGithubUser(name) {
-    return fetch(`https://api.github.com/users/${name}`)
-    .then(response => response.json());
-}
-
-function showAvatar(githubUser) {
-    return new Promise(function(resolve, reject) {
-    let img = document.createElement('img');
-    img.src = githubUser.avatar_url;
-    img.className = "promise-avatar-example";
-    document.body.append(img);
-
-    setTimeout(() => {
-        img.remove();
-        resolve(githubUser);
-    }, 3000);
-    });
-}
-
-// Используем их:
-loadJson('/article/promise-chaining/user.json')
-    .then(user => loadGithubUser(user.name))
-    .then(showAvatar)
-    .then(githubUser => alert(`Показ аватара ${githubUser.name} завершён`));
-    // ...
-// Итого
-// Если обработчик в .then (или в catch/finally, без разницы) возвращает промис, последующие элементы цепочки ждут,
-//  пока этот промис выполнится. Когда это происходит, результат его выполнения (или ошибка) передаётся дальше.
-}
-
-{//007 Fetch API, promise + server
-// API - Application Programming Interface (интерфейс программного приложения). Это набор данных и возможностей которые 
-//предоставляет нам какое то готовое решение, мы уже пользуемся DOM API (document.qerySelector - используя методы doument)
-
-// Fetch API - уже встроена в браузер, построена на промисах и позволяет общаться с сервером.
-//Будем обращаться к jsonplaceholder.typicode.com - небольшая база данных в интернете к которой можно обращаться для тестирования
-
-// Что на сервере хранится
-// /posts	100 posts
-// /comments	500 comments
-// /albums	100 albums
-// /photos	5000 photos
-// /todos	200 todos
-// /users   10 users
-
-//Какие запросы можно отправлять
-// GET	/posts
-// GET	/posts/1
-// GET	/posts/1/comments
-// GET	/comments?postId=1
-// POST	/posts
-// PUT	/posts/1
-// PATCH	/posts/1
-// DELETE	/posts/1
-
-//На этом сайте есть пример как обращаться к базе, копируем его - обращаемся к todo
-//Без указания дополнительных параметров - это будет класический GET запрос который получит данные
-// response.json- встроенный метод fetch заменяет JSON.parse и возвращает promise(потому что не знаем сколько будет длится операция)
-// fetch('https://jsonplaceholder.typicode.com/todos/1') // 1 - уникальній идентификатор по которому делаем запрос (id: 1)
-//     .then(response => response.json()) 
-//     .then(json => console.log(json));
-// получили объект {userId: 1, id: 1, title: 'delectus aut autem', completed: false}
-//Также с сервера может прийти текст который нужно будет потом превратить в объект
-
-//Для формирования POST запроса нужно добавить объект с настройками (обязательные 2 свойства - mehod и body, желательно указывать
-// еще заголовки для указания что мы отправляем )
-// fetch('https://jsonplaceholder.typicode.com/posts', { // обращаемся к POST	/posts 
-//     method: "POST",
-//     body: JSON.stringify({name:"Alex"}),
-//     headers: {
-//         'Content-type': 'application/json'
-//     }
-// }) 
-// .then(response => response.json()) 
-// .then(json => console.log(json));
-// {name: 'Alex', id: 101} - запостили и получили назад ответ с фейковой id: 101, на самом деле мы ничего не записали на сервер
-//просто получили такой ответ, который говорит нам что все работает 
-
-// Метод запросов fetch намного проще XMLHttpRequest запросов. url задается одной строкой, а настройки идут одним объектом. Этот
-//метод запросов сейчас используется почти везде, однако можно встретить и XMLHttpRequest запросы.
-
-//======== Перписываем функционал сайта продуктов с использованием fetch
-//============================ 007 Переписываем запросы с помощью fetch
-// 1) отправим классическую формдейту 2) отправим JSON файл на наш сервер
-function postData(form) { 
-    form.addEventListener('submit', (e) => {  
-        e.preventDefault(); 
-        
-        //005 изменяем для показа картинки и класс
-        const statusMessage = document.createElement('img');
-        statusMessage.src = message.loading;
-        //записываем инлайн стили что бы картинка была по центру
-        statusMessage.style.cssText = `
-            display: block;
-            margin: 0 auto;
-        `;
-        //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма используем insertAdjacentElement послеформы
-        form.insertAdjacentElement('afterend', statusMessage);
-
-        //007 Убираем этот запрос, вместо него будет fetch - который перемещаем ниже под создание formData
-        // const req = new XMLHttpRequest(); 
-        // req.open('POST', 'server.php'); 
-        
-        //007 из req.setRequestHeader берем headers только через двоеточие и удаляем строку
-        //req.setRequestHeader('Content-type', 'application/json');
-     
-        const formData = new FormData(form);
-
-        //007- пока закоментируем потому что  отправляем только FormData и превращать в json не нужно
-        // const object = {};
-        // formData.forEach(function(value, key){
-        //     object[key] = value;
-        // });
-        // const json = JSON.stringify(object);
-
- 
-        // req.send(formData);  //007 убрано
-
-                //007  Раньше обрабатывали результат запроса так, теперь с помощью промисов
-        // req.addEventListener('load', () => {
-        //     if (req.status === 200) {
-        //         console.log(req.response);
-        //         showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
-        //         form.reset(); //Удалили таймаут потому что она будет использоваться только для спинера
-        //         statusMessage.remove(); // удаляется спиннер   
-        //     }else{
-        //         showThanksModal(message.failure);
-        //     }
-        // });
-
-        fetch('server.php', {
-            method: 'POST',
-            // headers: {                // заголовок раскоментируем когда будем отправлять json данные
-            //     'Content-type': 'application/json'
-            // },
-            body: formData
-        }).then(data => data.text()) //От сервера пришел отве Responce объект, но не данные которые мы отправляли, что бы их получить
-        //что бы понимать какой ответ приходит нужно этот ответ модифицировать. В данном случае в текст, потому что мы знаем
-        //что отправляли не json. ***Так же в Сервере .php  закоментируем строку для работы с json
-        .then(data => { 
-            console.log(data);
-            showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
-            statusMessage.remove(); // удаляется спиннер  
-        }).catch(() => {
-            showThanksModal(message.failure); // Показываем ошибку если есть
-        }).finally(() => {
-            form.reset(); //очищаем форму в любом случае в конце этого кода
+    loadScript("/article/promise-chaining/one.js").then(script1 => {
+        loadScript("/article/promise-chaining/two.js").then(script2 => {
+        loadScript("/article/promise-chaining/three.js").then(script3 => {
+            // эта функция имеет доступ к переменным script1, script2 и script3
+            one();
+            two();
+            three();
+        });
         });
     });
-}
-// Что бы передать JSON изменяем
+    // Этот код делает то же самое: последовательно загружает 3 скрипта. Но он «растёт вправо», так что возникает такая же проблема,
+    //  как и с колбэками.
 
-//007- пока закоментируем потому что  отправляем только FormData и превращать в json не нужно
-        // const object = {};
-        // formData.forEach(function(value, key){
-        //     object[key] = value;
-        // });
+    // Разработчики, которые не так давно начали использовать промисы, иногда не знают про цепочки и пишут код именно так, как
+    //  показано выше. В целом, использование цепочек промисов предпочтительнее.
 
-        // const json = JSON.stringify(object); // - избавляемся от лишней переменной и подставляем вместо formData
+    // Иногда всё же приемлемо добавлять .then напрямую, чтобы вложенная в него функция имела доступ к внешней области видимости.
+    //  В примере выше самая глубоко вложенная функция обратного вызова имеет доступ ко всем переменным script1, script2, script3.
+    //   Но это скорее исключение, чем правило.
 
-        fetch('server.php', {
-            method: 'POST',
-            headers: {                // заголовок раскоментируем для отправки json данных 
-                'Content-type': 'application/json' //***Так же в Сервере .php  раскомментируем строку для работы с json
-            },
-            body: JSON.stringify(object)
-            //body: formData 
-        }).then(data => data.text()) 
-        .then(data => { 
-            console.log(data);
-            showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
-            statusMessage.remove(); // удаляется спиннер  
-        }).catch(() => {
-            showThanksModal(message.failure); // Показываем ошибку если есть
-        }).finally(() => {
-            form.reset(); //очищаем форму в любом случае в конце этого кода
+    // Thenable
+    // Если быть более точными, обработчик может возвращать не именно промис, а любой объект, содержащий метод .then, такие объекты
+    //  называют «thenable», и этот объект будет обработан как промис.
+
+    // Смысл в том, что сторонние библиотеки могут создавать свои собственные совместимые с промисами объекты. Они могут иметь свои
+    //  наборы методов и при этом быть совместимыми со встроенными промисами, так как реализуют метод .then.
+
+    // Вот пример такого объекта:
+
+    class Thenable {
+        constructor(num) {
+        this.num = num;
+        }
+        then(resolve, reject) {
+        alert(resolve); // function() { native code }
+        // будет успешно выполнено с аргументом this.num*2 через 1 секунду
+        setTimeout(() => resolve(this.num * 2), 1000); // (**)
+        }
+    }
+
+    new Promise(resolve => resolve(1))
+        .then(result => {
+        return new Thenable(result); // (*)
+        })
+        .then(alert); // показывает 2 через 1000мс
+    // JavaScript проверяет объект, возвращаемый из обработчика .then в строке (*): если у него имеется метод then, который можно
+    //  вызвать, то этот метод вызывается, и в него передаются как аргументы встроенные функции resolve и reject, вызов одной из 
+    //  которых потом ожидается. В примере выше происходит вызов resolve(2) через 1 секунду (**). Затем результат передаётся дальше
+    //   по цепочке.
+
+    // Это позволяет добавлять в цепочки промисов пользовательские объекты, не заставляя их наследовать от Promise.
+
+    // Более сложный пример: fetch
+    // Во фронтенд-разработке промисы часто используются, чтобы делать запросы по сети. Давайте рассмотрим один такой пример.
+
+    // Мы будем использовать метод fetch, чтобы подгрузить информацию о пользователях с удалённого сервера. Этот метод имеет много
+    //  опциональных параметров, разобранных в соответствующих разделах, но базовый синтаксис весьма прост:
+
+    // let promise = fetch(url);
+    // Этот код запрашивает по сети url и возвращает промис. Промис успешно выполняется и в свою очередь возвращает объект response
+    //  после того, как удалённый сервер присылает заголовки ответа, но до того, как весь ответ сервера полностью загружен.
+
+    // Чтобы прочитать полный ответ, надо вызвать метод response.text(): он тоже возвращает промис, который выполняется, когда данные
+    //  полностью загружены с удалённого сервера, и возвращает эти данные.
+
+    // Код ниже запрашивает файл user.json и загружает его содержимое с сервера:
+
+    fetch('/article/promise-chaining/user.json')
+        // .then в коде ниже выполняется, когда удалённый сервер отвечает
+        .then(function(response) {
+        // response.text() возвращает новый промис,
+        // который выполняется и возвращает полный ответ сервера,
+        // когда он загрузится
+        return response.text();
+        })
+        .then(function(text) {
+        // ...и здесь содержимое полученного файла
+        alert(text); // {"name": "iliakan", isAdmin: true}
         });
+    // Есть также метод response.json(), который читает данные в формате JSON. Он больше подходит для нашего примера, так что
+    //  давайте использовать его.
 
-//**** Проверим вывод ошибки для пользователя. Допустим ошибку в пути сервера server1.php, при этом в консоль выкидывается ошибка
-//но сообщение в модальном окне выводится как при положительном ответе. Это особенность fetch, промис который он запускает
-// не перейдет в состояни отклонено(rejected) из-за ответа http который считается ошибкой (404, 500, 502, ...) он все равно
-//выполнится нормально у него поменятся только status который будет false. (Еще раз простыми словами - если внутри фетча промис
-//попадает на ошибку которая связана с http протоколом - он не выкинет reject, для него это не считается ошибкой, он нормально
-//отработает resolve. Главное для фетча что он вообще смог сделать запрос, соответственно reject юудет только в случае сбоя сети
-// или если что то помешало запросу выполнится)
+    // Мы также применим стрелочные функции для более компактной записи кода:
+
+    // то же самое, что и раньше, только теперь response.json() читает данные в формате JSON
+    fetch('/article/promise-chaining/user.json')
+        .then(response => response.json())
+        .then(user => alert(user.name)); // iliakan, получили имя пользователя
+    // Теперь давайте что-нибудь сделаем с полученными данными о пользователе.
+
+    // Например, мы можем послать запрос на GitHub, чтобы загрузить данные из профиля пользователя и показать его аватар:
+
+    // Запрашиваем user.json
+    fetch('/article/promise-chaining/user.json')
+        // Загружаем данные в формате json
+        .then(response => response.json())
+        // Делаем запрос к GitHub
+        .then(user => fetch(`https://api.github.com/users/${user.name}`))
+        // Загружаем ответ в формате json
+        .then(response => response.json())
+        // Показываем аватар (githubUser.avatar_url) в течение 3 секунд (возможно, с анимацией)
+        .then(githubUser => {
+        let img = document.createElement('img');
+        img.src = githubUser.avatar_url;
+        img.className = "promise-avatar-example";
+        document.body.append(img);
+
+        setTimeout(() => img.remove(), 3000); // (*)
+        });
+    // Код работает, детали реализации отражены в комментариях. Однако в нём есть одна потенциальная проблема, 
+    // с которой часто сталкиваются новички.
+
+    // Посмотрите на строку (*): как мы можем предпринять какие-то действия после того, как аватар был показан и удалён? 
+    // Например, мы бы хотели показывать форму редактирования пользователя или что-то ещё. Сейчас это невозможно.
+
+    // Чтобы сделать наш код расширяемым, нам нужно возвращать ещё один промис, который выполняется после того, как 
+    // завершается показ аватара.
+
+    // Примерно так:
+
+    fetch('/article/promise-chaining/user.json')
+        .then(response => response.json())
+        .then(user => fetch(`https://api.github.com/users/${user.name}`))
+        .then(response => response.json())
+        .then(githubUser => new Promise(function(resolve, reject) { // (*)
+        let img = document.createElement('img');
+        img.src = githubUser.avatar_url;
+        img.className = "promise-avatar-example";
+        document.body.append(img);
+
+        setTimeout(() => {
+            img.remove();
+            resolve(githubUser); // (**)
+        }, 3000);
+        }))
+        // срабатывает через 3 секунды
+        .then(githubUser => alert(`Закончили показ ${githubUser.name}`));
+    // То есть, обработчик .then в строке (*) будет возвращать new Promise, который перейдёт в состояние «выполнен» только после того,
+    //  как в setTimeout (**) будет вызвана resolve(githubUser).
+
+    // Соответственно, следующий по цепочке .then будет ждать этого.
+
+    // Как правило, все асинхронные действия должны возвращать промис.
+
+    // Это позволяет планировать после него какие-то дополнительные действия. Даже если эта возможность не нужна прямо сейчас,
+    //  она может понадобиться в будущем.
+
+    // И, наконец, давайте разобьём написанный код на отдельные функции, пригодные для повторного использования:
+
+    function loadJson(url) {
+        return fetch(url)
+        .then(response => response.json());
+    }
+
+    function loadGithubUser(name) {
+        return fetch(`https://api.github.com/users/${name}`)
+        .then(response => response.json());
+    }
+
+    function showAvatar(githubUser) {
+        return new Promise(function(resolve, reject) {
+        let img = document.createElement('img');
+        img.src = githubUser.avatar_url;
+        img.className = "promise-avatar-example";
+        document.body.append(img);
+
+        setTimeout(() => {
+            img.remove();
+            resolve(githubUser);
+        }, 3000);
+        });
+    }
+
+    // Используем их:
+    loadJson('/article/promise-chaining/user.json')
+        .then(user => loadGithubUser(user.name))
+        .then(showAvatar)
+        .then(githubUser => alert(`Показ аватара ${githubUser.name} завершён`));
+        // ...
+    // Итого
+    // Если обработчик в .then (или в catch/finally, без разницы) возвращает промис, последующие элементы цепочки ждут,
+    //  пока этот промис выполнится. Когда это происходит, результат его выполнения (или ошибка) передаётся дальше.
 
 }
 
-{//008 Методы перебора массивов и объектов
-// 1) filter - фильтрует массив согласно заданному правилу и ***возвращает в новом массиве. Поэтому присваиваем результат переменной
-//в примере нужно получить все имена которые меньше 5 символов
 
-const names = ['Ivan', 'Ann', ' Ksenia', 'Volandemort'];
+{//  007    ====  Fetch API, promise + server  ====
 
-const shortNames = names.filter(function(name) {
-    return name.length < 5; // можно использовать запись через if if(name.length < 5) { return name.length;}
-});
+    // API - Application Programming Interface (интерфейс программного приложения). Это набор данных и возможностей которые 
+    //предоставляет нам какое то готовое решение, мы уже пользуемся DOM API (document.qerySelector - используя методы doument)
 
+    // Fetch API - уже встроена в браузер, построена на промисах и позволяет общаться с сервером.
+    //Будем обращаться к jsonplaceholder.typicode.com - небольшая база данных в интернете к которой можно обращаться для тестирования
 
-// 2) map - аналогичен forEach но ***возвращает новый массив
-//Нам нужно все элементы привести к нижнему регистру для дальнейшоего использования
+    // Что на сервере хранится
+    // /posts	100 posts
+    // /comments	500 comments
+    // /albums	100 albums
+    // /photos	5000 photos
+    // /todos	200 todos
+    // /users   10 users
 
-let answers = ['iVaN', 'AnnA', 'Hello'];
+    //Какие запросы можно отправлять
+    // GET	/posts
+    // GET	/posts/1
+    // GET	/posts/1/comments
+    // GET	/comments?postId=1
+    // POST	/posts
+    // PUT	/posts/1
+    // PATCH	/posts/1
+    // DELETE	/posts/1
 
-const result = answers.map(item => {  //  сокращаем запись  answers.map(item => item.toLowerCase());
-    return item.toLowerCase(); 
-});
-console.log(result); // ['ivan', 'anna', 'hello']
+    //На этом сайте есть пример как обращаться к базе, копируем его - обращаемся к todo
+    //Без указания дополнительных параметров - это будет класический GET запрос который получит данные
+    // response.json- встроенный метод fetch заменяет JSON.parse и возвращает promise(потому что не знаем сколько будет длится операция)
+    // fetch('https://jsonplaceholder.typicode.com/todos/1') // 1 - уникальній идентификатор по которому делаем запрос (id: 1)
+    //     .then(response => response.json()) 
+    //     .then(json => console.log(json));
+    // получили объект {userId: 1, id: 1, title: 'delectus aut autem', completed: false}
+    //Также с сервера может прийти текст который нужно будет потом превратить в объект
 
-// //Можно переприсвоить значение исходному массиву, объявляя его через let. 
-// //***С точки зрения Иммутабельности лучше создавать новую переменную
-answers = answers.map(item => item.toLocaleLowerCase()); // ['ivan', 'anna', 'hello']
+    //Для формирования POST запроса нужно добавить объект с настройками (обязательные 2 свойства - mehod и body, желательно указывать
+    // еще заголовки для указания что мы отправляем )
+    // fetch('https://jsonplaceholder.typicode.com/posts', { // обращаемся к POST	/posts 
+    //     method: "POST",
+    //     body: JSON.stringify({name:"Alex"}),
+    //     headers: {
+    //         'Content-type': 'application/json'
+    //     }
+    // }) 
+    // .then(response => response.json()) 
+    // .then(json => console.log(json));
+    // {name: 'Alex', id: 101} - запостили и получили назад ответ с фейковой id: 101, на самом деле мы ничего не записали на сервер
+    //просто получили такой ответ, который говорит нам что все работает 
 
+    // Метод запросов fetch намного проще XMLHttpRequest запросов. url задается одной строкой, а настройки идут одним объектом. Этот
+    //метод запросов сейчас используется почти везде, однако можно встретить и XMLHttpRequest запросы.
 
-// 3) every/some
-// some - если хотя бы один эл. подходит под условие возвращает true
-//*** при использовании стрелочной записи функции return подставляется автоматически
-const some = [4, 'Some', 'user'];
-console.log(some.some(item => typeof(item) === 'number')); //true  сравниеваем эл. с типом number
+    //======== Перписываем функционал сайта продуктов с использованием fetch
+    //============================ 007 Переписываем запросы с помощью fetch
+    // 1) отправим классическую формдейту 2) отправим JSON файл на наш сервер
+    function postData(form) { 
+        form.addEventListener('submit', (e) => {  
+            e.preventDefault(); 
+            
+            //005 изменяем для показа картинки и класс
+            const statusMessage = document.createElement('img');
+            statusMessage.src = message.loading;
+            //записываем инлайн стили что бы картинка была по центру
+            statusMessage.style.cssText = `
+                display: block;
+                margin: 0 auto;
+            `;
+            //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма используем insertAdjacentElement послеформы
+            form.insertAdjacentElement('afterend', statusMessage);
 
-//every - true если все эл. массива подходят под условие
-console.log(some.every(item => typeof(item) === 'number')); //false  сравниеваем эл. с типом number
+            //007 Убираем этот запрос, вместо него будет fetch - который перемещаем ниже под создание formData
+            // const req = new XMLHttpRequest(); 
+            // req.open('POST', 'server.php'); 
+            
+            //007 из req.setRequestHeader берем headers только через двоеточие и удаляем строку
+            //req.setRequestHeader('Content-type', 'application/json');
+        
+            const formData = new FormData(form);
 
+            //007- пока закоментируем потому что  отправляем только FormData и превращать в json не нужно
+            // const object = {};
+            // formData.forEach(function(value, key){
+            //     object[key] = value;
+            // });
+            // const json = JSON.stringify(object);
 
-// 4) reduce - собирает массив в единое целое ( чаще всего работает с числами)
-const arr = [4, 3, 2, 1];
+    
+            // req.send(formData);  //007 убрано
 
-const result = arr.reduce((sum, current) => sum + current); //10
+                    //007  Раньше обрабатывали результат запроса так, теперь с помощью промисов
+            // req.addEventListener('load', () => {
+            //     if (req.status === 200) {
+            //         console.log(req.response);
+            //         showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
+            //         form.reset(); //Удалили таймаут потому что она будет использоваться только для спинера
+            //         statusMessage.remove(); // удаляется спиннер   
+            //     }else{
+            //         showThanksModal(message.failure);
+            //     }
+            // });
 
-//Можно проводить другие действия 
-//*** Если не задавать значение по умолчанию для sum - тогда оно равняется первому элементу массива 
-const resultMinus = arr.reduce((sum, current) => sum - current); // -2 (4 -3 -2 -1)
-//*** Если задать 0
-const resultMinus2 = arr.reduce((sum, current) => sum - current, 0); // -10 (0 -4 -3 -2 -1)
+            fetch('server.php', {
+                method: 'POST',
+                // headers: {                // заголовок раскоментируем когда будем отправлять json данные
+                //     'Content-type': 'application/json'
+                // },
+                body: formData
+            }).then(data => data.text()) //От сервера пришел отве Responce объект, но не данные которые мы отправляли, что бы их получить
+            //что бы понимать какой ответ приходит нужно этот ответ модифицировать. В данном случае в текст, потому что мы знаем
+            //что отправляли не json. ***Так же в Сервере .php  закоментируем строку для работы с json
+            .then(data => { 
+                console.log(data);
+                showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
+                statusMessage.remove(); // удаляется спиннер  
+            }).catch(() => {
+                showThanksModal(message.failure); // Показываем ошибку если есть
+            }).finally(() => {
+                form.reset(); //очищаем форму в любом случае в конце этого кода
+            });
+        });
+    }
+    // Что бы передать JSON изменяем
 
-const resultDouble = arr.reduce((sum, current) => (sum + current)*2, 0); // 98 ((0+4)*2 = (8+3)*2 = (22+2)*2 = (48+1)*2 = 98)
+    //007- пока закоментируем потому что  отправляем только FormData и превращать в json не нужно
+            // const object = {};
+            // formData.forEach(function(value, key){
+            //     object[key] = value;
+            // });
 
-//*** Массив со строками можно собрать в единую строку
-const str = ['Apple', 'Juice', 'Awesome'];
-//Метод 1 через конкатенацию
-const solidStr = str.reduce((sum, current) => sum + ', ' + current); //Apple, Juice, Awesome
-//Метод 2 через интерполяцию
-const solidStr2 = str.reduce((sum, current) => `${sum}, ${current}`); //Apple, Juice, Awesome
+            // const json = JSON.stringify(object); // - избавляемся от лишней переменной и подставляем вместо formData
 
+            fetch('server.php', {
+                method: 'POST',
+                headers: {                // заголовок раскоментируем для отправки json данных 
+                    'Content-type': 'application/json' //***Так же в Сервере .php  раскомментируем строку для работы с json
+                },
+                body: JSON.stringify(object)
+                //body: formData 
+            }).then(data => data.text()) 
+            .then(data => { 
+                console.log(data);
+                showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
+                statusMessage.remove(); // удаляется спиннер  
+            }).catch(() => {
+                showThanksModal(message.failure); // Показываем ошибку если есть
+            }).finally(() => {
+                form.reset(); //очищаем форму в любом случае в конце этого кода
+            });
 
-//*** ПРАКТИЧЕСКИЙ ПРИМЕР
-// После обращения к серверу с него пришел объект с поменяными сетами названиями и свойствами (так делают потому что объект не может
-// содержать одинаковые названия свойств). Задача - вытащить имена пользователей ivan и ann, при том что расположение свойств 
-//в объекте неизвестно (индекс не известен)
-const obj = {
-    ivan: 'persone',
-    ann: 'persone',
-    dog: 'animal',
-    cat: 'animal'
-};
+    //**** Проверим вывод ошибки для пользователя. Допустим ошибку в пути сервера server1.php, при этом в консоль выкидывается ошибка
+    //но сообщение в модальном окне выводится как при положительном ответе. Это особенность fetch, промис который он запускает
+    // не перейдет в состояни отклонено(rejected) из-за ответа http который считается ошибкой (404, 500, 502, ...) он все равно
+    //выполнится нормально у него поменятся только status который будет false. (Еще раз простыми словами - если внутри фетча промис
+    //попадает на ошибку которая связана с http протоколом - он не выкинет reject, для него это не считается ошибкой, он нормально
+    //отработает resolve. Главное для фетча что он вообще смог сделать запрос, соответственно reject юудет только в случае сбоя сети
+    // или если что то помешало запросу выполнится)
 
-// entries - метод для преобразования объекта в матрицу (*НОВЫЙ массив с вложенными массивами)
-    //const newArr = Object.entries(obj);  // [ ['ivan', 'persone'], ['ann', 'persone'], ['dog', 'animal'], ['cat', 'animal'] ]
-
-//теперь фильтруем массив и оставляем те массивы у которых вторым эл. persone. Сделаем это методом цепочек(chaining) как промисы
-const newArr = Object.entries(obj)
-.filter(item => item[1] === 'persone')  //[ ['ivan', 'persone'], ['ann', 'persone'] ] снова используем цепочку
-.map(item => item[0]);                  // ['ivan', 'ann']
 }
 
-{//009 Подробно про npm и проект. JSON-server
+
+{//  008    ====  Методы перебора массивов и объектов  ====
+
+    // 1) filter - фильтрует массив согласно заданному правилу и ***возвращает в новом массиве. Поэтому присваиваем результат переменной
+    //в примере нужно получить все имена которые меньше 5 символов
+
+    const names = ['Ivan', 'Ann', ' Ksenia', 'Volandemort'];
+
+    const shortNames = names.filter(function(name) {
+        return name.length < 5; // можно использовать запись через if if(name.length < 5) { return name.length;}
+    });
+
+
+    // 2) map - аналогичен forEach но ***возвращает новый массив
+    //Нам нужно все элементы привести к нижнему регистру для дальнейшоего использования
+
+    let answers = ['iVaN', 'AnnA', 'Hello'];
+
+    const result = answers.map(item => {  //  сокращаем запись  answers.map(item => item.toLowerCase());
+        return item.toLowerCase(); 
+    });
+    console.log(result); // ['ivan', 'anna', 'hello']
+
+    // //Можно переприсвоить значение исходному массиву, объявляя его через let. 
+    // //***С точки зрения Иммутабельности лучше создавать новую переменную
+    answers = answers.map(item => item.toLocaleLowerCase()); // ['ivan', 'anna', 'hello']
+
+
+    // 3) every/some
+    // some - если хотя бы один эл. подходит под условие возвращает true
+    //*** при использовании стрелочной записи функции return подставляется автоматически
+    const some = [4, 'Some', 'user'];
+    console.log(some.some(item => typeof(item) === 'number')); //true  сравниеваем эл. с типом number
+
+    //every - true если все эл. массива подходят под условие
+    console.log(some.every(item => typeof(item) === 'number')); //false  сравниеваем эл. с типом number
+
+
+    // 4) reduce - собирает массив в единое целое ( чаще всего работает с числами)
+    const arr = [4, 3, 2, 1];
+
+    const result = arr.reduce((sum, current) => sum + current); //10
+
+    //Можно проводить другие действия 
+    //*** Если не задавать значение по умолчанию для sum - тогда оно равняется первому элементу массива 
+    const resultMinus = arr.reduce((sum, current) => sum - current); // -2 (4 -3 -2 -1)
+    //*** Если задать 0
+    const resultMinus2 = arr.reduce((sum, current) => sum - current, 0); // -10 (0 -4 -3 -2 -1)
+
+    const resultDouble = arr.reduce((sum, current) => (sum + current)*2, 0); // 98 ((0+4)*2 = (8+3)*2 = (22+2)*2 = (48+1)*2 = 98)
+
+    //*** Массив со строками можно собрать в единую строку
+    const str = ['Apple', 'Juice', 'Awesome'];
+    //Метод 1 через конкатенацию
+    const solidStr = str.reduce((sum, current) => sum + ', ' + current); //Apple, Juice, Awesome
+    //Метод 2 через интерполяцию
+    const solidStr2 = str.reduce((sum, current) => `${sum}, ${current}`); //Apple, Juice, Awesome
+
+
+    //*** ПРАКТИЧЕСКИЙ ПРИМЕР
+    // После обращения к серверу с него пришел объект с поменяными сетами названиями и свойствами (так делают потому что объект не может
+    // содержать одинаковые названия свойств). Задача - вытащить имена пользователей ivan и ann, при том что расположение свойств 
+    //в объекте неизвестно (индекс не известен)
+    const obj = {
+        ivan: 'persone',
+        ann: 'persone',
+        dog: 'animal',
+        cat: 'animal'
+    };
+
+    // entries - метод для преобразования объекта в матрицу (*НОВЫЙ массив с вложенными массивами)
+        //const newArr = Object.entries(obj);  // [ ['ivan', 'persone'], ['ann', 'persone'], ['dog', 'animal'], ['cat', 'animal'] ]
+
+    //теперь фильтруем массив и оставляем те массивы у которых вторым эл. persone. Сделаем это методом цепочек(chaining) как промисы
+    const newArr = Object.entries(obj)
+    .filter(item => item[1] === 'persone')  //[ ['ivan', 'persone'], ['ann', 'persone'] ] снова используем цепочку
+    .map(item => item[0]);                  // ['ivan', 'ann']
 
 }
 
-{//Деструктуризация / todo list
+
+{//  009    ====  Подробно про npm и проект. JSON-server
+
+}
+
+
+{//      ====  Деструктуризация / todo list
 
 }
