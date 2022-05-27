@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 const numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
 
 const personalMovieDB = {
@@ -12,19 +12,15 @@ const personalMovieDB = {
 let movieName = prompt('Один из последних просмотренных фильмов?', '');
 let movieRank = +prompt('На сколько его оцените?', '');
 
-
-
+let movieName2 = prompt('Один из последних просмотренных фильмов?', '');
+let movieRank2 = +prompt('На сколько его оцените?', '');
 
 personalMovieDB.count = numberOfFilms;
-personalMovieDB.movies =  [movieName,movieRank];
+personalMovieDB.movies[movieName] = movieRank;
+personalMovieDB.movies[movieName2] = movieRank2;
 
 
-
-
-
-
-
-
-console.log(personalMovieDB.count);
 console.log(personalMovieDB.movies);
 console.log(typeof(personalMovieDB.movies));
+//document.write(`Фильмов просмотрено ${personalMovieDB.count}`);
+document.write(personalMovieDB.movies);
