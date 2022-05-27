@@ -16,6 +16,7 @@ let movieRank = +prompt('На сколько его оцените?', '');
 
 
 personalMovieDB.count = numberOfFilms;
+personalMovieDB.movies =  [movieName,movieRank];
 
 
 
@@ -24,11 +25,6 @@ personalMovieDB.count = numberOfFilms;
 
 
 
-
-
-
-
-
-console.log(numberOfFilms);
-console.log(numberOfFilms);
-document.write(personalMovieDB.count);
+console.log(personalMovieDB.count);
+console.log(personalMovieDB.movies);
+console.log(typeof(personalMovieDB.movies));
