@@ -385,6 +385,7 @@
 }
 
 
+//==============================================  Udemy course ===================================================================
 //================================================ ОСНОВЫ JS =====================================================================
 
 {/*  002    ====  ПЕРЕМЕННЫЕ И СТРОГИЙ РЕЖИМ  ====
@@ -452,14 +453,14 @@
     const obj = {
         age: 10, 
         name: "John",
-            say: function() {
+        say: function() {
             console.log("Hello");
         },
         isMarried: false
     }
-    console.log(obj.age); //10       console.log( obj.say() ); // Hello
+    console.log(obj.age); //10       
     console.log(obj["age"]);//10
-
+    console.log( obj.say() ); // Hello
 
     /* +++ СПЕЦ. ОБЪЕКТЫ: 
 
@@ -538,102 +539,6 @@
     //Теперь это реализуется интерполяцией
     console.log(`https://someurl.com/${category}/4`);
     //Можно динамически менять содержимое строки в зависимости от  пришедших данных.
-
-}
-
-
-{//         ====  ПРАКТИЧЕСКОЕ ЗАДАНИЕ  ====
-
-    let personalMovieDB = {
-        count:  0,
-        movies: {},
-        actors: {},
-        genres: [],
-        privat: false,
-        start: function (){
-            personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
-                
-                    while(personalMovieDB.count == ""||personalMovieDB.count ==null || isNaN(personalMovieDB.count ) ){
-                        personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
-                    }
-                },
-        rememberMyFilms: function (){
-                            for (let i = 0; i < 2; i++) {
-                                let a = prompt("Последний просмотренный фильм?", "");
-                                let b = prompt("Оцените этот фильм.", "");
-                            
-                                if(a != null && b != null && a != "" && b != "" && a.length < 50){
-                                    personalMovieDB.movies[a] = b;
-                                    console.log("Job's Done");
-                                }else{
-                                    console.log("Error");
-                                    i--;
-                                }
-                            }
-                        },
-        detectPersonalLevel: function (){
-            if(personalMovieDB.count < 10){
-                document.write("Просмотрено мало фильмов");
-            }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30){
-                document.write("Вы классический зритель");
-            }else if(personalMovieDB.count >= 30){
-                document.write("Вы киноман");
-            }else{
-                document.write("Произошла ошибка");
-            }
-        },
-        showMyDB: function (hidden){
-                        if(!hidden){
-                            console.log(personalMovieDB);
-                        }
-                    },
-        writeYourGenres: function () {
-                            //Method cycling
-                            // for (let i = 1; i <= 3; i++) {
-                            //     let a = prompt(`Ваш любимый жанр под номером ${i}`, "");
-                                
-                            //     if(a != null && a != ""){
-                            //         personalMovieDB.genres[i-1] = a;
-                            //         console.log("Job's Done");
-                            //     }else{
-                            //         console.log("Error");
-                            //         i--;
-                            //     }
-                            // }
-                            //Method for all values in massive
-                            for (let i = 1; i < 2; i++) {  //decrease i that cycle has 1 itteration
-                                let all = prompt(`Введите ваши любимые жанры через запятую.`, "").toLowerCase();
-                                
-                                if(all != null && all != ""){
-                                    personalMovieDB.genres = all.split(", ");
-                                    personalMovieDB.genres.sort();
-                                    console.log("Job's Done");
-                                }else{
-                                    console.log("Error");
-                                    i--; //Decrease increament for back in one itteration back
-                                }
-                            }
-
-                            personalMovieDB.genres.forEach( (value, index ) => {
-                                                                console.log(`Любимый жанр #${index+1} - это ${value}`);
-                                                            }
-                            );
-                        },
-        toggleVisibleMyDB: function(){
-                            if (personalMovieDB.privat){
-                                personalMovieDB.privat = false;
-                            } else{
-                                personalMovieDB.privat = true;  
-                            }
-                            }
-    };
-    // personalMovieDB.start();
-    // personalMovieDB.rememberMyFilms();
-    // personalMovieDB.detectPersonalLevel();
-    // personalMovieDB.toggleVisibleMyDB();
-    // personalMovieDB.showMyDB(personalMovieDB.privat);
-    // personalMovieDB.writeYourGenres();
-    // console.log(personalMovieDB);
 
 }
 
@@ -846,9 +751,140 @@
     
 */}
 
-{//  009    ====  Практика часть 1. Создаем приложение  ====
 
+{//  009    ====  Практика часть 1. Создаем консольное приложение  ====
+
+    /*  Изучение новых языков программирования почти всегда начинаются с написания консольных приложений, это общепринятая практика
+    Этот проект будет дополнятся и расширять функциональность, так происходит в любом реальном приложении. Также научимся рефакторить
+    код проекта.
     
+    ЗАДАНИЕ
+    1) Создать переменную numberOfFilms и поместить в нее ответ пользователя на вопрос:
+    "Сколько фильмов вы уже посмотрели?"
+
+    2) Создать объект personalMovieDB и в него поместить такие свойства:
+        - count     - сюда передается ответ на первый вопрос
+        - movies    - поместить пустой объект
+        - actors    - поместить пустой объект
+        - genres    - поместить пустой массив
+        - privat    - поместить boolean значение false
+    
+    3) Задать пользователю по два вопроса:
+        - "Один из последних просмотренных фильмов?"
+        - "На сколько его оцените?"
+    Ответы поместить в отдельные переменные и
+    записать в объект movies в формате:
+    movies: {
+        'logan': '8.1'
+    }
+    Подсказка: записать свойство в объект можно двумя способами:
+    movies.keyMovie;     keyMovie - переменная
+    movies[keyMovie];    - такой метод позволит избежать багов при работе с кирилицей.
+
+    ***Проверить что бы все работало без ошибок в консоли.  */
+
+    const numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
+
+
+
+
+
+
+}
+
+
+{//  ???    ====  ПРАКТИЧЕСКОЕ ЗАДАНИЕ  ====
+
+    let personalMovieDB = {
+        count:  0,
+        movies: {},
+        actors: {},
+        genres: [],
+        privat: false,
+        start: function (){
+            personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
+                
+                    while(personalMovieDB.count == ""||personalMovieDB.count ==null || isNaN(personalMovieDB.count ) ){
+                        personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
+                    }
+                },
+        rememberMyFilms: function (){
+                            for (let i = 0; i < 2; i++) {
+                                let a = prompt("Последний просмотренный фильм?", "");
+                                let b = prompt("Оцените этот фильм.", "");
+                            
+                                if(a != null && b != null && a != "" && b != "" && a.length < 50){
+                                    personalMovieDB.movies[a] = b;
+                                    console.log("Job's Done");
+                                }else{
+                                    console.log("Error");
+                                    i--;
+                                }
+                            }
+                        },
+        detectPersonalLevel: function (){
+            if(personalMovieDB.count < 10){
+                document.write("Просмотрено мало фильмов");
+            }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30){
+                document.write("Вы классический зритель");
+            }else if(personalMovieDB.count >= 30){
+                document.write("Вы киноман");
+            }else{
+                document.write("Произошла ошибка");
+            }
+        },
+        showMyDB: function (hidden){
+                        if(!hidden){
+                            console.log(personalMovieDB);
+                        }
+                    },
+        writeYourGenres: function () {
+                            //Method cycling
+                            // for (let i = 1; i <= 3; i++) {
+                            //     let a = prompt(`Ваш любимый жанр под номером ${i}`, "");
+                                
+                            //     if(a != null && a != ""){
+                            //         personalMovieDB.genres[i-1] = a;
+                            //         console.log("Job's Done");
+                            //     }else{
+                            //         console.log("Error");
+                            //         i--;
+                            //     }
+                            // }
+                            //Method for all values in massive
+                            for (let i = 1; i < 2; i++) {  //decrease i that cycle has 1 itteration
+                                let all = prompt(`Введите ваши любимые жанры через запятую.`, "").toLowerCase();
+                                
+                                if(all != null && all != ""){
+                                    personalMovieDB.genres = all.split(", ");
+                                    personalMovieDB.genres.sort();
+                                    console.log("Job's Done");
+                                }else{
+                                    console.log("Error");
+                                    i--; //Decrease increament for back in one itteration back
+                                }
+                            }
+
+                            personalMovieDB.genres.forEach( (value, index ) => {
+                                                                console.log(`Любимый жанр #${index+1} - это ${value}`);
+                                                            }
+                            );
+                        },
+        toggleVisibleMyDB: function(){
+                            if (personalMovieDB.privat){
+                                personalMovieDB.privat = false;
+                            } else{
+                                personalMovieDB.privat = true;  
+                            }
+                            }
+    };
+    // personalMovieDB.start();
+    // personalMovieDB.rememberMyFilms();
+    // personalMovieDB.detectPersonalLevel();
+    // personalMovieDB.toggleVisibleMyDB();
+    // personalMovieDB.showMyDB(personalMovieDB.privat);
+    // personalMovieDB.writeYourGenres();
+    // console.log(personalMovieDB);
 
 }
 
