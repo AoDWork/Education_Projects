@@ -14,10 +14,11 @@
 // пойдем от обратного чтобы увидеть и другие логические конструкции. Тут мы будем проверять неправдивые(неправильные варианты)
 // если это так то вопрос повторится, а если все хорошо то цикл будет закончен. Проверям numberOfFilms - пустая строка или
 // (нажимает кнопку ОТМЕНА)null или isNaN(numberOfFilms) - метод проверяет аргумент и если внутри не число то он возвращает
-//  правду. Тоесть цикл будет выполняться до тех пор пока уловия не будут ложными - тоесть введенные значения будут правильными для
-// условия проверки но неправильными для нас.
-// А когда значения  будут неправильными для условия, но правильными для нас(числовой тип) тогда цикл остановится.
-const numberOfFilms;
+//  правду. Тоесть цикл будет выполняться(задавать вопрос пользователю пока он будет вводить невалидные данные в поле ввода) 
+// до тех пор пока уловия не будут ложными - тоесть введенные значения будут валидными для условия проверки но невалидные 
+// для нас.  А когда значения  будут невалидные для условия, но правильными для нас(числовой тип) тогда цикл остановится.
+
+let numberOfFilms;
 
 function start () {
     numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
@@ -35,29 +36,84 @@ const personalMovieDB = {
     privat: false
 };
 
-if (personalMovieDB.count < 10){
-    console.log("Просмотрено довольно мало фильмов");
-}else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
-    console.log("Вы классический зритель");
-}else if(personalMovieDB.count >= 30) {
-    console.log("Вы киноман");
-}else {
-    console.log("Произошла ошибка");
-}
-
-for (let i = 0; i < 2; i++) {
-    const movieName = prompt(`Один из последних просмотренных фильмов? ${i}`, ''),
-          movieRank = prompt('На сколько его оцените?', '');
-    
-    if(movieName != null && movieRank != null && movieName != '' && movieRank != '' && movieName.length < 50) {
-        personalMovieDB.movies[movieName] = movieRank;
-        console.log('Done');
-    }else{
-        console.log('Enter valid data');
-        i--;
+//Сделаем обвертку ф-цией этого блока для того что бы вызывать его только по требованию. Далее сделаем для нее вызов.
+function rememberMyFilms(){
+    for (let i = 0; i < 2; i++) {
+        const movieName = prompt(`Один из последних просмотренных фильмов? ${i}`, ''),
+              movieRank = prompt('На сколько его оцените?', '');
+        
+        if(movieName != null && movieRank != null && movieName != '' && movieRank != '' && movieName.length < 50) {
+            personalMovieDB.movies[movieName] = movieRank;
+            console.log('Done');
+        }else{
+            console.log('Enter valid data');
+            i--;
+        }
     }
 }
 
+// rememberMyFilms();
 
-console.log(personalMovieDB.movies);
+// Эту часть кода тоже оборачиваем в ф-ю. *Таким образом у нас появились ф-и к которым можно обратиться и вызвать
+// их в нужное время или по событию.
+function detectPersonalLevel(){
+    if (personalMovieDB.count < 10){
+        console.log("Просмотрено довольно мало фильмов");
+    }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
+        console.log("Вы классический зритель");
+    }else if(personalMovieDB.count >= 30) {
+        console.log("Вы киноман");
+    }else {
+        console.log("Произошла ошибка");
+    }
+}
+
+// detectPersonalLevel();
+
+// Мое решение
+// function showMyDB(){
+//     if (personalMovieDB.privat){
+//         console.log('This is a privat object.');
+//     } else {
+//         console.log(personalMovieDB);
+//     }
+// }
+// showMyDB();
+
+// Сделаем передачу данных из personalMovieDB.privat в параметр hidden. Тогда условие звучит так, если база
+// НЕ скрыта(!hidden - нот тру) показываем. false передается в хидден и через ! становится тру и показывается
+// база данных, а если в privat будет тру то оно превратится в фолс и покажется.
+function showMyDB(hidden){
+    if (!hidden){
+        console.log(personalMovieDB);
+        } else {
+        console.log('This is a privat object.');
+    }
+}
+showMyDB(personalMovieDB.privat);
+
+
+//Мое решение
+// function writeYourGenres(){
+//     for(let i = 1; i < 4; i++){
+//         personalMovieDB.genres[i-1] = prompt(`Ваш любимый жанр под номером ${i}?`);
+//     }
+// }
+// writeYourGenres();
+
+function writeYourGenres(){
+    for(let i = 1; i <= 3; i++){
+        // Первоначальный код через переменную
+        // const genre = prompt(`Ваш любимый жанр под номером ${i}?`);
+        // personalMovieDB.genres[i - 1] = genre; 
+
+        //personalMovieDB.genres.push(genre);  - так тоже работало с переменной
+
+        //Уменьшим код такой записью - код работает быстрее потому что не нужно создавать переменную
+        personalMovieDB.genres[i-1] = prompt(`Ваш любимый жанр под номером ${i}?`);
+    }
+}
+writeYourGenres();
+
+console.log(personalMovieDB.genres);
 console.log(personalMovieDB);
