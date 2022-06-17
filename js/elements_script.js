@@ -1,9 +1,8 @@
 'use strict'
 
-const box = document.getElementById("box"),
+let box = document.getElementById("box"),
       btns = document.getElementsByTagName("button"),
       circles = document.getElementsByClassName("circle"),
-      wrapper = document.querySelector(".wrapper"),
       hearts = document.querySelectorAll('.heart'),
       oneHeart = document.querySelector('.heart');  
 
@@ -20,4 +19,11 @@ for (let i = 0; i < hearts.length; i++){
 
 const div = document.createElement("div");
 div.classList.add("black");
-document.body.append(div);
+const wrapper = document.querySelector(".wrapper");
+hearts[1].after(div);
+
+oneHeart = wrapper.querySelector('.heart');     
+hearts = wrapper.querySelectorAll('.heart');
+console.log(wrapper);
+console.log(hearts);
+console.log(oneHeart);
