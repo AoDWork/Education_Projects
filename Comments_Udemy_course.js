@@ -3449,7 +3449,6 @@
 
 
 
-
     /* ЗАДАНИЕ на урок:
 
         1) Удалить все рекламные блоки со страницы (правая часть сайта)
@@ -3527,7 +3526,7 @@
     */}
 
 
-    const movieDB = {
+    {const movieDB = {
         movies: [
             "Логан",
             "Лига справедливости",
@@ -3612,6 +3611,7 @@
             // <li class="promo__interactive-item">СКОТТ ПИЛИГРИМ ПРОТИВ...
             //     <div class="delete"></div>
             // </li>
+    }
 
 }
 
@@ -3639,7 +3639,7 @@
     // *** 2) Используем СВОЙСТВО DOM дерева для событий.
         // при этом способе мы можем забыть что этот обработчик событий у нас уже используется на кнопке или из другого скрипта
         // на него навесится другой обработчик, тогда последний обработчик заменит все предыдущие, и поэтому код который написан
-        //  до этого перестанет работать(потеряется функционал). Еще один минус в том что иногда обработчики событий нам нужно
+        // до этого перестанет работать(потеряется функционал). Еще один минус в том что иногда обработчики событий нам нужно
         // удалять (допустим единоразовое нажатие на кнопку на странице), то при таком способе назначения обработчика удалить
         // его потом мы не сможеи.
         let btn = document.querySelector("button"); // button - тег - выбирает только первый элемент с этим тегом
@@ -3713,7 +3713,7 @@
         
 
 
-    // +++ Всплытие событий(не потуть со всплытием переменных hoisting, это другое) - когда событие срабатывает сначала на
+    // +++ Всплытие событий(не путать со всплытием переменных hoisting, это другое) - когда событие срабатывает сначала на
         // вложенном элементе(на который назначен обработчик события), а потом на родителе поднимаясь все выше и выше если есть
         // большая вложенность. 
 
@@ -3785,31 +3785,114 @@
 
 {//  029    ====    NAVIGATION IN DOM, DATA ATTRIBUTES, FOROF преимущества    ====
 
-    console.log(document.body); //- получаем боди
-    console.log(document.documentElement); //- получаем ХТМЛ
-    console.log(document.body.childNodes); //- псевдомассив узлов(нод) боди - 
-    аналога с Элементами нету иногда его создают вручную перебором фороф потому что в нем есть брейк и континье
-    for(let node of document.body.childNodes){
-        if(node.nodeName == "#text"){ // пропускаем узлы содержащие в названии #text
-            continue;              
+    // Научимся путешествовать по ДОМ дереву. Есть задача взять эл. и обратиться к его родителю или к следующему эл. и уже у них
+        // поменять класс. Для тестов открываем заготовку 029 index.
+
+
+    // Мы уже можем получать эл. из body. Также можем получить эл. из head например для динамической смены стилей.
+        //получаем тег боди со всеми эл-ми. При наведении в консоли все эл. подсвечиваются
+        console.log(document.body); // <body>...</body> - 
+        
+        // Также можем получить и head но эти элементы мы не увидим на странице. Видим содержимое head, таким образом мы можем
+        // сменить title, добавить метатег, динамически подключить стили или шрифты.
+        console.log(document.head);
+    
+    // Если смотреть на уровень выше от хед и бади, то увидим их родителя тег ХТМЛ (<html lang="en">). Его мы можем получить через
+        // такое свойство. Это родительский эл. - объединяет находящиеся внутри него эл.
+        console.log(document.documentElement); //- получаем ХТМЛ тег со всем содержимым
+
+
+
+    // +++ Дочерние эл.(внутренние) можем получить при помощи 3х методов(команд)
+        
+
+        // *** Самая полезная на практике childNodes. Получает узлы которые являются детьми у бади - document.body.childNodes
+        console.log(document.body.childNodes); //- NodeList(6) [text, div.wrapper, text, script]
+        // псевдомассив(NodeList) узлов(нод) боди 4 эл., а если их раскрыть то получаетс 8 эл.
+        // 0: text 1: div.wrapper 2: text 3: script 4: text 5: comment 6: text 7: script 8: text 
+
+        // Разберем что за эл. Заходим в Elements открываем body видим что сначала идет текстовый узел между body и
+        // оболочкой wrapper (== $0), его в обычной верстке не видно, только если нажать на эл. в этой вкладке в браузере
+        //  - это обычный перенос строки, он считается текстовой нодой(узлом). Дальше вторым эл. идет эл. wrapper.
+        // После него снова идет text - перенос строки(== $0). И дальше идет script где мы используем JS.
+
+        // При первом рендере страницы этих эл. всего 4. Остальные элементы 8 когда раскрываем подставились нам из-за работы
+        // live server. Он подставляет свой комментарий в верстку + 2 переноса строки до и после коментария и еще один перенос
+        // идет после тего script.
+
+        // * Разница между ДОМ эл. и узлом в том что элементы - все элементы могут быть узлами, но не все узлы могут быть эл-ми.
+        // Как я понимаю ВСЕ элементы в тегах, которые видно в верстке в редакторе кода и они выступают узлами если берется 
+        // псевдомассив эл-в, а некоторые узлы видно только в браузере во вкладке Elements и в псевдомассиве. Узлами выступают
+        // переносы строк, текстовые эл. Например лист айтем <li>1</li> - это элемент, но в нем есть текстовый узел "1".
+
+        // *** Можно получить первого ребенка(узел)
+        console.log(document.body.firstChild); // #text - первая Нода(узел переноса строки)
+
+        // *** Можно получить последнего ребенка(узел)
+        console.log(document.body.lastChild);// <script>...</script> - последняя Нода(тег script с содержимым)
+
+
+
+        // +++ Аналоги для получения ЭЛЕМЕНТОВ 
+
+        // *** Можно получить первый элемент
+        console.log(document.body.firstElementChild); // <div class="wrapper"> - первый эл. бади
+
+        // *** Можно получить последний элемент
+        console.log(document.body.lastElementChild); // <script>...</script> - последний эл. бади
+
+
+        // *! Аналога childNodes для получения псевдоколлекции ТОЛЬКО ЭЛЕМЕНТОВ - НЕТ. Тогда метод создают вручную. Можно 
+        // использовать forEach для перебора псевдоколлекции но в этом случае нужно использовать перебор for of  потому что в нем 
+        // есть break и continue - которым мы будем отсеивать(пропускать) текстовые ноды(Только те у которых NodName: "#text"-  
+        // узлы переносы на новую строку), если будет какой то коментарий добавленый вучную(<!-- comment -->), его тоже оставит.
+
+        for(let node of document.body.childNodes){
+            if(node.nodeName == "#text"){ // пропускаем узлы содержащие в свойстве NodName: "#text"
+                continue;              
+            }
+            console.log(node);
         }
-        console.log(node);
-    }
 
-    console.log(document.body.firstChild); //первая Нода
-    console.log(document.body.firstElementChild); // первый Элемент
-    console.log(document.body.lastChild);// последняя Нода
-    console.log(document.querySelector("#current").parentNode); // получаем ноду по классу и обращаемя к его родителю
-    console.log(document.querySelector("#current").parentNode);// получаем ноду родителя еще на уровень выше
-    console.log(document.querySelector("#current").parentElement); // получаем ЭЛЕМЕНТ
 
-    !!! НОДА - узел, отличается от получения элемента тем что может быть просто перенос на новыю строку, а не элемент
-    data элементы <li data-current="3">3</li> используем вместо id
-    console.log(document.querySelector("[data-current='3']"));//получить элем по дата аттрибуту !комбинация кавычек
-    console.log(document.querySelector("[data-current='3']").nextSibling); //Следующая нода 
-    console.log(document.querySelector("[data-current='3']").previousSibling); //Предыдущая нода
-    console.log(document.querySelector("[data-current='3']").nextElementSibling); // Следующий элемент
-    console.log(document.querySelector("[data-current='3']").nextSibling);
+
+    // Мы отталкивались от родительского элемента, теперь рассмотрим методы которые позволяют оттолкнуться от любого эл. на 
+        // странице. Они позволяю получить, родителя, соседей и детей. Получим элемент  <button id="current"></button> по айди
+        // так как будем использовать 1 раз то не помещаем его в переменную
+        console.log(document.querySelector("#current"));
+        
+        // Посмотрим на верстку. Этот эл. у нас кнопка которая находится между двумя другими кнопками для которых родителем
+        // выступает <div class="first">. Допустим задача - при клике на кнопку получить её родителя.
+        console.log(document.querySelector("#current").parentNode); // <div class="first">...</div> - получаем родительскую ноду 
+
+        // Если нам нужно получить родителя еще на уровень выше коим является <div class="wrapper"> пропишем
+        console.log(document.querySelector("#current").parentNode.parentNode);// получаем ноду родителя еще на уровень выше
+        
+
+        // *! Получаем родительский ЭЛЕМЕНТ. Таким образом мы ТОЧНО знаем что получим элемент.
+        console.log(document.querySelector("#current").parentElement); // получаем ЭЛЕМЕНТ
+
+
+
+    // +++ Data аттрибуты. 
+        // Когда пишем скрипты нам не хватает ориентиров, конечно мы можем везде в верстке расставить id(айдишники), но у этого
+        // способа есть минус, поговорим дальше о нем. Для удобного ориентирования были созданы data аттрибуты с таким синтаксисом
+        // <li data-current="3">3</li>. Всегда начинаем его с этой части "data-" , а дальше пишем абсолютно все что хотим, например
+        // data-current или data-modal(модальное окно) или data-close(этот эл. будет что то закрывать.) Если оставить без
+        // значения data-current то оно будет приравниваться к data-current = true, означает что этот аттрибут у нас существует,
+        // но можно и присвоить значение data-current="3". 
+        
+        // Для получения эл. по аттрибуту ставим [] квадратные скобки. *!комбинация кавычек
+        console.log(document.querySelector("[data-current='3']"));// элем по дата аттрибуту 
+
+        // Методы получени следующей и предыдущей НОДЫ(узел)
+        console.log(document.querySelector("[data-current='3']").nextSibling); //#text - Следующая нода(узел переноса строки)
+        console.log(document.querySelector("[data-current='3']").previousSibling); //#text - Предыдущая нода
+
+
+        // Аналогичные методы для ЭЛЕМЕНТО
+        console.log(document.querySelector("[data-current='3']").nextElementSibling);   // <li>4</li> -Следующий элемент
+        console.log(document.querySelector("[data-current='3']").previousElementSibling);// <li>2</li> -Следующий элемент
 
 }
 
@@ -3817,117 +3900,231 @@
 
 {//  030    ====    PRACTICE USE eventListeners    ====
         
-        'use strict';
+    // Будем использовать проект с фильмами из прошлой практики в папке - practice_project
+    
 
-    document.addEventListener('DOMContentLoaded', () =>{ // - скрипт начнет работу при полной загрузке ДОМ дерева
 
-        const movieDB = {
+    /* ЗАДАНИЕ на урок:
+
+        1) Реализовать функционал, после заполнения формы и нажатия кнопки "Подтвердить" - новый фильм добавляется в список
+            movieDB. Страница не должна перезагружаться.
+            *Для получени доступа к значению input обращаемся к нему как input.value; - тут есть несколько вариантов решения.
+
+        2) Если название фильма больше чем 21 символ, обрезать его и добавить три точки
+
+        3) При клике на мусорную корзину (на против фильма) - элемент будет удаляться из списка (сложно).
+
+        4) Если в форме стоит галочка - "Сделать любимым" - в консоль выводится сообщение "Добавлен любимый фильм"
+
+        5) Фильмы сортируются по алфавиту
+        */
+
+
+
+    //  +++ РЕШЕНИЕ    
+        {// Мое решение
+            'use strict';
+
+            const movieDB = {
             movies: [
                 "Логан",
                 "Лига справедливости",
                 "Ла-ла лэнд",
                 "Одержимость",
+                'Алешки',
                 "Скотт Пилигрим против..."
             ]
-        };
-        
-        //1 Удалить все рекламные блоки со страницы (правая часть сайта)
-        let reklama =  document.querySelectorAll('.promo__adv img');
-            //    reklama.forEach(item=>{
-            //        item.remove();
-            //      });
-        //2 Изменить жанр фильма, поменять "комедия" на "драма"
-        let genre = document.querySelector(".promo__genre");
-        // genre.textContent = "Драма";
-        //3 Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
-        //Реализовать только при помощи JS
-        let bg = document.querySelector(".promo__bg");
-        // bg.style.backgroundImage =  "url('img/bg.jpg')";//Прописываем внутры другие кавычки что бы избежать конфликта
-        //4  Список фильмов на странице сформировать на основании данных из этого JS файла.
-        //Отсортировать их по алфавиту 
-        let movieList =  document.querySelector(".promo__interactive-list"); // Селктор один что бы получить доступ к родителю списка и его методу
-        // movieList.innerHTML = ""; //Очистили список на странице
-        // movieDB.movies.sort(); // сортируем по алфавиту
-        // movieDB.movies.forEach((film, i) =>{    //a=a+1 или a+=1;
-        //         movieList.innerHTML += ` 
-        //                 <li class="promo__interactive-item">№${i+1} ${film}
-        //                     <div class="delete"></div>
-        //                 </li>
-        //         `; // 5 Добавить нумерацию выведенных фильмов ${i+1} 
-        // });
-
-    //30 Practice
-    // После введения текста в форму и нажатия кнопки 'Подтвердить'- добавляется новый фильм в список 
-    //без перезагрузки страницы. Новый фильм должен добавиться в movieDB.movies. Для получения значения из
-    // инпут  обращаемся  input.value.
-    let addForm = document.querySelector("form.add"); //<form class="add">
-    let addInput = addForm.querySelector(".adding__input"); // в теге form с классом add ищем класс <input class="adding__input"
-    let checkbox = addForm.querySelector("[type=checkbox]");  // ищем по аттрибуту <input type="checkbox">
-
-    addForm.addEventListener('submit', (event)=>{
-        event.preventDefault();
-
-        let newMovie = addInput.value;
-        let favorite = checkbox.checked; // обращаемся к чекбоксу что б он вернул тру или фолсе галочка отмечена или нет
-        
-        if(newMovie) {  // Проверка на пустую строку
-        if(newMovie.length > 21){
-            newMovie = `${newMovie.substring(0, 22)}...`; //проверяем на длинну символом и больше 21 знака добавляем троеточие
-        }
-        if(favorite){
-            console.log("Добавляем любимый фильм");
-        }
-            movieDB.movies.push(newMovie);
-            sortArr(movieDB.movies); //заново сортируем список
+            };
+                
+            const adv =  document.querySelectorAll('.promo__adv img');
             
-            createMovieList(movieDB.movies, movieList);
-        }
-    
-        event.target.reset(); // удаляем текст из формы (addForm заменили на event.target разницы нету)
-    });
-
-    //создаем функцию для вывода списка и добавляем аргументы что бы она вызывалась только при нажатии
-    function createMovieList(films, parent){
-        parent.innerHTML = ""; //Очистили список на странице
-        sortArr(films);
-
-        films.forEach((film, i) =>{    //a=a+1 или a+=1;
-            parent.innerHTML += ` 
-                        <li class="promo__interactive-item">№${i+1} ${film}
-                            <div class="delete"></div>
-                        </li>
-                `; 
-        });
-        //3 Удаляем фильм при нажатии на кнопку корзинки которые создаются вместе с элементом фильма 
-        document.querySelectorAll(".delete").forEach((btn, i)=>{ //находим кнопки удаления через класс <div  class="delete"
-            btn.addEventListener("click", ()=> {
-                btn.parentElement.remove();
-                movieDB.movies.splice(i, 1); //удаляем 1 элемент из массива под номером i
-                createMovieList(films, parent); //заново перестраиваем список вызывая функцию внутри себя (Рекурсия)
+                adv.forEach(item => {
+                    item.remove();
             });
+                
+            const poster = document.querySelector(".promo__bg"),
+                  genre = poster.querySelector(".promo__genre");
+        
+            genre.textContent = "Драма";
+        
+            poster.style.backgroundImage = 'url("img/bg.jpg")'; 
+        
+            let movieList =  document.querySelector(".promo__interactive-list"); 
+        
+            // 30 lesson
+               
+            let btn = document.querySelector('button');
+            let input = document.querySelector('.adding__input');
+            let mark = document.querySelector('[type=checkbox]');
+        
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();         // 1)
+        
+                if( input.value.length < 21) {  // 2)
+                movieDB.movies.push(input.value);
+                } else {
+                    movieDB.movies.push(input.value.slice(0, 21) +"...");
+                }
+        
+                if(mark.checked) {              // 4)
+                    console.log("Добавлен любимый фильм");
+                }
+        
+        
+                movieList.innerHTML = ""; 
+        
+                movieDB.movies.sort();          // 5)
+        
+                movieDB.movies.forEach((film, i) =>{    
+                    movieList.innerHTML += ` 
+                            <li class="promo__interactive-item">№${i + 1} ${film}
+                                <div class="delete"></div>
+                            </li>
+                    `;
+                });
+                // console.log(movieDB.movies);
+            });
+            // 3) При клике на мусорную корзину (на против фильма) - элемент будет удаляться из списка (сложно).
+                // НЕ СДЕЛАЛ
+
+        }
+
+
+
+        {'use strict';
+
+        // Некоторые страницы плохо оптимизированы, и так как построение ДОМ дерева идет сверху вниз и там будут тяжелый картинки
+        // например, элементы могут долго появляться на странице, а наш код уже может обращаться к странице для получения эл. 
+        // которых еще нету. Чтобы наш код не начал работать раньше чем страница загрузиться нужно его обернуть в обработчик события
+        // с callback функцией которая начнет работать ТОЛЬКО при ПОЛНОМ ПОСТРОЕНИИ ДОМ дерева. Для этого у нас есть 2 
+        // отслеживаемых события: 1) load - когда страница ПОЛНОСТБЮ загрузилась со всеми скриптами и картинками; 
+        // 2) DOMContentLoaded - при этом мы ждем не полной загрузки всех элементов на странице, а только построение ДОМ структуры,
+        // то есть когда наше дерево тегов (DOM) сформируется полноценно для нормальной работы с ним, тогда наши скрипты начинают
+        // работать а картинки и остальное еще подгружаются.
+
+
+        document.addEventListener('DOMContentLoaded', () =>{ // - скрипт начнет работу при полной загрузке ДОМ дерева
+
+            const movieDB = {
+                movies: [
+                    "Логан",
+                    "Лига справедливости",
+                    "Ла-ла лэнд",
+                    "Одержимость",
+                    "Скотт Пилигрим против..."
+                ]
+            };
+            
+            const adv =  document.querySelectorAll('.promo__adv img');  // Удаление рекламы
+            const bg = document.querySelector(".promo__bg"),     
+            genre = bg.querySelector(".promo__genre");
+            let movieList =  document.querySelector(".promo__interactive-list"); // Доступ к родителю списка
+        
+        // 1) На сайте при нажатии на кнопку "Подтвердить" идет отправка формы на серверер и стандартное действие при этом - 
+            // перезагрузка  страницы. Можно решить парой способов 1) когда отправляется форма - добавляем новые данные в массив и
+            // после этого заново строим список фильмов; 2) делаем это паралельно добавляем новый эл. в верстку и новый эл. в
+            // массив. На этом этапе разныци в быстродействии не будет, но второй способ тяжее реализовать, поэтому разберем
+            // только первый способ.
+
+
+            // Получим эл. с которыми будем работать.
+            const addForm = document.querySelector("form.add"); //<form class="add"> - форма с классом add
+            const addInput = addForm.querySelector(".adding__input"); // в теге form ищем класс <input class="adding__input"
+            const checkbox = addForm.querySelector("[type=checkbox]");  // ищем по аттрибуту <input type="checkbox">
+
+
+            // Для отслеживания отправки формы используем обработчик событий по событию submit
+            addForm.addEventListener('submit', (event)=>{
+                event.preventDefault();         // отменяем стандартное поведение формы
+
+                let newFilm = addInput.value;   // берем введенный пользователем текст
+                const favorite = checkbox.checked; // обращаемся к чекбоксу по свойству checked, оно вернет true или false при 
+                                                 // изменении состояния галочки(onchange)
+                
+                if(newFilm) {  // Проверка на пустую строку(если ничего не ввели - false)
+                    if(newFilm.length > 21){
+                        newFilm = `${newFilm.substring(0, 22)}...`; //проверяем на длинну символов и добавляем троеточие
+                    }
+                    if(favorite){
+                        console.log("Добавляем любимый фильм");
+                    }
+                        movieDB.movies.push(newFilm);  // пушим фильм в массив
+                        sortArr(movieDB.movies);        // заново сортируем список
+                        
+                        createMovieList(movieDB.movies, movieList); // заново строим список фильмов на странице
+                }
+            
+                event.target.reset(); // *! удаляем текст из формы (addForm заменили на event.target разницы нету)
+            });
+
+
+            // Создаем функцию для вывода списка чтобы ее можно было вызвать при нажатии и добавляем аргументы чтобы отойти от 
+                // переменных а ф-я узнавала с чем она работает только в момент вызова.
+                function createMovieList(films, parent){
+                    parent.innerHTML = ""; //Очистили список на странице
+                    sortArr(films);         // Сортирует и при загрузке страницы потому что createMovieList вызывается при загрузке
+
+                    films.forEach((film, i) =>{    //a=a+1 или a+=1;
+                        parent.innerHTML += ` 
+                                    <li class="promo__interactive-item">№${i+1} ${film}
+                                        <div class="delete"></div>
+                                    </li>
+                            `; 
+                    });
+
+            // Корзинка на которую нужно нажать чтобы удалился фильм создается динамически с помощью CSS. В верстку в браузере
+                // к каждому фильму элементу с фильмом после построения списка фильмов добавляется див с классом delete
+                // <div  class="delete" - это и есть та самая корзинка. Чтобы корзинка соответствовала тому фильму на против
+                // которого расположена нам нужно брать список(массив) корзинок после построения нового списка и вешать на
+                // каждую обработчик события для удаления родителя корзинки + к этому нужно будет удалить фильм из базы
+                // данных и перестроить список.
+                document.querySelectorAll(".delete").forEach((btn, i)=>{ //находим кнопки удаления через класс <div  class="delete"
+                    btn.addEventListener("click", ()=> {
+                        btn.parentElement.remove();
+                        movieDB.movies.splice(i, 1); //удаляем 1 элемент под номером i из массива(базы данных) 
+                        createMovieList(films, parent); //заново перестраиваем список чтобы перестроить нумерацию,
+                                                        // вызывая функцию внутри себя (Рекурсия)
+                    });
+                });
+            }  
+
+
+            // Оборачиваем удаление рекламы в ф-ю что бы ее вызвать и добавляем параметры что бы отвязаться от переменных.
+                const deleteAdv = (arr)=>{
+                    arr.forEach(item=>{
+                        item.remove();
+                    });
+                };
+
+
+            // Оборачиваем два действия в ф-ю
+                let makeChanges = () =>{
+                    genre.textContent = "Драма";
+                    bg.style.backgroundImage =  "url('img/bg.jpg')";
+                };
+
+
+            // Создадим дефолтную ф-ю для сортировки для того если наша ф-я будет дополняться, например добавится проверка сортируемых
+                // эл., возможно подключить доп. ф-ю сортировки как мы делали с числами.
+                let sortArr = (arr) =>{
+                    arr.sort();
+                };
+                
+            deleteAdv(adv);
+            makeChanges();
+            createMovieList(movieDB.movies, movieList); // вызываем один раз для построения первоначального списка
+
         });
-    }  
 
-    let deleteAdv = (arr)=>{
-    arr.forEach(item=>{
-        item.remove();
-    });
-    };
+        }
 
-    let makeChanges = () =>{
-        genre.textContent = "Драма";
-        bg.style.backgroundImage =  "url('img/bg.jpg')";
-    };
+}
 
-    let sortArr = (arr) =>{
-        arr.sort();
-    };
 
-    createMovieList(movieDB.movies, movieList); //вызываем первый раз для построения списка
-    makeChanges();
-    deleteAdv(reklama);
 
-    });
+{//  031    ====    EVENTS on MOBILE devices    ====
+
+
 
 }
 
