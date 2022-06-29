@@ -1,23 +1,9 @@
 "use strict";
-
-function hello () {
-    console.log("Hello World");
-    debugger;
-}
-
-hello();
-
-function hi () {
-    console.log("Say hi");
-}
-
-hi();
-
-const arr = [1, 14, 4, 30, 54],
-      sorted = arr.sort(compareNum);
-
-function compareNum (a, b) {
-    return a - b;
-}
-
-console.log(sorted);
+let start = new Date();
+        
+        for (let i = 0; i < 100000; i++){
+            let some = i ** 3; // i возводим в степень 3
+        }
+        
+        let end = new Date();
+        alert(`Цикл выполнился за ${end - start} миллисекунд`);
