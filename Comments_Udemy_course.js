@@ -1157,29 +1157,31 @@
     ***Проверить что бы все работало без ошибок в консоли.  */
 
 
+
     //  +++ РЕШЕНИЕ
-   "use strict";
-   const numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
-   
-   const personalMovieDB = {
-       count: numberOfFilms,
-       movies: {},
-       actors: {},
-       genres: [],
-       privat: false
-   };
-   
-   const movieName = prompt('Один из последних просмотренных фильмов?', ''),
-         movieRank = prompt('На сколько его оцените?', ''),   
-         movieName2 = prompt('Один из последних просмотренных фильмов?', ''),
-         movieRank2 = prompt('На сколько его оцените?', '');
-   
-   personalMovieDB.movies[movieName] = movieRank;
-   personalMovieDB.movies[movieName2] = movieRank2;
-   
-   
-   console.log(personalMovieDB.movies);
-   console.log(typeof(personalMovieDB.movies));
+    {"use strict";
+    const numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
+    
+    const personalMovieDB = {
+        count: numberOfFilms,
+        movies: {},
+        actors: {},
+        genres: [],
+        privat: false
+    };
+    
+    const movieName = prompt('Один из последних просмотренных фильмов?', ''),
+            movieRank = prompt('На сколько его оцените?', ''),   
+            movieName2 = prompt('Один из последних просмотренных фильмов?', ''),
+            movieRank2 = prompt('На сколько его оцените?', '');
+    
+    personalMovieDB.movies[movieName] = movieRank;
+    personalMovieDB.movies[movieName2] = movieRank2;
+    
+    
+    console.log(personalMovieDB.movies);
+    console.log(typeof(personalMovieDB.movies));
+    }
 
 }
 
@@ -1337,48 +1339,50 @@
     4) Потренироваться и переписать цикл еще двумя способами. */
 
 
+
     //  +++ РЕШЕНИЕ
-        "use strict";
-    const numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
+    {    "use strict";
+        const numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
 
-    const personalMovieDB = {
-        count: numberOfFilms,
-        movies: {},
-        actors: {},
-        genres: [],
-        privat: false
-    };
+        const personalMovieDB = {
+            count: numberOfFilms,
+            movies: {},
+            actors: {},
+            genres: [],
+            privat: false
+        };
 
-    //При сравнении нажатий на кнопку отмена -null и кнопки ок без данных(пустой строки) - '', они превращаются в 0 и засчитывается
-    //  первый ответ, а не ошибка, в последующем мы это исправим, такие случаи нужно держать в голове и уметь с ними работать.
-    if (personalMovieDB.count < 10){
-        console.log("Просмотрено довольно мало фильмов");
-    }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
-        console.log("Вы классический зритель");
-    }else if(personalMovieDB.count >= 30) {
-        console.log("Вы киноман");
-    }else {
-        console.log("Произошла ошибка");
-    }
-
-    for (let i = 0; i < 2; i++) {
-        const movieName = prompt(`Один из последних просмотренных фильмов? ${i}`, ''),
-              movieRank = prompt('На сколько его оцените?', '');
-        // первая и вторая переменная не равна null - который получаем при нажатии кнопки отмены и не равны пустой строке '' 
-        // и первая переменная не длинее 50 символов. Что бы не было таких длинных цепочек можно называеть переменные которые не 
-        // используются дальше в коде(технические) короткими названиями a и b - например.
-        if(movieName != null && movieRank != null && movieName != '' && movieRank != '' && movieName.length < 50) {
-            personalMovieDB.movies[movieName] = movieRank;
-            console.log('Done');
-        }else{
-            console.log('Enter valid data');
-            i--;    // если введены неправильные данные то цикл вернется на 1 итерацию назад уменьшая i на единицу и вопрос будет 
-                    // задан повторно
+        //При сравнении нажатий на кнопку отмена -null и кнопки ок без данных(пустой строки) - '', они превращаются в 0 и засчитывается
+        //  первый ответ, а не ошибка, в последующем мы это исправим, такие случаи нужно держать в голове и уметь с ними работать.
+        if (personalMovieDB.count < 10){
+            console.log("Просмотрено довольно мало фильмов");
+        }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
+            console.log("Вы классический зритель");
+        }else if(personalMovieDB.count >= 30) {
+            console.log("Вы киноман");
+        }else {
+            console.log("Произошла ошибка");
         }
-    }
 
-    console.log(personalMovieDB.movies);
-    console.log(personalMovieDB);
+        for (let i = 0; i < 2; i++) {
+            const movieName = prompt(`Один из последних просмотренных фильмов? ${i}`, ''),
+                movieRank = prompt('На сколько его оцените?', '');
+            // первая и вторая переменная не равна null - который получаем при нажатии кнопки отмены и не равны пустой строке '' 
+            // и первая переменная не длинее 50 символов. Что бы не было таких длинных цепочек можно называеть переменные которые не 
+            // используются дальше в коде(технические) короткими названиями a и b - например.
+            if(movieName != null && movieRank != null && movieName != '' && movieRank != '' && movieName.length < 50) {
+                personalMovieDB.movies[movieName] = movieRank;
+                console.log('Done');
+            }else{
+                console.log('Enter valid data');
+                i--;    // если введены неправильные данные то цикл вернется на 1 итерацию назад уменьшая i на единицу и вопрос будет 
+                        // задан повторно
+            }
+        }
+
+        console.log(personalMovieDB.movies);
+        console.log(personalMovieDB);
+    }
 
 }
 
@@ -1593,126 +1597,128 @@
     */
 
 
+
     //  +++ РЕШЕНИЕ
     
-    "use strict";
-    // В ф-ю start поместим инициализирующий вопрос с которого начинается работа программы const numberOfFilms = +prompt('С...
-    // также добавим проверку что бы пользователь не мог отменить вопрос, ввести пустую строку или нечисло.
-    // Что бы он вводил число мы ограничивались плюсом перед +prompt, но теперь этого мало. Проверка будет на этапе выполнения,
-    // когда он нажал клавишу ОК. *Для проверки на этапе ввода в инпут нужно использовать РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ которые изучим
-    // позднее. 
+    {"use strict";
+        // В ф-ю start поместим инициализирующий вопрос с которого начинается работа программы const numberOfFilms = +prompt('С...
+        // также добавим проверку что бы пользователь не мог отменить вопрос, ввести пустую строку или нечисло.
+        // Что бы он вводил число мы ограничивались плюсом перед +prompt, но теперь этого мало. Проверка будет на этапе выполнения,
+        // когда он нажал клавишу ОК. *Для проверки на этапе ввода в инпут нужно использовать РЕГУЛЯРНЫЕ ВЫРАЖЕНИЯ которые изучим
+        // позднее. 
 
-    // При переносе numberOfFilms в ф-ю она станет локальной и мы не сможем записать ее в personalMovieDB напрямую(можно через
-    // return сделать ее вывод), поэтому мы объявим переменную numberOfFilms глобально, а само присваивание и вопрос пренесем в
-    // ф-ю и сменим объявление numberOfFilms с const на let чтобы можно было ее изменять.
+        // При переносе numberOfFilms в ф-ю она станет локальной и мы не сможем записать ее в personalMovieDB напрямую(можно через
+        // return сделать ее вывод), поэтому мы объявим переменную numberOfFilms глобально, а само присваивание и вопрос пренесем в
+        // ф-ю и сменим объявление numberOfFilms с const на let чтобы можно было ее изменять.
 
-    //Проверку на правильность ввода мы делали через цикл for и использовали проверку правдивости, но мы можем использовать и while, 
-    // пойдем от обратного чтобы увидеть и другие логические конструкции. Тут мы будем проверять неправдивые(неправильные варианты)
-    // если это так то вопрос повторится, а если все хорошо то цикл будет закончен. Проверям numberOfFilms - пустая строка или
-    // (нажимает кнопку ОТМЕНА)null или isNaN(numberOfFilms) - метод проверяет аргумент и если внутри не число то он возвращает
-    //  правду. Тоесть цикл будет выполняться(задавать вопрос пользователю пока он будет вводить невалидные данные в поле ввода) 
-    // до тех пор пока уловия не будут ложными - тоесть введенные значения будут валидными для условия проверки но невалидные 
-    // для нас.  А когда значения  будут невалидные для условия, но правильными для нас(числовой тип) тогда цикл остановится.
+        //Проверку на правильность ввода мы делали через цикл for и использовали проверку правдивости, но мы можем использовать и while, 
+        // пойдем от обратного чтобы увидеть и другие логические конструкции. Тут мы будем проверять неправдивые(неправильные варианты)
+        // если это так то вопрос повторится, а если все хорошо то цикл будет закончен. Проверям numberOfFilms - пустая строка или
+        // (нажимает кнопку ОТМЕНА)null или isNaN(numberOfFilms) - метод проверяет аргумент и если внутри не число то он возвращает
+        //  правду. Тоесть цикл будет выполняться(задавать вопрос пользователю пока он будет вводить невалидные данные в поле ввода) 
+        // до тех пор пока уловия не будут ложными - тоесть введенные значения будут валидными для условия проверки но невалидные 
+        // для нас.  А когда значения  будут невалидные для условия, но правильными для нас(числовой тип) тогда цикл остановится.
 
-    let numberOfFilms;
+        let numberOfFilms;
 
-    function start () {
-        numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
-
-        while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)){
+        function start () {
             numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
-        }
-    }
 
-    const personalMovieDB = {
-        count: numberOfFilms,
-        movies: {},
-        actors: {},
-        genres: [],
-        privat: false
-    };
-
-    //Сделаем обвертку ф-цией этого блока для того что бы вызывать его только по требованию. Далее сделаем для нее вызов.
-    function rememberMyFilms(){
-        for (let i = 0; i < 2; i++) {
-            const movieName = prompt(`Один из последних просмотренных фильмов? ${i}`, ''),
-                movieRank = prompt('На сколько его оцените?', '');
-            
-            if(movieName != null && movieRank != null && movieName != '' && movieRank != '' && movieName.length < 50) {
-                personalMovieDB.movies[movieName] = movieRank;
-                console.log('Done');
-            }else{
-                console.log('Enter valid data');
-                i--;
+            while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)){
+                numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
             }
         }
-    }
 
-    // rememberMyFilms();
+        const personalMovieDB = {
+            count: numberOfFilms,
+            movies: {},
+            actors: {},
+            genres: [],
+            privat: false
+        };
 
-    // Эту часть кода тоже оборачиваем в ф-ю. *Таким образом у нас появились ф-и к которым можно обратиться и вызвать
-    // их в нужное время или по событию.
-    function detectPersonalLevel(){
-        if (personalMovieDB.count < 10){
-            console.log("Просмотрено довольно мало фильмов");
-        }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
-            console.log("Вы классический зритель");
-        }else if(personalMovieDB.count >= 30) {
-            console.log("Вы киноман");
-        }else {
-            console.log("Произошла ошибка");
+        //Сделаем обвертку ф-цией этого блока для того что бы вызывать его только по требованию. Далее сделаем для нее вызов.
+        function rememberMyFilms(){
+            for (let i = 0; i < 2; i++) {
+                const movieName = prompt(`Один из последних просмотренных фильмов? ${i}`, ''),
+                    movieRank = prompt('На сколько его оцените?', '');
+                
+                if(movieName != null && movieRank != null && movieName != '' && movieRank != '' && movieName.length < 50) {
+                    personalMovieDB.movies[movieName] = movieRank;
+                    console.log('Done');
+                }else{
+                    console.log('Enter valid data');
+                    i--;
+                }
+            }
         }
-    }
 
-    // detectPersonalLevel();
+        // rememberMyFilms();
 
-    // Мое решение
-    // function showMyDB(){
-    //     if (personalMovieDB.privat){
-    //         console.log('This is a privat object.');
-    //     } else {
-    //         console.log(personalMovieDB);
-    //     }
-    // }
-    // showMyDB();
-
-    // Сделаем передачу данных из personalMovieDB.privat в параметр hidden. Тогда условие звучит так, если база
-    // НЕ скрыта(!hidden - нот тру) показываем. false передается в хидден и через ! становится тру и показывается
-    // база данных, а если в privat будет тру то оно превратится в фолс и покажется.
-    function showMyDB(hidden){
-        if (!hidden){
-            console.log(personalMovieDB);
-            } else {
-            console.log('This is a privat object.');
+        // Эту часть кода тоже оборачиваем в ф-ю. *Таким образом у нас появились ф-и к которым можно обратиться и вызвать
+        // их в нужное время или по событию.
+        function detectPersonalLevel(){
+            if (personalMovieDB.count < 10){
+                console.log("Просмотрено довольно мало фильмов");
+            }else if(personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
+                console.log("Вы классический зритель");
+            }else if(personalMovieDB.count >= 30) {
+                console.log("Вы киноман");
+            }else {
+                console.log("Произошла ошибка");
+            }
         }
-    }
-    showMyDB(personalMovieDB.privat);
 
+        // detectPersonalLevel();
 
-    //Мое решение
-    // function writeYourGenres(){
-    //     for(let i = 1; i < 4; i++){
-    //         personalMovieDB.genres[i-1] = prompt(`Ваш любимый жанр под номером ${i}?`);
-    //     }
-    // }
-    // writeYourGenres();
+        // Мое решение
+        // function showMyDB(){
+        //     if (personalMovieDB.privat){
+        //         console.log('This is a privat object.');
+        //     } else {
+        //         console.log(personalMovieDB);
+        //     }
+        // }
+        // showMyDB();
 
-    function writeYourGenres(){
-        for(let i = 1; i <= 3; i++){
-            // Первоначальный код через переменную
-            // const genre = prompt(`Ваш любимый жанр под номером ${i}?`);
-            // personalMovieDB.genres[i - 1] = genre; 
-
-            //personalMovieDB.genres.push(genre);  - так тоже работало с переменной
-
-            //Уменьшим код такой записью - код работает быстрее потому что не нужно создавать переменную
-            personalMovieDB.genres[i-1] = prompt(`Ваш любимый жанр под номером ${i}?`);
+        // Сделаем передачу данных из personalMovieDB.privat в параметр hidden. Тогда условие звучит так, если база
+        // НЕ скрыта(!hidden - нот тру) показываем. false передается в хидден и через ! становится тру и показывается
+        // база данных, а если в privat будет тру то оно превратится в фолс и покажется.
+        function showMyDB(hidden){
+            if (!hidden){
+                console.log(personalMovieDB);
+                } else {
+                console.log('This is a privat object.');
+            }
         }
-    }
-    writeYourGenres();
+        showMyDB(personalMovieDB.privat);
 
-    console.log(personalMovieDB.genres);
-    console.log(personalMovieDB);
+
+        //Мое решение
+        // function writeYourGenres(){
+        //     for(let i = 1; i < 4; i++){
+        //         personalMovieDB.genres[i-1] = prompt(`Ваш любимый жанр под номером ${i}?`);
+        //     }
+        // }
+        // writeYourGenres();
+
+        function writeYourGenres(){
+            for(let i = 1; i <= 3; i++){
+                // Первоначальный код через переменную
+                // const genre = prompt(`Ваш любимый жанр под номером ${i}?`);
+                // personalMovieDB.genres[i - 1] = genre; 
+
+                //personalMovieDB.genres.push(genre);  - так тоже работало с переменной
+
+                //Уменьшим код такой записью - код работает быстрее потому что не нужно создавать переменную
+                personalMovieDB.genres[i-1] = prompt(`Ваш любимый жанр под номером ${i}?`);
+            }
+        }
+        writeYourGenres();
+
+        console.log(personalMovieDB.genres);
+        console.log(personalMovieDB);
+    }
 
 }
 
@@ -2348,7 +2354,7 @@
 
     //  +++ РЕШЕНИЕ
 
-    "use strict";
+    {"use strict";
     // При переносе ф-и start в объект нужда в переменной numberOfFilms отпадает. Мы установим для свойства count значение равное 0.
     // а в ф-и вместо переменной numberOfFilms пропишем путь к count куда и будет ложиться результат personalMovieDB.count
 
@@ -2457,6 +2463,7 @@
 
     writeYourGenres();
     console.log(personalMovieDB);
+    }
 
 }
 
@@ -3528,6 +3535,7 @@
     */}
 
 
+    
     {const movieDB = {
         movies: [
             "Логан",
