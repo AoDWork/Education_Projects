@@ -1,6 +1,6 @@
 "use strict";
 
-{// 302
+{//  302 Tabs
         // window.addEventListener("DOMContentLoaded", ()=>{
         
         // //получаем элементы в переменные
@@ -56,8 +56,76 @@
         // });
 }
 
+
+{//  306 Timer обратного отсчета
+    "use strict";
+    const deadLine = "2022-07-20"; //Строкой задаем время окончания, такие строки получают еще из инпута на сайтах
+    
+    
+    function getTimeRemaining(endtime){
+        const t = Date.parse(endtime) - Date.parse(new Date()), //Превращает строку в количество милисекунд для математических расчетов
+        //Отнимаем текущую дату и получим число в милисекундах
+              days = Math.floor(t / (1000*60*60*24)),//Переводим в дни, милисек делим на 1(1000) сек*60 в минуте*60 в часе*24 часов в дне
+              //и Math.floor округляет это число до меньшего целого
+              hours = Math.floor((t / (1000*60*60) % 24)),//Переводим в часы, и получаем остаток от деления на 24 часа, что бы не было
+              //например 150 часов
+              minutes = Math.floor((t / 1000 / 60) % 60),
+              seconds = Math.floor((t / 1000) % 60);
+              //Для возврата этих локальных переменных из фунции используем ретурн и выводим объектом
+              return{
+                "total": t,
+                "days": days,
+                "hours": hours,
+                "minutes": minutes,
+                "seconds": seconds
+              };
+    }
+    
+    //Функция помощник для подставления 0 если число часов/минут меньше 10
+    function getZero(num) {
+        if (num >= 0 && num < 10){
+            return `0${num}`;
+        }else{
+            return num;
+        }
+    }
+    
+    //функция Устанавливает время на страницу
+    function setClock(selector, endtime){
+        //получаем элементы со страницы
+        const timer = document.querySelector(selector),
+              days = timer.querySelector("#days"), //<span id="days">12</span>
+              hours = timer.querySelector("#hours"),
+              minutes = timer.querySelector("#minutes"),
+              seconds = timer.querySelector("#seconds"),
+              timeInterval = setInterval(updateClock, 1000); //запускаем функцию каждую секунду
+        
+        updateClock(); //Запускаем вручную что бы пофиксить второй баг
+        
+        function updateClock () {  //функция обновления таймера
+            const t = getTimeRemaining(endtime); //в переменную получаем объект из функции с расчетами на эту секунду  
+    
+            days.innerHTML = getZero(t.days);
+            hours.innerHTML = getZero(t.hours);
+            minutes.innerHTML = getZero(t.minutes);
+            seconds.innerHTML = getZero(t.seconds);
+    
+            //Останавливаем таймер если время вышло
+            if(t.total <= 0){
+                clearInterval(timeInterval);
+            }
+        }
+    }
+    
+    setClock(".timer", deadLine); //Запускаем таймер в селектор подставляем класс элемента в ендтайм дату которую задаем 
+                                    // или откуда то получаем (панель управления, сервер)
+
+}
+
+
+{// ??? Динамическое модально окно
 //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
-//Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
+//Кнопки с разными аттрибутами и поэтому мы их объеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
 //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
 //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
 const modal = document.querySelector(".modal"),
@@ -139,8 +207,10 @@ function showModalByScroll() {
 //ВТОРОЙ способ будем удалять обработчик события с виндовся после 1 разового выполнения removeEventListener для этого
 //создаем функцию showModalByScroll и там прописываем ремув, и модифицируем window.addEventListener
 window.addEventListener("scroll", showModalByScroll);
+}
 
-//013
+
+{//  313
 // class MenuCard{
 //     constructor(src, alt, title, descr, price, parentSelector){ //alt - будет показываться если картинки нету
 //         this.src = src;
@@ -223,8 +293,10 @@ window.addEventListener("scroll", showModalByScroll);
         <div class="menu__field">
             <div class="container">
                 <div class="menu__item"></div> */
+}
 
-//=========  014 используем rest оператор =============
+
+{//  314 используем rest оператор =============
 //В методе render мы создаем лишний div, что бы от этого избавится нужно класс "menu__item" присвоить этому div 
 //но что бы нам присвоить еще классы этому div которые могут появится в будущем, можно их задать через rest
 class MenuCard{
@@ -301,8 +373,10 @@ new MenuCard(
     ".menu .container",
     "menu__item"
 ).render();
+}
 
-//============================ 004 POST отправка данных на сервер
+
+{//  404 POST отправка данных на сервер
 //Задача собрать данные из форм  Имя и Телефон в двух местах(на сайте и в модальном окне) и отправить на сервер при нажатии кнопки
 //Для контроля правильной отработки бэкенда создаем в корне проэкта файл server.php и запишем <?php echo var_dump($_POST);
 //Эта комманда берет данные которые пришли из клиента ( массив _POST ) превращает в строку и показывает обратно на клиенте(ответ сервера, responce)
@@ -443,9 +517,10 @@ form.forEach(item => {
 //         });
 //     });
 // }
+}
 
 
-//============================ 005 Красивое оповещение пользователя
+{//  405 Красивое оповещение пользователя
 //Прикручиваем спиннер в течении отправки запроса на сервер, а после успешного выполнения появление нового модального окна с текстом
 //Если запрос неудачный то будет другое сообщение. Модальное окно можно сделать новое, а можно использовать существующее.
 //Используем существующее и в нем заменим <div class="modal__dialog"> для изменения контента окна. Стили действуют прежние
@@ -583,8 +658,10 @@ function showThanksModal(message) {
 //можно избежать если вместо аппенда  form.append(statusMessage) присоединять спиннер после формы
         //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма используем insertAdjacentElement послеформы
         // form.insertAdjacentElement('afterend', statusMessage);
+}
 
-//============================ 007 Переписываем запросы с помощью fetch
+
+{//  407 Переписываем запросы с помощью fetch
 // 1) отправим классическую формдейту 2) отправим JSON файл на наш сервер
 //Убираем 
 function postData(form) { 
@@ -688,3 +765,4 @@ function postData(form) {
 //попадает на ошибку которая связана с http протоколом - он не выкинет reject, для него это не считается ошибкой, он нормально
 //отработает resolve. Главное для фетча что он вообще смог сделать запрос, соответственно reject юудет только в случае сбоя сети
 // или если что то помешало запросу выполнится)
+}
