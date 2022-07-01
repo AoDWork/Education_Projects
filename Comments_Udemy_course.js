@@ -5281,17 +5281,177 @@
 
 {//  308    ====    Создание модального окна    ====
 
+    // Практикуемся на проекте Project_food в папке 303
+    
+    // Создадим модальное окно и назначим его вызов на несколько триггеров(эл. которые вызывают последующее действие). Триггерами
+        // на сайте будут две кнопки белая и черная "Связаться с нами". Модальное окно находиться в верстке но скрыто потому что 
+        // у него ксс свойство display: none. У триггером могут быть разные классы и даже теги поэтому для того что бы пометить 
+        // что они вызывают одно и тоже действие им назначают одинаковый дейта(дата) аттрибут(прописываем в верстке data-modal)  
+        // для обеих кнопок (название после data- можно придумать любое). Теперь с помощью этого селектора будем получать только
+        // те эл. которые ответственны за вызов этого модального окна. Такое же действие проведем и для эл. который будет закрывать
+        // модальное окно. Пропишем data-close в верстку эл. - крестик у модального окна(находим по верстке в браузере сделав
+        // перед этим модальное окно видимым(убрав display: none в стилях справа)).
+
+
+
+    // Определим переменные и получим в них нужные эл. Модальное окно для изменения его видимости инлайн стилем, кнопки тригеры
+        // псевдомассив и кнопка закрытия. *! Используем квадратные скобки что бы обратится к аттрибуту.
+        const modal = document.querySelector(".modal"),
+              modalTrigger = document.querySelectorAll("[data-modal]"), 
+              modalCloseBtn = document.querySelector("[data-close]");
+
+
+
+    // Алгоритм работы скрипта. Нам понадобится только две ф-ии. 1) будет открывать модальное окно; 2) будет его закрывать.
+        // Обработчики событий нужно подвязать сразу на несколько триггеров что бы срабатывала ф-я при нажатии на любой из них.
+
+
+
+    // Пока что запишем в формате обработчиков событий, не зная будем в будущем переиспользовать эти ф-и или нет. Для тестирования
+        // работоспособности ф-и  возьмем один эл.(первую кнопку) открытия модального окна.
+        modalTrigger = document.querySelector("[data-modal]");
+
+        // При клике на кнопку будем изменять инлайн стили которые ранее прописали в ксс файле ( .show{display:block}
+        // .hide{display:none}.fade{animation-name: fade;animation-duration: 1.5s;}@keyframes fade{from{opacity: 0.1;} 
+        // to{opacity: 1;}} ). Будем добавлять класс show и удалять класс hide (тут можно использовать вариант с toggle, потому
+        // что класс hide будет изначально установлен и мы это будем знать), но так как в верстке мы такого свойства 
+        // прописаного в инлайн стиль не видим то будем отталкиваться от этой схемы.
+        
+        modalTrigger.addEventListener("click", () => {
+            modal.classList.add("show");
+            modal.classList.remove("hide");
+        });
+
+        // Теперь сделаем ф-ю на закрытие 
+        modalCloseBtn.addEventListener("click", () => {
+            modal.classList.add("hide");
+            modal.classList.remove("show");
+        });
+
+        // Проверяем - все работает. 
+        
+
+
+    //Но многое еще нужно доработать. Например когда модальное окно открыто, мы все равно можем скролить сайт, многие заказчики
+        //  не хотят такое поведение, им нужно что бы страница была зафиксирована пока пользователь  видит модальное окно,
+        // особенно если в модальном окне тоже будет скролл(полоса прокрутки). Помним что за скролл отвечает ксс свойство 
+        // overflow, его мы и будем использовать. Обращаемся к нем и устанавливаем в hidden тогда скролл скрывается и сайт не
+        // прокручивается. А когда закрываем МО(мод. окно) - нужно восстановить скролл, допишем в закрывающую ф-ю 
+        // document.body.style.overflow = "" - с пустыми кавычками, браузер сам решит что нужно подставить.
+        modalTrigger.addEventListener("click", ()=>{
+            modal.classList.add("show");
+            modal.classList.remove("hide");
+            document.body.style.overflow = "hidden";
+        });
+        
+        modalCloseBtn.addEventListener("click", ()=>{
+            modal.classList.add("hide");
+            modal.classList.remove("show");
+            document.body.style.overflow = ""; //оставляем пустые скобки и браузер сам возвращает дефолт для прокрутки страницы
+        });
+    
+
+
+    // Используем toggle. При этом нужно контролировать что бы по умолчанию класс hide применялся к эл., а в ксс было установлено
+        // свойство display: none;
+        modalTrigger.addEventListener("click", ()=>{
+            modal.classList.toggle("show");     //если класса нет - добавит, если есть уберет
+            document.body.style.overflow = "hidden";
+        });
+    
+        modalCloseBtn.addEventListener("click", ()=>{
+            modal.classList.toggle("show");
+            document.body.style.overflow = ""; 
+        });
+    
+    
+
+    // Теперь навесим обр. соб. на все кнопки. Для этого вернем querySelectorAll в modalTrigger. И для обращения к этим эл. в
+        // псевдомассиве нужно его перебрать, потому что прямо на псведом. навесить обр. соб. нельзя - будет ошибка.
+        modalTrigger = document.querySelectorAll("[data-modal]"), 
+
+        modalTrigger.forEach(btn => {
+            btn.addEventListener("click", ()=>{
+                modal.classList.add("show");
+                modal.classList.remove("hide");
+                document.body.style.overflow = "hidden";
+            });
+        });
+
+
+
+    // Некоторые заказчики требуют чтобы можно было закрывать МО по клику на подложку (часть экрана вне МО) или клавише Esc.
+        // Для этого найдем подложку(темную часть). Вызовем МО и посмотрим через элементы, видно что есть эл. modal__dialog
+        // который служит оберткой для КОНТЕНТА МО (оранжевая подсветка) клик по нему сработает, только если кникнуть на 
+        // белую форму МО в нем - "modal__content" - это само белое поле МО. И есть эл. который относится к МО div с классом
+        // "modal" (бирюзовая подсветка) - это оберка ВСЕГО модального окна. Таким образом мы можем отследить куда 
+        // кликнул пользователь используя event.target. То есть если клик был на бирюзовом элементе "modal  show" то считается
+        // то кликнули на подложку и можно закрыть окно.
+
+        modal.addEventListener("click", (e) => {
+            if(e.target === modal){    //проверяем на строгое равенство объекта по которому кликнули объекту modal
+                modal.classList.add("hide");
+                modal.classList.remove("show");
+                document.body.style.overflow = ""; 
+            }
+        });
+
+        // Редко можно встретить такой некачественно написанный код, когда event(e) - не пишут в скобках ф-ии, а в теле ф-ии
+        // далее прописывают event.target. Это будет работать (event объявлен, но приэтом мы его не передавали в ф-ю) в нашем 
+        // проекте, но НЕ везде будет работать, потому что мы отходим от стандарта, и строго привязываемся к названию event, 
+        // нарушаем логику кода. Нужно четко говорить что (e) мы используем
+            // modal.addEventListener("click", () => {
+            //     if(event.target === modal){
+
+
+
+    // Рассмотрим важное правило программирования Don't Repeat yourself (DRY) - мы не должны повторять код, если он повторяется 
+        // хотя бы два раза нужно его вынести в отдельную функцию. Прописываем ф-ю и потом передаем ее туда где она должна
+        // использовать.
+        function closeModal(){
+            modal.classList.add("hide");
+            modal.classList.remove("show");
+            document.body.style.overflow = ""; 
+        }
+        
+        modalCloseBtn.addEventListener("click", closeModal); // тут просто передаем функцию без вызова( без скобок () )
+        
+        modal.addEventListener("click", (e)=>{
+            if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+                closeModal();          // тут вызываем функцию
+            }
+        });
+        
+        
+        
+    //Реализуем закрытие по кнопке Esc клавиатуры. Коды кнопок можно найти - keycode.info или learn.javascript.ru/keyboard-events
+        // Событие для отлавливания нажатия клавиш на клавиатуре - keydown(срабатывает сразу при нажатии кнопки). Навешивать его
+        // будем на весь документ, а не на определенный эл.  document.addEventListener("keydown", . Тут снова будет использовать
+        // свойство объекта события код(e.code) - это код клавиши. В условие добавим проверку на открытое МО чтобы не вызывать
+        // ф-ю при закрытом МО  -  && modal.classList.contains("show"))
+        
+        document.addEventListener("keydown", (e)=>{
+            if(e.code === "Escape" && modal.classList.contains("show")){//если код события строго равен Escape(обозначение кнопки Esc)
+                closeModal();           // вызываем функцию
+            }
+        });
+    
+    // В следующем уроке мы модернизируем это МО.
+
+
+    {// Код скрипта
     "use strict";
-    //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
-    //Кнопки с разными аттрибутами и поэтому мы их бъеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
-    //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем 
-    //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
-    const modal = document.querySelector(".modal"),
-          modalTrigger = document.querySelectorAll("[data-modal]"), //квадратные скобки что бы обратится к аттрибуту
-          modalCloseBtn = document.querySelector("[data-close]");
-    //Проверяем функционал выбирая только первую кнопку modalTrigger = document.querySelector("[data-modal]"),
-    //добавляем и убираем стили которые раньше прописали в css .show{display:block}.hide{display:none}
-    //.fade{animation-name: fade;animation-duration: 1.5s;}@keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}     
+    // По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
+        // Кнопки с разными аттрибутами и поэтому мы их объеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
+        // <button data-modal class="btn btn_dark">Связаться с нами</button>. Для закрытия окна после вызова(показа) прописываем 
+        // в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
+        const modal = document.querySelector(".modal"),
+              modalTrigger = document.querySelectorAll("[data-modal]"), // *! квадратные скобки что бы обратится к аттрибуту
+              modalCloseBtn = document.querySelector("[data-close]");
+
+    // Проверяем функционал выбирая только первую кнопку modalTrigger = document.querySelector("[data-modal]"),
+    // добавляем и убираем стили которые раньше прописали в css .show{display:block}.hide{display:none}
+    // .fade{animation-name: fade;animation-duration: 1.5s;}@keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}     
     
     // modalTrigger.addEventListener("click", ()=>{
     //     modal.classList.add("show");
@@ -5308,6 +5468,8 @@
     //Страницу можно пролистывать не закрывая окно, многим заказчикам это не нужно. Нужно зафиксировать страницу скрывая скролл
     // document.body.style.overflow = "hidden";
     
+
+
     //Делаем через toggle контролируя свойство display через стиль show
     // modalTrigger.addEventListener("click", ()=>{
     //     modal.classList.toggle("show"); //если класса нет - добавит, если есть уберет
@@ -5319,6 +5481,8 @@
     //     document.body.style.overflow = ""; //оставляем пустые скобки и браузер сам возвращает дефолт для прокрутки страницы
     // });
     
+
+
     //Создаем функцию для перебора кнопок при querySelectorAll
     modalTrigger.forEach(btn =>{
         btn.addEventListener("click", ()=>{
@@ -5334,6 +5498,8 @@
     //     document.body.style.overflow = ""; 
     // });
     
+
+
     //реализуем закрытие окна по клику на подложку(темную часть) и по кнопке Esc клавиатуры
     //<div class="modal"> - подложка (обертка) (темная)
     //   <div class="modal__dialog"> - область окна (светлая) - вложена в подложку(обертку)
@@ -5373,6 +5539,7 @@
         }
     });
     //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
+    }
 
 }
 
