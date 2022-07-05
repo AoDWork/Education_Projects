@@ -286,7 +286,7 @@ modalTrigger.forEach(btn =>{
     btn.addEventListener("click", openModal);
 });
 
-const modalTimerId = setTimeout(openModal, 50_000);
+const modalTimerId = setTimeout(openModal, 5000_000); // сделал побольше время что б не отвлекало
 
 function showModalByScroll() {
     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
@@ -314,7 +314,8 @@ window.addEventListener("scroll", showModalByScroll);
 }
 
 
-{//  313
+{//  313 создавать карточки динамически при помощи классов.
+
 // class MenuCard{
 //     constructor(src, alt, title, descr, price, parentSelector){ //alt - будет показываться если картинки нету
 //         this.src = src;
@@ -379,7 +380,7 @@ window.addEventListener("scroll", showModalByScroll);
 //     ".menu .container"
 // ).render();
 
-
+// Пробовал сам
 // const testCard = new MenuCard(
 //     "img/tabs/elite.jpg",
 //     "elite",
@@ -387,8 +388,9 @@ window.addEventListener("scroll", showModalByScroll);
 //     'В меню “Премиум” мы ...',
 //     100,
 //     ".menu .container");
-// testCard.render();
-//btnCall.addEventListener("click", testCard.render); //- через кнопку почему то не работает
+
+// let btnCall = document.querySelector('.btn_min');
+// btnCall.addEventListener("mouseover", testCard.render()); //- через кнопку почему то не работает
 
 //Структура HTML верстки. Обращаемся к самому верхнему элементу .menu а потом к его div .container
 /* <div class="menu">
@@ -400,7 +402,8 @@ window.addEventListener("scroll", showModalByScroll);
 }
 
 
-{//  314 используем rest оператор =============
+{//  314 используем rest оператор
+
 //В методе render мы создаем лишний div, что бы от этого избавится нужно класс "menu__item" присвоить этому div 
 //но что бы нам присвоить еще классы этому div которые могут появится в будущем, можно их задать через rest
 class MenuCard{
@@ -477,6 +480,7 @@ new MenuCard(
     ".menu .container",
     "menu__item"
 ).render();
+
 }
 
 
