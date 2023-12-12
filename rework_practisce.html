@@ -9,8 +9,8 @@
 
 <body>
     <script>
-        // 013
-        /* let numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '')
+        {/* 013
+        let numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '')
 
         const personalMovieDB = {
             count: numberOfFilms,
@@ -27,8 +27,43 @@
         personalMovieDB['movies'][filmName] = +prompt('На сколько его оцените?', '')
 
         console.log(personalMovieDB)
-        */
+        */}
 
+        // 218
+        let numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '')
+
+        const personalMovieDB = {
+            count: numberOfFilms,
+            movies: {},
+            actors: {},
+            genres: [],
+            privat: false
+        }
+
+
+        if (personalMovieDB.count < 10) {
+            console.log("Просмотрено довольно мало фильмов")
+        } else if (personalMovieDB.count > 30) {
+            console.log("Вы киноман")
+        } else if (10 <= personalMovieDB.count <= 30) {
+            console.log("Вы классический зритель")
+        }
+
+
+        for (i = 1; i < 3; i++) {
+            const f = prompt('Один из последних просмотренных фильмов (не больше 20ти символов)?', '')
+            const r = +prompt('На сколько его оцените (ответ числом)?', '')
+
+            if (!!f && !!r && f.length < 20) {
+                personalMovieDB.movies[f] = r
+                console.log('Done')
+            } else {
+                i--
+                console.log('Enter valid data')
+            }
+        }
+
+        console.log(personalMovieDB)
 
     </script>
 
