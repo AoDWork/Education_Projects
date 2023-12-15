@@ -9,7 +9,7 @@
 
 <body>
     <script>
-        {/* 013
+        {/* 213
         let numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '')
 
         const personalMovieDB = {
@@ -29,7 +29,7 @@
         console.log(personalMovieDB)
         */}
 
-        // 218
+        {/* 218
         let numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '')
 
         const personalMovieDB = {
@@ -64,6 +64,81 @@
                 console.log('Enter valid data')
             }
         }
+
+        console.log(personalMovieDB)
+    */}
+
+        //222 + add trim()
+
+        let numberOfFilms;
+
+        function start() {
+            numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
+
+            while (!numberOfFilms) {
+                numberOfFilms = +prompt('Сколько фильмов вы уже посмотрели?', '');
+            }
+        }
+
+        const personalMovieDB = {
+            count: numberOfFilms,
+            movies: {},
+            actors: {},
+            genres: [],
+            privat: false
+        }
+
+
+        function detectPersonalLevel() {
+            if (personalMovieDB.count < 10) {
+                console.log("Просмотрено довольно мало фильмов")
+            } else if (personalMovieDB.count > 30) {
+                console.log("Вы киноман")
+            } else if (10 <= personalMovieDB.count <= 30) {
+                console.log("Вы классический зритель")
+            } else {
+                console.log("Произошла ошибка");
+            }
+        }
+
+
+        function rememberMyFilms() {
+            for (i = 0; i < 2; i++) {
+                const f = (prompt('Один из последних просмотренных фильмов ?', '')).trim()
+                const r = +prompt('На сколько его оцените (ответ числом)?', '')
+
+                if (!!f && !!r && f.length < 20) {
+                    personalMovieDB.movies[f] = r
+                    console.log('Done')
+                } else {
+                    i--
+                    console.log('Error. Enter valid data')
+                }
+            }
+        }
+
+
+        function showMyDB() {
+            if (!personalMovieDB.privat) {
+                console.log(personalMovieDB)
+            }
+        }
+
+
+        function writeYuorGenres() {
+            let favMovie
+            for( i = 1; i < 4; i++) {
+                favMovie = prompt(`Ваш любимый жанр под номером ${i}?`)
+                personalMovieDB.genres[i-1] = favMovie
+            }
+        }
+        
+        
+        start()
+        detectPersonalLevel()
+        rememberMyFilms()
+        showMyDB()
+        writeYuorGenres()
 
         console.log(personalMovieDB)
 
