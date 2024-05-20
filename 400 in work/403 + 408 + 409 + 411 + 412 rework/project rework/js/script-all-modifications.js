@@ -222,14 +222,11 @@
   //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
 }
 
-{  // 309 МО через время или при пролистивании до конца сайта
-  //По нажатии двух разных кнопок будет выскакивать пока еще скрытое модальное окно <div class="modal">
-  //Кнопки с разными аттрибутами и поэтому мы их объеденим одним дата аттрибутом data-modal, допишем в верстку этот селектор
-  //<button data-modal class="btn btn_dark">Связаться с нами</button> для закрытия этого окна прописываем
-  //в закрывающем элементе data-close  <div data-close class="modal__close">&times;</div>  - это крестик
+{  // 412 весь код вместе с предыдущими
+  
   const modal = document.querySelector(".modal"),
-    modalTrigger = document.querySelectorAll("[data-modal]"), //квадратные скобки что бы обратится к аттрибуту
-    //modalCloseBtn = document.querySelector("[data-close]"), // удаляем в 005 уроке и создаем для динам. модальных окон другой
+    modalTrigger = document.querySelectorAll("[data-modal]"), 
+    //modalCloseBtn = document.querySelector("[data-close]"), 
     btnCall = document.querySelector(".btn_min");
 
   //Правило Don't Repeat yourself (DRY) если код повторяется нужно его вынести в одну функцию
@@ -239,16 +236,17 @@
     document.body.style.overflow = "";
   }
 
-  // удаляем в 005 уроке и создаем для динам. модальных окон другой
+  // todo удаляем в ??? уроке и создаем для динам. модальных окон другой
   //modalCloseBtn.addEventListener("click", closeModal); // тут просто передаем функцию
 
   // modal.addEventListener("click", (e)=>{
-  //     if(e.target === modal){    //проверяем строгое равенство объекта по которому кликнули объекту modal
+  //     if(e.target === modal){    // строгое равенство объекта по которому кликнули объекту modal
   //         closeModal();          // тут вызываем функцию
   //     }
   // });
 
-  //005 Усовершенствованное для динамически создаваемых окон
+
+  // todo ??? Усовершенствованное для динамически создаваемых окон
   modal.addEventListener("click", (e) => {
     // Проверяем равенство объекту modal или объект содержащий аттрибут data-close равен пустой строке, мы туда ничего не помещаем
     if (e.target === modal || e.target.getAttribute("data-close") == "") {
@@ -265,49 +263,34 @@
   });
   //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
 
-  //<<<<<<<009 Модальное окно должно появится через определенное время или когда пользователь долистал страницу до конца >>>>>
-  // const modalTimerId = setTimeout();
 
-  //Создаем функцию для открытия окна преобразуя modalTrigger.forEach(btn =>{
-  function openModal() {
-    modal.classList.add("show");
-    modal.classList.remove("hide");
-    document.body.style.overflow = "hidden";
-    //Дорабатываем openModal что бы если пользователь сам открыл окно, таймер отменялся
-    clearInterval(modalTimerId); //Timeout отменяет также как и интервал
-  }
+  // 412 Модифицируем Модальное окно для показа по таймеру и при долистывании страницы до конца
 
-  modalTrigger.forEach((btn) => {
-    btn.addEventListener("click", openModal);
-  });
-
-  const modalTimerId = setTimeout(openModal, 5000_000); // сделал побольше время что б не отвлекало
-
-  function showModalByScroll() {
-    if (
-      window.pageYOffset + document.documentElement.clientHeight >=
-      document.documentElement.scrollHeight - 1
-    ) {
-      openModal();
-      window.removeEventListener("scroll", showModalByScroll);
+    // Создаем функцию для открытия окна преобразуя modalTrigger.forEach(btn =>{
+      function openModal() {
+        modal.classList.add("show");
+        modal.classList.remove("hide");
+        document.body.style.overflow = "hidden";
+        //Дорабатываем openModal чтобы если пользователь сам открыл окно, таймер отменялся
+        clearInterval(modalTimerId); //Timeout отменяет тойже командо как и интервал
     }
-  }
+    
+    modalTrigger.forEach(btn =>{
+        btn.addEventListener("click", openModal);
+    });
+    
+    const modalTimerId = setTimeout(openModal, 5000);
+    
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= 
+            document.documentElement.scrollHeight - 1){
+                openModal();
+                window.removeEventListener("scroll", showModalByScroll);
+        } 
+    }
+    
+    window.addEventListener("scroll", showModalByScroll);
 
-  //Делаем что бы окно показывалось при долистывании страницы до конца
-  // window.addEventListener("scroll", ()=>{
-  //     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1){
-  //         openModal();
-  //     }   //pageYOffset - проскролленая часть + clientHeight - видимая часть на мониторе будут больше или равны
-  //         // или больше scrollHeight все области скролла, минус 1 пиксель из-за особенности некоторых браузеров и мониторов
-  // }//,{once: true});
-
-  //что бы не запускалось много раз окно при доскроле до конца страницы можно использовать настройки обработчика событий
-  //после функции можно добавить {once: true}, но оно в данном случае не сработает потому что обработчик повешен на скролл
-  //тоесть оно срабатывает при скроле, но условия не выполняются и окно не появляется, а внизу страницы не запускается
-  //потому что уже как бы сработало
-  //ВТОРОЙ способ будем удалять обработчик события с виндовся после 1 разового выполнения removeEventListener для этого
-  //создаем функцию showModalByScroll и там прописываем ремув, и модифицируем window.addEventListener
-  window.addEventListener("scroll", showModalByScroll);
 }
 
 {  //  313 создавать карточки динамически при помощи классов.

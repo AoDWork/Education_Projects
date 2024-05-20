@@ -121,40 +121,69 @@ window.addEventListener("DOMContentLoaded", () => {
   setClock(".timer", deadLine); //Запускаем таймер в селектор подставляем класс элемента в ендтайм
   // дату которую задаем или откуда то получаем (панель управления, сервер)
 
-  
+
   // 411 Modal
   const modal = document.querySelector(".modal"),
-  modalTrigger = document.querySelectorAll("[data-modal]"),
-  modalCloseBtn = document.querySelector("[data-close]");
+    modalTrigger = document.querySelectorAll("[data-modal]"),
+    modalCloseBtn = document.querySelector("[data-close]");
 
+  // заменили в 412
   //Создаем функцию для перебора кнопок при querySelectorAll
-  modalTrigger.forEach(btn =>{
-      btn.addEventListener("click", ()=>{
-          modal.classList.add("show");
-          modal.classList.remove("hide");
-          document.body.style.overflow = "hidden";
-      });
-  });
+  // modalTrigger.forEach((btn) => {
+  //   btn.addEventListener("click", () => {
+  //     modal.classList.add("show");
+  //     modal.classList.remove("hide");
+  //     document.body.style.overflow = "hidden";
+  //   });
+  // });
 
-  function closeModal(){
+  function closeModal() {
     modal.classList.add("hide");
     modal.classList.remove("show");
-    document.body.style.overflow = ""; 
+    document.body.style.overflow = "";
   }
 
-  modalCloseBtn.addEventListener("click", closeModal); 
-  modal.addEventListener("click", (e)=>{
-      if(e.target === modal){    
-          closeModal();          
-      }
-  });
+  modalCloseBtn.addEventListener("click", closeModal);
   
-  //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
-  document.addEventListener("keydown", (e)=>{
-      if(e.code === "Escape" && modal.classList.contains("show")){
-          closeModal();           
-      }
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
   });
 
+  //Реализуем закрытие по кнопке Esc клавиатуры (Коды кнопок  keycode.info или learn.javascript.ru/keyboard-events)
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Escape" && modal.classList.contains("show")) {
+      closeModal();
+    }
+  });
+
+
+  // 412 Модифицируем Модальное окно для показа по таймеру и при долистывании страницы до конца
+  function openModal() {
+    modal.classList.add("show");
+    modal.classList.remove("hide");
+    document.body.style.overflow = "hidden";
+    //Дорабатываем openModal чтобы если пользователь сам открыл окно, таймер отменялся
+    clearInterval(modalTimerId); //Timeout отменяет тойже командо как и интервал
+  }
+
+  modalTrigger.forEach((btn) => {
+    btn.addEventListener("click", openModal);
+  });
+
+  const modalTimerId = setTimeout(openModal, 5000);
+
+  function showModalByScroll() {
+    if (
+      window.scrollY + document.documentElement.clientHeight >=
+      document.documentElement.scrollHeight - 1
+    ) {
+      openModal();
+      window.removeEventListener("scroll", showModalByScroll);
+    }
+  }
+
+  window.addEventListener("scroll", showModalByScroll);
 
 });
