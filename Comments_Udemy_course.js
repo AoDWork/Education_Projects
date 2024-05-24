@@ -11047,17 +11047,28 @@ window.addEventListener("DOMContentLoaded", () => {
 
 {//  504    ====    Реализация скрипта ОТПРАВКИ данных на сервер (POST) XML http request    ====
 
-    /* Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
-    Задача собрать данные из форм  Имя и Телефон в двух местах(на сайте и в модальном окне) и отправить
+    /* Переходим в проект о еде который ранее дорабатывали(табы, карточки,модальное окно). 
+    Перенес его в папку 504. 
+
+    ! Установить сервер MAMP или OpenServer. Запускаем его на сервере для работы POST
+
+    Задача собрать данные из форм Имя и Телефон в двух местах(на сайте и в модальном окне) и отправить
     на сервер при нажатии кнопки
-    Для контроля правильной отработки бэкенда создаем в корне проэкта файл server.php и запишем 
-    <?php echo var_dump($_POST);
+
+
+    ! Для контроля правильной отработки бэкенда создаем в корне проэкта файл server.php и запишем 
+        <?php 
+            echo var_dump($_POST);
+
     Эта комманда берет данные которые пришли из клиента ( массив _POST ) превращает в строку и 
     показывает обратно на клиенте(ответ сервера, responce)
 
-    формы две (имя, телефон) поэтому функция отправки будет повторятся, что бы не дублировать два 
-    обработчика, обернем в функцию для последующего вызова. Тут еще используем XML hhtp request, в 
-    следующих уроках будет более современный метод
+
+    Формы на сайте две поэтому функция отправки будет повторятся, что бы не дублировать два 
+    обработчика, обернем в функцию для последующего вызова при отправке формы. 
+    
+    ! Тут еще используем XMLHttpRequest, в  следующих уроках будет более современный метод
+
 
     получаем все формы по тегу */
 
@@ -11069,28 +11080,34 @@ window.addEventListener("DOMContentLoaded", () => {
         const message = {
             loading: 'Загрузка',
             success: 'Спасибо! До связи',
-            failure: ' Что-то пошло не так...'
+            failure: 'Что-то пошло не так...'
         };
 
 
-    // берем все form и для каждой подвязываем функцию postData
+    // Берем все form и для каждой подвязываем функцию postData
 
-        form.forEach(item => {
+        forms.forEach(item => {
             postData(item);
         });
 
 
-    // Функция для постинга данных
+    /* Функция для постинга данных. В параметры пропишем form чтобы удобно было навешивать обр. событий
+    на нее. Событие submit срабатывает каждый раз когда пытаемся отправить форму, как нажатием Enter
+    так и нажатием по кнопке отправки button с type='submit'. 
+
+    ! В верстке если кнопка задна тегом button(а не div или a ) то у нее автоматически type='submit'
+    это класическое поведение кнопки - отправка формы с перезагрузкой страницы, мы же сделаем без
+    перезагрузки и напишем свой функционал для этого, отменив стандартное поведение */
 
     function postData(form) { // принимаем аргумент form для удобства навешивания ему обр. соб. submit
         form.addEventListener('submit', (e) => {  // submit срабатывает по Enter или button с type submit. 
             //если в верстке кнопка задана  тегом <button - у нее автоматически установлен type submit
             e.preventDefault(); // отменяем стандартное повередение - перезагрузку страницы
             
-            //Создаем переменную для вывода пользователю сообщений
+            //Создаем новый блок для вывода пользователю сообщений
             const statusMessage = document.createElement('div');
             statusMessage.classList.add('status'); // добавляем класс status
-            statusMessage.textContent = message.loading;
+            statusMessage.textContent = message.loading; // отправка только пошла, сообщение - загрузка
             form.append(statusMessage); // Прикрепляем этот див с сообщением к form для показа на странице
 
             const req = new XMLHttpRequest(); // создаем объект запроса
@@ -11099,65 +11116,76 @@ window.addEventListener("DOMContentLoaded", () => {
             /* как получить все данные введенные пользователем и отправить на сервер. 
             Можно вручную. взять форму, взять все инпуты которые есть внутри, взять их value, перебрать,
             сформировать объект, но это очень нерационально потому что есть готовые механизмы, и самый 
-            простой способ подготовить данные для отправки из формы использовать объект - formData
-            не всегда нужно передавать в формате JSON, зависит от поддержки сервера или программиста 
-            бэкенда. Рассмотрим formData и второй формат JSON
+            простой способ подготовить данные для отправки из формы использовать объект - formData,
+            не всегда нужно передавать данные в формате JSON, зависит от поддержки сервера. 
+            Рассмотрим formData и второй формат JSON(данные из formData преобразуем  в JSON ) */
 
-            Если работаем с JSON, FormData специфический объект который просто превратить в JSON не
-            получится, есть спец прием для этого */
             req.setRequestHeader('Content-type', 'application/json');
-            // Для этого создаем пустой объект и через перебор FormData через forEach запушим значения
+
+            const formData = new FormData(form); //! формирует объект ключ-значение из полей 
+                                                 //! input/option/textarea, но только если у них  
+                                                 //! прописан тег name, иначе не найдет эти значения.
+                                                 // (name="name", name="phone")
+
+            /* Если работаем с JSON, FormData специфический объект который просто превратить в JSON не
+            получится, есть спец прием для этого
+            создаем пустой объект и через перебор FormData через forEach запушим значения */
             const object = {};
             formData.forEach(function(value, key){
                 object[key] = value;
             });
+
             //Теперь используем конвертацию в json и помещаем его в  req.send(json);
             const json = JSON.stringify(object);
 
-            /* если передаем через XMLHttpRequest
-            req.setRequestHeader('Content-type', 'multipart/form-data'); 
-            multipart/form-data - используем что бы работал FormData
-            ! согласно описанию FormData, но есть ньюанс - смотр ниже */
-
-            const formData = new FormData(form); // формирует объект ключ-значение из полей 
-                                                 // input/option/textarea, но только если у них прописан 
-                                                 // тег name, иначе не найдет эти значения.
-                                                 // (name="name", name="phone")
-            req.send(formData); // так как мы отправляем данные то есть body - formData
-
             //Если работаем с JSON то 
-            //req.send(json);
+            req.send(json);
+
+
+            /* если передаем через XMLHttpRequest
+            multipart/form-data - используем чтобы работал FormData
+            ! согласно описанию FormData, но есть ньюанс - смотр ниже
+            так как мы отправляем данные то есть body - formData
+
+                req.setRequestHeader('Content-type', 'multipart/form-data'); 
+                req.send(formData); 
+
+            */
 
             req.addEventListener('load', () => {
                 if (req.status === 200) {
                     console.log(req.response);
-                    statusMessage.textContent = message.success;
+                    statusMessage.textContent = message.success;    // Сообщение успешной отправки
                     form.reset();                   // очищаем форму
                     setTimeout(() =>{
                         statusMessage.remove()      // удаляем блок со страницы
                     }, 2000);
-                }else{
-                    statusMessage.textContent = message.failure;
-                    }
+                } else {
+                    statusMessage.textContent = message.failure;    // Сообщение ошибки
+                }
             });
         });
     }
 
-    /* Что бы изменения сохраненные в коде применились при работе с сервером, нужно каждый раз сбрасывать
-    кеш - shift+f5
+    /*
+    ! Чтобы изменения сохраненные в коде применились при работе с локальным сервером, нужно каждый раз
+    сбрасывать кеш - shift+f5 . Сервер запоминает старые изменения чтобы их каждый раз не подгружать.
+
 
     После заполнения полей и нажатия кнопки отправить, данные ушли - смотрим по вкладке Network, 
     статус сервера - 200 ОК  нам написало 'Спасибо! До связи' но в консоль получили пустой массив, это
-    случилось из-за заголовка  multipart/form-data  Когда используем связку XMLHttpRequest(), Объекта и 
-    FormData - заголовок устанавливать не нужно, он устанавливается автоматически, поэтому весь заголовок
-    req.setRequestHeader('Content-type', 'multipart/form-data'); 
-    нам не нужно прописывать поэтому закомментируем его и все будет отрабатывать хорошо. 
+    случилось из-за заголовка  multipart/form-data  
+    ! Когда используем связку XMLHttpRequest объекта и FormData - заголовок устанавливать не нужно, 
+    он устанавливается автоматически, поэтому весь заголовок
+        req.setRequestHeader('Content-type', 'multipart/form-data'); 
+    нам не нужно прописывать, поэтому закомментируем его и все будет отрабатывать хорошо. 
 
     Если нужно отправлять данные в JSON тогда прописываем 
     req.setRequestHeader('Content-type', 'application/json');
 
+
     ! Ньюанс PHP нативно не умеет работать с данными JSON, чаще всего такие данные отправляют на сервера
-    Node.JS
+    с использованием Node.JS
 
     Но можно вручную прописать совместимость с PHP в файле допишем строку 
 
@@ -11172,554 +11200,669 @@ window.addEventListener("DOMContentLoaded", () => {
 
 {//  505    ====    Красивое оповещение пользователя    ====
 
-    //Переходим в файл со скриптом о карточках Food. Запускаем его на сервере для работы POST
-    //============================ 005 Красивое оповещение пользователя
-    //Прикручиваем спиннер в течении отправки запроса на сервер, а после успешного выполнения появление нового модального окна с текстом
-    //Если запрос неудачный то будет другое сообщение. Модальное окно можно сделать новое, а можно использовать существующее.
-    //Используем существующее и в нем заменим <div class="modal__dialog"> для изменения контента окна. Стили действуют прежние
+    /* Переходим в проект в папке о еде 504+505 rework. Запускаем его на локальном сервере для работы POST
+
+    Прикручиваем спиннер в течении отправки запроса на сервер, а после успешного выполнения - появится
+    новое(другое) модальное окно с текстом. Если запрос неудачный то будет другое сообщение. Модальное 
+    окно можно сделать новое, а можно использовать существующее. Используем существующее и в нем заменим
+    контент, найдем контент в верстке, он находится в -  <div class="modal__dialog">. Для изменения 
+    контента окна будем скрывать его и создавать новый div с версткой, который поместим в родителя div
+    с классом modal, потом его удалим и вернем старый контент чтобы функционал сайта не пострадал. 
+    Стили действуют прежние. */
+    
+
     {/* <div class="modal">
             <div class="modal__dialog">
                 <div class="modal__content">
-                    <form action="#">
-                        <div data-close class="modal__close">&times;</div>
-                        <div class="modal__title">Мы свяжемся с вами как можно быстрее!</div>
-                        <input required placeholder="Ваше имя" name="name" type="text" class="modal__input">
-                        <input required placeholder="Ваш номер телефона" name="phone" type="phone" class="modal__input">
-                        <button class="btn btn_dark btn_min">Перезвонить мне</button>
-                    </form>
+                    ...
                 </div>
             </div>
         </div> */}
 
+
+    // Ф-я для показа нового контента модального окна 
     function showThanksModal(message) {
         const prevModalDialog = document.querySelector('.modal__dialog');
     
-        //скрываем, а не удаляем предыдущее модальное окно что бы пользователь повторно его мог использовать
+        // скрываем, а не удаляем предыдущее модальное окно что бы юзер повторно мог его использовать
         prevModalDialog.classList.add('hide');
-        openModal(); // открывается модальное окно
+        openModal(); // открываем обертку модального окна
     
-        const thanksModal = document.createElement('div'); //Создаем обвертку для нового модального окна
-        thanksModal.classList.add('modal__dialog'); // добавляем стили для модального окна
-        //Создаем новый тайтл и крестик х - закрытия, но он динамически создается и на него обработчик события ранее созданный closemodal
-        // которая вешалась на modalCloseBtn получаемому по аттрибуту [data-close] действовать не будут, поэтому мы их подправим
-        // modalCloseBtn = document.querySelector("[data-close]") и modalCloseBtn.addEventListener("click", closeModal); - этот удалим
-        //
-        //Этот подправим    modal.addEventListener("click", (e)=>{
-        //                      if(e.target === modal){    
-        //                      closeModal();          
-                                //}
-                            //});
-        //теперь выглядит так 
-        //005 Усовершенствованное для динамически создаваемых окон
-        // modal.addEventListener("click", (e)=>{
-        //     // Проверяем равенство объекту modal или объект содержащий аттрибут data-close равен пустой строке, мы туда ничего не помещаем
-        //     if(e.target === modal || e.target.getAttribute('data-close') == '') {  
-        //         closeModal();          // тут вызываем функцию
-        //     }
-        // });
+        const thanksModal = document.createElement('div'); // Создаем елемент для нового модального окна
+        thanksModal.classList.add('modal__dialog'); // добавляем класс для ел. модального окна
+
+        /* При создании новой верстки - крестик закрытия создается динамически и на него не повесится 
+        обраб. соб. ранее созданный в closemodal  который вешался на modalCloseBtn получаемому по 
+        аттрибуту [data-close] действовать не будут, поэтому мы их подправим используя делегирование событий.
+        Удалим изначальное получение кнопки  и навешивание на нее события
+            modalCloseBtn = document.querySelector("[data-close]") и 
+            modalCloseBtn.addEventListener("click", closeModal)
+        А там где закрытие происходило по клику за пределы модалки добавим в условие проверки крестика.
+        Проверять будем элемент по которому был клик на наличие аттрибута data-close (если в нем нету 
+        аттрибута тогда вернется null и при сравнении с пустой строкой будет false) на равенство пустой
+        строке. А если аттрибут есть, то так как мы аттрибуту ничего не присвоили в верстке, то будет
+        пустая строка, и тогда условие выполнится.
+
+        Этот подправим     */
+            modal.addEventListener("click", (e)=>{
+                if(e.target === modal){    
+                    closeModal();          
+                }
+            });
+
+
+        // Теперь выглядит так 
+        // 005 Усовершенствованное для динамически создаваемых окон
+            modal.addEventListener("click", (e)=>{
+                // если равно объекту modal или объект содержит аттрибут data-close - пустая строка 
+                // тогда сработает закрытие модального окна
+                if(e.target === modal || e.target.getAttribute('data-close') == '') {  
+                    closeModal();          
+                }
+            });
     
-        //***Крестик x  - специальный ХТМЛ символ (✖	&#10006;	Жирный символ закрыть (крестик))
-        //Сообщение для пользователя в modal__title будем перелаваит как аргумент message в showThanksModal который будем брать из
-        //объекта message
-        thanksModal.innerHTML = `
-        <div class="modal__content">
-            <div class="modal__close" data-close>x</div> 
-            <div class="modal__title">${message}</div> 
-        </div>
-        `;
+
+        /* Крестик x  - специальный ХТМЛ символ (✖	&#10006;	Жирный символ - закрыть (крестик))
+        Сообщение для пользователя в modal__title будем передавать как аргумент message в 
+        showThanksModal() который будем брать из объекта message */
+
+            thanksModal.innerHTML = `
+            <div class="modal__content">
+                <div class="modal__close" data-close>x</div> 
+                <div class="modal__title">${message}</div> 
+            </div>`;
     
-        //Получаем модальное окно и сразу аппендим наш блок для замены старого окна новым
+
+        // Получаем модальное окно и сразу аппендим наш блок для показа
         document.querySelector('.modal').append(thanksModal);
     
-        //Реализуем появление старого окна если пользователь снова его вызовет
-        setTimeout(() => { // удаляем наш новый блок
-            thanksModal.remove();
+
+        // Реализуем возвращение старого окна, если юзеру нужно будетснова работать с ним и закрытие  
+        // текущего через 4 секунды. Тоесть перед закрытием сообщения(модального окна) в него вернется
+        // старый контент.
+        setTimeout(() => {
+            thanksModal.remove();   // удаляем наш новый блок
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            closeModal(); // закрываем окно что бы не мешало пользователю
+            closeModal();           // закрываем окно 
         } , 4000);
     }
     
-    // Теперь в функции отправки проведем изменения
-    // function postData(form) { 
-    //     form.addEventListener('submit', (e) => {  
-          
-    //         e.preventDefault(); 
-            
-    //          const statusMessage = document.createElement('div');
-    //         statusMessage.classList.add('status'); 
-    //         statusMessage.textContent = message.loading;
-    //         form.append(statusMessage); 
+    // Ф-я готова, будем использовать
+
+
+    /* Теперь в функции отправки проведем изменения
+    У statusMessage в запросе удалим таймаут потому что statusMessage будет использоваться для loading, 
+    тоесть для spinner который будет показываться на странице.
     
-    //         const req = new XMLHttpRequest(); 
-    //         req.open('POST', 'server.php'); 
+    Вместо statusMessage.textContent = message.success - будем вызывать ф-ю которую только что создали
+    помещая в нее message.success - showThanksModal(message.success);, тоже самое делаем для else чтобы
+    показывать оповещать о неудачном результате.
+    */
+        function postData(form) { 
+            form.addEventListener('submit', (e) => {  
+                e.preventDefault(); 
+                
+                const statusMessage = document.createElement('div');
+                statusMessage.classList.add('status'); 
+                statusMessage.textContent = message.loading;
+                // form.append(statusMessage);  // 505 удалена чтобы не ехала верстка на сайте
+                form.insertAdjacentElement('afterend', statusMessage)
+        
+                const req = new XMLHttpRequest(); 
+                req.open('POST', 'server.php'); 
+        
+                req.setRequestHeader('Content-type', 'application/json');
+                const formData = new FormData(form); 
+                const object = {};
+
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+                
+                const json = JSON.stringify(object);
+                req.send(json); 
+        
+                req.addEventListener('load', () => {
+                    if (req.status === 200) {
+                        console.log(req.response);
+                        showThanksModal(message.success); // запускаем нашу ф-ю с аргументом сообщением
+                        form.reset(); // Удалили таймаут ф-я будет использоваться только для спинера
+                        statusMessage.remove(); // удаляется спиннер   
+                    }else{
+                        showThanksModal(message.failure);
+                    }
+                });
+            });
+        }
     
-    //         req.setRequestHeader('Content-type', 'application/json');
-    //         const object = {};
-    //         formData.forEach(function(value, key){
-    //             object[key] = value;
-    //         });
-           
-    //         const json = JSON.stringify(object);
+
+    /* Раскоментируем const modalTimerId = setTimeout(openModal, 50000); если эта строка были 
+    закоментирована, потому что она давала ошибку в консоле, и если так и оставить то вызов
+    openModal() в функции showThanksModal завершится ошибкой и дальше код не пойдет.
     
-    //         const formData = new FormData(form); 
-    //         req.send(formData); 
+    Добавляем вместо loading: 'Загрузка' в объекте message - ссылку на картинку спиннер spinner.svg. 
+    В папке img создаем папку form и туда помещаем спиннер. В модальном окне не изменится потому что там
+    выравнивание в столбик и на вид будет одинаково. В на сайте спиннер будет показываться теперь ниже
+    чем форм отправки, а не в ней, и не будет сдвигать элементы */
+
+        const message = {
+            loading: 'img/form/spinner.svg',
+            success: 'Спасибо! До связи',
+            failure: ' Что-то пошло не так...'
+        };
     
-    //         req.addEventListener('load', () => {
-    //             if (req.status === 200) {
-    //                 console.log(req.response);
-    //                 showThanksModal(message.success); // запускаем нашу нункцию с аргументом сообщением
-    //                 form.reset(); //Удалили таймаут потому что она будет использоваться только для спинера
-    //                 statusMessage.remove(); // удаляется спиннер   
-    //             }else{
-    //                 showThanksModal(message.failure);
-    //             }
-    //         });
-    //     });
-    // }
+
+    // Также изменяем
+        function postData(form) {
+            form.addEventListener('submit', (e) => {  
+                e.preventDefault(); 
+                //005 изменяем для показа картинки и класс
+                // const statusMessage = document.createElement('div');
+                const statusMessage = document.createElement('img');    // создаем img вместо div
+                // statusMessage.classList.add('status');
+                statusMessage.src = message.loading;   // прописываем путь
+                // statusMessage.textContent = message.loading; // текста уже нет, удаляем
+                // записываем инлайн стили что бы картинка была по центру
+                statusMessage.style.cssText = `
+                    display: block;
+                    margin: 0 auto;
+                `;
+                // form.append(statusMessage);  // 505 удалена чтобы не ехала верстка на сайте
+                form.insertAdjacentElement('afterend', statusMessage) 
+                //...
+            })}
+
+
+    /* При первой эмуляции медленного интернета slow 3G(вместо online) на вкладке Network в консоли
+    изображение спинера мелькнуло и пропало, так как эмулируется медленный интернет картинка не успела 
+    подгрузится до выполнения запроса, а подгрузилась уже после, поэтому нужно повторить отправку формы
+    без перезагрузки для нормального отображения.
+
+    При сбросе кеша параметр slow 3G нужно менять снова на online, а то будет долго перекешироваться 
+    страница
     
-    //Раскоментируем const modalTimerId = setTimeout(openModal, 50000); потому что она давала ошибку в консоле и если так и оставить
-    //то вызов  openModal() в функции showThanksModal завершится ошибкой и дальше код не пойдет
-    
-    //Добавляем вместо loading: 'Загрузка' в объекте message - картинку спиннер "spinner.svg". В папке img создаем папку form
-    //и туда помещаем спиннер, как относящийся к этому элементу
-    // const message = {
-    //     loading: 'img/form/spinner.svg',
-    //     success: 'Спасибо! До связи',
-    //     failure: ' Что-то пошло не так...'
-    // };
-    
-    //Также изменяем
-    // form.addEventListener('submit', (e) => {  
-    //     e.preventDefault(); 
-    //     //005 изменяем для показа картинки и класс
-    //     const statusMessage = document.createElement('img');
-    //     statusMessage.src = message.loading;
-    //     //записываем инлайн стили что бы картинка была по центру
-    //     statusMessage.style.cssText = `
-    //         display: block;
-    //         margin: 0 auto;
-    //     `;
-    //     form.append(statusMessage); 
-    
-    //При первой эмуляции медленного интернета slow 3G(вместо online) на вкладке Network в консоли изображение мелькнуло и пропало,
-    //так как эмулируется медленный интерней картинка не успела подгрузится до выполнения запроса, нужно повторить отправку формы
-    //для нормального отображения.
-    //При сбросе кеша параметр slow 3G нужно менять снова на online, а то будет долго перекешироваться страница
-    
-    //При проверке второй формы без модального окна, спиннер сдвигает форму влево, потому что верстка на флексах(фликсах) этого
-    //можно избежать если вместо аппенда  form.append(statusMessage) присоединять спиннер после формы
-            //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма используем insertAdjacentElement послеформы
-            // form.insertAdjacentElement('afterend', statusMessage);
-            
+
+    При проверке второй формы без модального окна(отправка с сайта), спиннер сдвигает форму влево, потому
+    что верстка на флексах этого можно избежать если вместо аппенда  form.append(statusMessage) 
+    присоединять спиннер после формы */
+
+        form.append(statusMessage);  // удалена в 005 что бы не сдвигалась форма используем  insertAdj
+        form.insertAdjacentElement('afterend', statusMessage); 
+
+
 }
 
 {//  506    ====    Promise (ES6)    ====
 
-    "use strict";
-    //Позволяет удобно работать с асинхронными операциями(timeOut или запросы на сервер). При выполнении клика хотим что бы только
-    // в этом случае выполнялся заданный код, тогда мы используем коллбек фунции. ПРИМЕР :Когда делаем запрос на сервер получаем
-    //данные, выполняем с ними какие то действия и снова отправляем на сервер что бы получить следующие данные и снова с ними произвести
-    //какие то операции. Цепочка действий зависит от предыдущих результатов (выполняем действие только после успешного выполнения 
-    // предыдущих действий). Для такого кода можно написать много функций обратного вызова что превратится в большой нечитабельный код,
-    // его также иногда называются call back hell.  Promise заменяет большой код с функциями обратного вызова.
+    /* Позволяет удобно работать с асинхронными операциями(timeOut или запросы на сервер). 
+    
+    При выполнении клика хотим чтобы только в этом случае выполнялся заданный код, тогда мы используем
+    коллбек фунции. 
+    
+    ПРИМЕР : Когда делаем запрос на сервер получаем данные, выполняем с ними какие то действия и снова
+    отправляем на сервер что бы получить следующие данные и снова с ними произвести какие то операции. 
+    Цепочка действий зависит от предыдущих результатов (выполняем действие только после успешного 
+    выполнения предыдущих действий). Для такого кода можно написать много функций обратного вызова что 
+    превратится в большой нечитабельный код, его также иногда называются call back hell.  
+    Promise заменяет большой код с функциями обратного вызова.
 
-    // Promise после reject/resolve – неизменны. после вызова resolve/reject промис уже не может «передумать».
-    // Когда промис переходит в состояние «выполнен» – с результатом (resolve) или ошибкой (reject) – это навсегда.
-    // Последующие вызовы resolve/reject будут просто проигнорированы.
+
+    Promise после reject/resolve – неизменны. после вызова resolve/reject промис уже не может 
+    «передумать».
+    Когда промис переходит в состояние «выполнен» – с результатом (resolve) или ошибкой (reject) – это 
+    навсегда.
+    Последующие вызовы resolve/reject будут просто проигнорированы.
 
 
-
-    // НЕБОЛЬШОЙ ПРИМЕР (вместо setTimeot  будут запросы к серверу)
-    // console.log('Запрос данных...');
-
-    // setTimeout(() => {
-    //     console.log('Подготовка данных...');
-
-    //     const product = {
-    //         name: 'TV',
-    //         price: 2000
-    //     };
-
-    //     setTimeout(() => {
-    //         product.status = 'Ordered';
-    //         console.log(product);
-    //     }, 2000);
-    // }, 2000);
-
+    НЕБОЛЬШОЙ ПРИМЕР (вместо setTimeot  будут запросы к серверу) */
 
         console.log('Запрос данных...');
 
-    //создаем новый промис с коллбек функцией внутри обычно принимает 2 аргумента function(resolve, reject). resolve, reject - функции
-    //которые мы сами сможем передавать. resolve - означает что то выполнилось правильно, reject - что то пошло не так, 
-    //обещание не выполнилось. Сеттаймут с  product.status - заменяем на resolve, потому что он выполнится только в случае выполнения
-    //предыдущего кода
-            const req = new Promise(function(resolve, reject) {
-                setTimeout(() => {
-                    console.log('Подготовка данных...');
-                
-                    const product = {
-                        name: 'TV',
-                        price: 2000
-                    };
-                
-                    resolve(product);
-                }, 2000);
-            }); 
+        setTimeout(() => {
+            console.log('Подготовка данных...');
 
-    //vscode подсказывает что есть методы req (catch, then, finally). then - запускает функцию в случае положительного выполнения
-    //предыдущего кода, будет вызыватся из места где resolve впредыдущем коде. В этом коде product не существует, поэтому его
-    //нужно вернуть из предыдущей функции, вписав аргументом в resolve(product) и req.then((product)
-    // req.then((product) => {
-    //     setTimeout(() => {
-    //         product.status = 'Ordered';
-    //         console.log(product);
-    //     }, 2000);
-    // });
+            const product = {
+                name: 'TV',
+                price: 2000
+            };
+
+            setTimeout(() => {
+                product.status = 'Ordered';
+                console.log(product);
+            }, 2000);
+        }, 2000);
+
+        console.log('Запрос данных...');
+
+
+    /* создаем новый промис с коллбек функцией внутри обычно принимает 2 аргумента 
+    function(resolve, reject). resolve, reject - функции которые мы сами сможем передавать. resolve -
+    означает что то выполнилось правильно, reject - что то пошло не так, обещание не выполнилось. 
+    Сеттаймут с  product.status - заменяем на resolve, потому что он выполнится только в случае 
+    выполнения предыдущего кода*/
+
+        const req = new Promise(function(resolve, reject) {
+            setTimeout(() => {
+                console.log('Подготовка данных...');
+            
+                const product = {
+                    name: 'TV',
+                    price: 2000
+                };
+            
+                resolve(product);
+            }, 2000);
+        }); 
+
+
+    /* vscode подсказывает что есть методы req (catch, then, finally). then - запускает функцию в случае
+    положительного выполнения предыдущего кода, будет вызыватся из места где resolve впредыдущем коде. 
+    В этом коде product не существует, поэтому его нужно вернуть из предыдущей функции, вписав аргументом
+     в resolve(product) и req.then((product) */
+
+        req.then((product) => {
+            setTimeout(() => {
+                product.status = 'Ordered';
+                console.log(product);
+            }, 2000);
+        });
         
         
     //Для дальнейших действий с кодом req.then оборачиваем его в промис как и предыдущий(исходный код) 
-    // req.then((product) => {
-    //     const req2 = new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //             product.status = 'Ordered';
-    //             resolve(product);
-    //         }, 2000);
-    //     });
-    //
-    //     req2.then(data => {
-    //         console.log(data);
-    //     });
-    // });
-    //
 
-    //***Если код не обернуть в новый промис то второе обращение then будет обращаться к первому промису и будет выполнятся не 
-    //после второго, а совместно с первым tnen ***  МОЙ ПРИМЕР
-    // const prom = new Promise((resolve, reject) => {
-    //     let x = 5*2;
-    //     setTimeout(() => {
-    //        
-    //         console.log(x);
-    //         resolve(x);
-    //     }, 2_000);
-    //    
-    // });
-    // prom.then((x) => {
-    //      setTimeout(() => {
-    //       x = x + 2;
-    //         console.log(x);
-    //         return x;
-    //     }, 2_000);
-    // });
-    // prom.then((x2) => {
-    //     setTimeout(() => {
-    //     x2 = x2 + 4;
-    //         console.log(x2);
-    //         return x2;
-    //     }, 2_000);
-    // });
-    //Тут я ожидал увидеть  в консоли 10 12 16 через каждые 2 секунды, но по факту 10 12 14 - 12 и 14 выполняются одновременно и
-    //используют данные которые отдает resolve. Для того что бы отдать данные дальше и нужно создавать новый промис.
-    // const prom = new Promise((resolve, reject) => {
-    //     let x = 5*2;
-    //     setTimeout(() => {
-    //       
-    //         console.log(x);
-    //         resolve(x);
-    //     }, 2_000);
-    //  
-    // });
-    //
-    // prom.then((x) => {
-    //     const prom2 = new Promise((resolve) =>{
-    //         setTimeout(() => {
-    //             let  x2 = x + 2;
-    //               console.log(x2);
-    //               resolve(x2);
-    //           }, 2_000);
-    //     });
-    //
-    //     prom2.then((x2) => {
-    //    
-    //         setTimeout(() => {
-    //         let    x3 = x2 + 4;
-    //             console.log(x3);
-    //         }, 2_000);
-    //     });
-    // }); 
-    //*** Но второй then обращается к prom2.then внутри предыдущего then потому что глобально нового промиса не существует
-    //он существует в prom.then - первом then. И для дальнейшего вызова снова нужно создавать новый рпомис prom3, это
-    //неудобно и накладывает ограничения, поэтому в коде ниже мы будет ВОЗВРАЩАТЬ новый промис для последующего взаимодействия
-    //с then  и для того что бы не создавать каждый раз новый промис и называть его. После первого resolve, дальнейшая 
-    //передача данных осуществляется через return
-    //*** На завершённых промисах обработчики запускаются сразу
-    //Если промис в состоянии ожидания, обработчики в .then/catch/finally будут ждать его. Однако, если промис уже завершён, 
-    //то обработчики выполнятся сразу. Что бы таймауты работали правильно нужно каждый раз вызывать новый промис
-    // const prom = new Promise((resolve, reject) => {
-    //     let x = 5*2;
-    //     setTimeout(() => {
-    //         console.log(x);
-    //         resolve(x);
-    //     }, 1_000);
-    //    
-    // });
-    //
-    // prom.then(x => {
-    //     return new Promise((resolve, reject) =>{
-    //         setTimeout(() => {
-    //             x = x + 2;
-    //             console.log(x);
-    //             resolve(x);
-    //           }, 1_000);
-    //     });
-    // }).then(x => {
-    //     return new Promise((resolve, reject) =>{
-    //     x = x + 4;
-    //     setTimeout(() => {console.log(x); resolve(x);}, 1_000);
-    //     //return x;
-    //     });
-    // }).then(x => {
-    //     return new Promise((resolve, reject) =>{
-    //      x = x + 5; 
-    //      setTimeout(() => {console.log(x); resolve(x);}, 1_000);
-    //      //return x;
-    //      });
-    // }).then(x => {
-    //     return new Promise((resolve, reject) =>{
-    //     x = x + 5;
-    //     setTimeout(() => {console.log(x); resolve(x);}, 1_000);
-    //     //return x;
-    //     });
-    // }).catch(() =>{
-    //     new Error("…");
-    // }).finally(() => {console.log(`Job's done`)});
-
-
-    //По сравнению с обычными колбеками преимуществом промисов является то что мы можем возвращать промис из then по цепочке.
-    //Когда одна операция выполнится, выполним следующую, и т.д. сокращая написание функции вот так
-    // req.then(product => {
-    //     return new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //             product.status = 'Ordered';
-    //             resolve(product);
-    //         }, 2000);
-    //     });
-    // }).then(data => {
-    //     data.modify = true;
-    //     return data;
-    // }).then((prevData) => {
-    //     console.log(prevData);
-    // });
-
-    //***МОЙ ПРИМЕР*** setTimeout работает нормально только в паре с resolve. Если в then уже идет return, из тайм аута он не вернет 
-    //значение, его нужно использовать вне таймаута, наверное из-за этого все итерации с then и  return после первого выполняются
-    //мгновенно. В консоль получаем 10 12 16 21 26. 10 12 - с интервалом 2 скунды и еще через 2 секунды  сразу 3 числа 16 21 26
-    // const prom = new Promise((resolve, reject) => {
-    //     let x = 5*2;
-    //     setTimeout(() => {
-    //        
-    //         console.log(x);
-    //         resolve(x);
-    //     }, 2_000);
-    //    
-    // });
-    //
-    // prom.then(x => {
-    //     return new Promise((resolve) =>{
-    //         setTimeout(() => {
-    //             x = x + 2;
-    //             console.log(x);
-    //             resolve(x);
-    //           }, 2_000);
-    //     });
-    // }).then(x => {
-    //     x = x + 4;
-    //     setTimeout(() => {console.log(x);}, 3_000);
-    //     return x;
-    // }).then(x => {
-    //      x = x + 5; 
-    //     setTimeout(() => {console.log(x);}, 3_000);
-    //     return x;
-    // }).then(x => {
-    //     x = x + 5;
-    //     setTimeout(() => {console.log(x);}, 3_000);
-    // });
-        
-
-
-    //При помощи reject обрабатывается невыполнение кода из-за ссылки на несуществующий файл при его запросе, не существующий сервер,
-    // падение сервера и его ответ - ошибка. Метод catch обычно идет в конце. При ошибке все then пропускаются и выполнение кода
-    //переходит на catch. (При возникновении ошибки – она отправляется в ближайший обработчик onRejected.)
-            req.then(product => {
-                return new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        product.status = 'Ordered';
-                        resolve(product);
-                    }, 2000);
-                });
-            }).then(data => {
-                data.modify = true;
-                return data;
-            }).then((prevData) => {
-                console.log(prevData);
-            }).catch(() => {
-                console.error('Произошла ошибка');
-            }).finally(() => {
-                console.log('Finally');
+        req.then((product) => {
+            const req2 = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    product.status = 'Ordered';
+                    resolve(product);
+                }, 2000);
             });
-    // Блок finally всегда в конце - позволяет выполнить действия не зависимо от успеха выполнения кода. Используется например для
-    //очистки формы от старых данных по завершении работы кода
-
-    //Пример с learn.javascript.ru/promise
-    // 'use strict';
-    // httpGet('/article/promise/userNoGithub.json')
-    // .then(JSON.parse)
-    // .then(user => httpGet(`https://api.github.com/users/${user.name}`))
-    // .then(
-    //     JSON.parse,
-    //     function githubError(error) {
-    //     if (error.code == 404) {
-    //         return {name: "NoGithub", avatar_url: '/article/promise/anon.png'};
-    //     } else {
-    //         throw error;
-    //     }
-    //     }
-    // )
-    // .then(function showAvatar(githubUser) {
-    //     let img = new Image();
-    //     img.src = githubUser.avatar_url;
-    //     img.className = "promise-avatar-example";
-    //     document.body.appendChild(img);
-    //     setTimeout(() => img.remove(), 3000);
-    // })
-    // .catch(function genericError(error) {
-    //     alert(error); // Error: Not Found
-    // });
-
         
-    // Промисификация – это когда берут асинхронную функциональность и делают для неё обёртку, возвращающую промис.
-    // После промисификации использование функциональности зачастую становится гораздо удобнее.
-    // В качестве примера сделаем такую обёртку для запросов при помощи XMLHttpRequest.
-    // Функция httpGet(url) будет возвращать промис, который при успешной загрузке данных с url будет переходить в
-    // fulfilled с этими данными, а при ошибке – в rejected с информацией об ошибке:      
-
-    //Пример с learn.javascript.ru/promise    
-    // function httpGet(url) {
-    //     return new Promise(function(resolve, reject) {
-        
-    //       var xhr = new XMLHttpRequest();
-    //       xhr.open('GET', url, true);
-        
-    //       xhr.onload = function() {
-    //         if (this.status == 200) {
-    //           resolve(this.response);
-    //         } else {
-    //           var error = new Error(this.statusText);
-    //           error.code = this.status;
-    //           reject(error);
-    //         }
-    //       };
-        
-    //       xhr.onerror = function() {
-    //         reject(new Error("Network Error"));
-    //       };
-        
-    //       xhr.send();
-    //     });
-    //   }   
-
-    //Использование:
-    //     httpGet("/article/promise/user.json")
-    //   .then(
-    //     response => alert(`Fulfilled: ${response}`),
-    //     error => alert(`Rejected: ${error}`)
-    //   );
-
-
-    //Рассмотрим методы all и race - принимают аргументом массив с промисами
-
-    // Эта функция запускается принимает аргумент time(колю времени) возвращает Promise который зарезолвится через время time
-    //Эту функцию используют для запуска одинаковых операций через разные промежутки времени
-    const test = time => {
-        return new Promise(resolve => { // ***Очень редко бывает второй аргумент reject не нужен, тогда мы его не передаем
-            setTimeout(() => resolve(), time); //resolve выполнится через time
+            req2.then(data => {
+                console.log(data);
+            });
         });
-    };
+        
 
-    test(1000).then(() => console.log('1000 ms')); // - console.log - через then для того что бы увидеть результат
-    test(2000).then(() => console.log('2000 ms'));
-    test(3000).then(() => console.log('3000 ms'));
+    //! Если код не обернуть в новый промис то второе обращение then будет обращаться к первому промису и
+    // будет выполнятся не после второго, а совместно с первым tnen 
+    //! МОЙ ПРИМЕР
 
-    // all получает массив (или другой итерируемый объект) промисов и возвращает промис, который ждёт, 
-    //пока все переданные промисы завершатся, и переходит в состояние «выполнено» с массивом их результатов.
-    //Промисы вернут результат который можем обработать через then. Этот метод служит для того что бы точно убедится что все
-    //промисы выполнились. Например запрашиваем 4 картинки из разных серверов, и что бы одновременно их показать ждем пока 
-    //все промисы выполнятся. Ориентируемся на промис который выполнится последним. Если какой-то из промисов завершился с ошибкой,
-    // то результатом Promise.all будет эта ошибка. При этом остальные промисы игнорируются.
-    Promise.all([test(1000), test(2000), test(3000)]).then(() => {
-        console.log('All');
-    });
-    //Можно дописать catch для обработки ошибки
+        const prom = new Promise((resolve, reject) => {
+            let x = 5*2;
+            setTimeout(() => {
+            
+                console.log(x);
+                resolve(x);
+            }, 2_000);
+        
+        });
+        prom.then((x) => {
+            setTimeout(() => {
+            x = x + 2;
+                console.log(x);
+                return x;
+            }, 2_000);
+        });
+        prom.then((x2) => {
+            setTimeout(() => {
+            x2 = x2 + 4;
+                console.log(x2);
+                return x2;
+            }, 2_000);
+        });
+
+
+    /* Тут я ожидал увидеть в консоли 10 12 16 через каждые 2 секунды, но по факту 10 12 14 - 12 и 14 
+    выполняются одновременно и используют данные которые отдает resolve. Для того что бы отдать данные
+    дальше и нужно создавать новый промис. */
+    
+        const prom = new Promise((resolve, reject) => {
+            let x = 5*2;
+            setTimeout(() => {
+            
+                console.log(x);
+                resolve(x);
+            }, 2_000);
+        
+        });
+        
+        prom.then((x) => {
+            const prom2 = new Promise((resolve) =>{
+                setTimeout(() => {
+                    let  x2 = x + 2;
+                    console.log(x2);
+                    resolve(x2);
+                }, 2_000);
+            });
+        
+            prom2.then((x2) => {
+        
+                setTimeout(() => {
+                let    x3 = x2 + 4;
+                    console.log(x3);
+                }, 2_000);
+            });
+        }); 
+
+
+    //! Но второй then обращается к prom2.then внутри предыдущего then потому что глобально нового 
+    /* промиса не существует он существует в prom.then - первом then. И для дальнейшего вызова снова нужно
+    создавать новый рпомис prom3, это неудобно и накладывает ограничения, поэтому в коде ниже мы будет 
+    ВОЗВРАЩАТЬ новый промис для последующего взаимодействия с then и для того что бы не создавать каждый
+    раз новый промис и называть его. После первого resolve, дальнейшая  передача данных осуществляется
+    через return
+
+    ! На завершённых промисах обработчики запускаются сразу
+    Если промис в состоянии ожидания, обработчики в .then/catch/finally будут ждать его. Однако, если 
+    промис уже завершён, то обработчики выполнятся сразу. Чтобы таймауты работали правильно нужно каждый
+    раз вызывать новый промис */
+    
+        const prom = new Promise((resolve, reject) => {
+            let x = 5*2;
+            setTimeout(() => {
+                console.log(x);
+                resolve(x);
+            }, 1_000);
+        
+        });
+        
+        prom.then(x => {
+            return new Promise((resolve, reject) =>{
+                setTimeout(() => {
+                    x = x + 2;
+                    console.log(x);
+                    resolve(x);
+                }, 1_000);
+            });
+        }).then(x => {
+            return new Promise((resolve, reject) =>{
+            x = x + 4;
+            setTimeout(() => {console.log(x); resolve(x);}, 1_000);
+            //return x;
+            });
+        }).then(x => {
+            return new Promise((resolve, reject) =>{
+            x = x + 5; 
+            setTimeout(() => {console.log(x); resolve(x);}, 1_000);
+            //return x;
+            });
+        }).then(x => {
+            return new Promise((resolve, reject) =>{
+            x = x + 5;
+            setTimeout(() => {console.log(x); resolve(x);}, 1_000);
+            //return x;
+            });
+        }).catch(() =>{
+            new Error("…");
+        }).finally(() => {console.log(`Job's done`)});
+
+
+    /* По сравнению с обычными колбеками преимуществом промисов является то что мы можем возвращать 
+    промис из then по цепочке. Когда одна операция выполнится, выполним следующую, и т.д. сокращая 
+    написание функции вот так */
+    
+        req.then(product => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    product.status = 'Ordered';
+                    resolve(product);
+                }, 2000);
+            });
+        }).then(data => {
+            data.modify = true;
+            return data;
+        }).then((prevData) => {
+            console.log(prevData);
+        });
+
+    /* МОЙ ПРИМЕР
+    setTimeout работает нормально только в паре с resolve. Если в then уже идет return, из тайм аута он
+    не вернет значение, его нужно использовать вне таймаута, наверное из-за этого все итерации с then и
+    return после первого выполняются мгновенно. В консоль получаем 10 12 16 21 26. 10 12 - с интервалом
+    2 скунды и еще через 2 секунды сразу 3 числа 16 21 26 */
+    
+        const prom = new Promise((resolve, reject) => {
+            let x = 5*2;
+            setTimeout(() => {
+            
+                console.log(x);
+                resolve(x);
+            }, 2_000);
+        
+        });
+        
+        prom.then(x => {
+            return new Promise((resolve) =>{
+                setTimeout(() => {
+                    x = x + 2;
+                    console.log(x);
+                    resolve(x);
+                }, 2_000);
+            });
+        }).then(x => {
+            x = x + 4;
+            setTimeout(() => {console.log(x);}, 3_000);
+            return x;
+        }).then(x => {
+            x = x + 5; 
+            setTimeout(() => {console.log(x);}, 3_000);
+            return x;
+        }).then(x => {
+            x = x + 5;
+            setTimeout(() => {console.log(x);}, 3_000);
+        });
+
+
+
+    /* При помощи reject обрабатывается невыполнение кода из-за ссылки на несуществующий файл при его 
+    запросе, не существующий сервер, падение сервера и его ответ - ошибка. Метод catch обычно идет в 
+    конце. При ошибке все then пропускаются и выполнение кода переходит на catch. (При возникновении 
+    ошибки – она отправляется в ближайший обработчик onRejected.) */
+            
+        req.then(product => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    product.status = 'Ordered';
+                    resolve(product);
+                }, 2000);
+            });
+        }).then(data => {
+            data.modify = true;
+            return data;
+        }).then((prevData) => {
+            console.log(prevData);
+        }).catch(() => {
+            console.error('Произошла ошибка');
+        }).finally(() => {
+            console.log('Finally');
+        });
+
+    /* Блок finally всегда в конце - позволяет выполнить действия не зависимо от успеха выполнения кода.
+    Используется например для очистки формы от старых данных по завершении работы кода
+
+
+    Пример с learn.javascript.ru/promise */
+
+        'use strict';
+        httpGet('/article/promise/userNoGithub.json')
+        .then(JSON.parse)
+        .then(user => httpGet(`https://api.github.com/users/${user.name}`))
+        .then(
+            JSON.parse,
+            function githubError(error) {
+            if (error.code == 404) {
+                return {name: "NoGithub", avatar_url: '/article/promise/anon.png'};
+            } else {
+                throw error;
+            }
+            }
+        )
+        .then(function showAvatar(githubUser) {
+            let img = new Image();
+            img.src = githubUser.avatar_url;
+            img.className = "promise-avatar-example";
+            document.body.appendChild(img);
+            setTimeout(() => img.remove(), 3000);
+        })
+        .catch(function genericError(error) {
+            alert(error); // Error: Not Found
+        });
+
+
+        
+    /* Промисификация – это когда берут асинхронную функциональность и делают для неё обёртку, 
+    возвращающую промис.
+
+    После промисификации использование функциональности зачастую становится гораздо удобнее.
+    В качестве примера сделаем такую обёртку для запросов при помощи XMLHttpRequest.
+    Функция httpGet(url) будет возвращать промис, который при успешной загрузке данных с url будет 
+    переходить в  fulfilled с этими данными, а при ошибке – в rejected с информацией об ошибке:
+    Пример с learn.javascript.ru/promise */
+
+        function httpGet(url) {
+            return new Promise(function(resolve, reject) {
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            
+            xhr.onload = function() {
+                if (this.status == 200) {
+                resolve(this.response);
+                } else {
+                var error = new Error(this.statusText);
+                error.code = this.status;
+                reject(error);
+                }
+            };
+            
+            xhr.onerror = function() {
+                reject(new Error("Network Error"));
+            };
+            
+            xhr.send();
+            });
+        }   
+
+
+    // Использование:
+
+        httpGet("/article/promise/user.json")
+      .then(
+        response => alert(`Fulfilled: ${response}`),
+        error => alert(`Rejected: ${error}`)
+      );
+
+
+
+    /* Рассмотрим методы all и race - принимают аргументом массив с промисами
+
+    Эта функция запускается принимает аргумент time(колю времени) возвращает Promise который зарезолвится
+    через время time. Эту функцию используют для запуска одинаковых операций через разные промежутки 
+    времени */
+
+        const test = time => {
+            return new Promise(resolve => { //! Очень редко когда аргумент reject не нужен, тогда не передаем
+                setTimeout(() => resolve(), time); //resolve выполнится через time
+            });
+        };
+
+        test(1000).then(() => console.log('1000 ms')); // - console.log - через then для того что 
+        test(2000).then(() => console.log('2000 ms')); // бы увидеть результат
+        test(3000).then(() => console.log('3000 ms'));
+
+
+    /* all получает массив (или другой итерируемый объект) промисов и возвращает промис, который ждёт, 
+    пока все переданные промисы завершатся, и переходит в состояние «выполнено» с массивом их результатов.
+    Промисы вернут результат который можем обработать через then. Этот метод служит для того что бы точно
+    убедится что все промисы выполнились. Например запрашиваем 4 картинки из разных серверов, и что бы 
+    одновременно их показать ждем пока все промисы выполнятся. Ориентируемся на промис который выполнится
+    последним. Если какой-то из промисов завершился с ошибкой, то результатом Promise.all будет эта 
+    ошибка. При этом остальные промисы игнорируются. */
+
+        Promise.all([test(1000), test(2000), test(3000)]).then(() => {
+            console.log('All');
+        });
+
+    // Можно дописать catch для обработки ошибки
+
 
     // Пример с learn.javascript.ru/promise
-    // Promise.all([
-    //     httpGet('/article/promise/user.json'),
-    //     httpGet('/article/promise/guest.json'),
-    //     httpGet('/article/promise/no-such-page.json') // (нет такой страницы)
-    //   ]).then(
-    //     result => alert("не сработает"),
-    //     error => alert("Ошибка: " + error.message) // Ошибка: Not Found
-    //   )
+
+        Promise.all([
+            httpGet('/article/promise/user.json'),
+            httpGet('/article/promise/guest.json'),
+            httpGet('/article/promise/no-such-page.json') // (нет такой страницы)
+        ]).then(
+            result => alert("не сработает"),
+            error => alert("Ошибка: " + error.message) // Ошибка: Not Found
+        )
 
         
-    // race  - в отличие от all, результатом будет только первый успешно выполнившийся промис из списка. Остальные игнорируются.
-    //этот метод начнет выполнятся как только выполнится самый первый промис из массива
+    //! race  - в отличие от all, результатом будет только первый успешно выполнившийся промис из списка.
+    // Остальные игнорируются. Этот метод начнет выполнятся как только выполнится самый первый промис 
+    // из массива
+
     Promise.race([test(1000), test(2000), test(3000)]).then(() => {
         console.log('Race');
     });
-    // 1000 ms
-    // Race
-    // 2000 ms
-    // 3000 ms
-    // All
 
-    //     Пример с learn.javascript.ru/promise
-    //     Promise.race([
-    //         httpGet('/article/promise/user.json'),
-    //         httpGet('/article/promise/guest.json')
-    //       ]).then(firstResult => {
-    //         firstResult = JSON.parse(firstResult);
-    //         alert( firstResult.name ); // iliakan или guest, смотря что загрузится раньше
-    //       });
+        // 1000 ms
+        // Race
+        // 2000 ms
+        // 3000 ms
+        // All
 
 
-    // ИТОГО
-    // Промис – это специальный объект, который хранит своё состояние, текущий результат (если есть) и колбэки.
+    // Пример с learn.javascript.ru/promise
 
-    // При создании new Promise((resolve, reject) => ...) автоматически запускается функция-аргумент, 
-    //которая должна вызвать resolve(result) при успешном выполнении и reject(error) – при ошибке.
+        Promise.race([
+            httpGet('/article/promise/user.json'),
+            httpGet('/article/promise/guest.json')
+          ]).then(firstResult => {
+            firstResult = JSON.parse(firstResult);
+            alert( firstResult.name ); // iliakan или guest, смотря что загрузится раньше
+          });
 
-    // Аргумент resolve/reject (только первый, остальные игнорируются) передаётся обработчикам на этом промисе.
 
-    // Обработчики назначаются вызовом .then/catch.
 
-    // Для передачи результата от одного обработчика к другому используется чейнинг.
+    //! ИТОГО
+    /* Промис – это специальный объект, который хранит своё состояние, текущий результат (если есть) и 
+                колбэки.
 
-    // У промисов есть некоторые ограничения. В частности, стандарт не предусматривает какой-то метод для «отмены» промиса, 
-    //хотя в ряде ситуаций (http-запросы) это было бы довольно удобно. Возможно, он появится в следующей версии стандарта JavaScript.
+    При создании new Promise((resolve, reject) => ...) автоматически запускается функция-аргумент, 
+    которая должна вызвать resolve(result) при успешном выполнении и reject(error) – при ошибке.
 
-    // В современной JavaScript-разработке сложные цепочки с промисами используются редко, так как они куда проще 
-    //описываются при помощи генераторов с библиотекой co, которые рассмотрены в соответствующей главе. Можно сказать, 
-    //что промисы лежат в основе более продвинутых способов асинхронной разработки.
+    Аргумент resolve/reject (только первый, остальные игнорируются) передаётся обработчикам на этом 
+    промисе.
 
-    //***Функция для выполнения действия через заданное количество времени на промисе
-    // function delay(ms) {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    //   }
-    //   delay(1000).then(() => console.log('выполнилось через 1 секунду'));
-    //   delay(2000).then(() => console.log('выполнилось через 2 секунду'));
-    //   delay(3000).then(() => console.log('выполнилось через 3 секунду'));
-    //Заметьте, что resolve вызывается без аргументов. Мы не возвращаем из delay ничего, просто гарантируем задержку.
+    Обработчики назначаются вызовом .then/catch.
+
+    Для передачи результата от одного обработчика к другому используется чейнинг.
+
+    У промисов есть некоторые ограничения. В частности, стандарт не предусматривает какой-то метод для 
+    «отмены» промиса, хотя в ряде ситуаций (http-запросы) это было бы довольно удобно. Возможно, он
+    появится в следующей версии стандарта JavaScript.
+
+    В современной JavaScript-разработке сложные цепочки с промисами используются редко, так как они куда
+    проще описываются при помощи генераторов с библиотекой co, которые рассмотрены в соответствующей 
+    главе. Можно сказать, что промисы лежат в основе более продвинутых способов асинхронной разработки.
+
+
+
+    ! Функция для выполнения действия через заданное количество времени на промисе */
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        delay(1000).then(() => console.log('выполнилось через 1 секунду'));
+        delay(2000).then(() => console.log('выполнилось через 2 секунду'));
+        delay(3000).then(() => console.log('выполнилось через 3 секунду'));
+    
+    //! Заметьте, что resolve вызывается без аргументов. Мы не возвращаем из delay ничего, просто 
+    // гарантируем задержку.
+
 
 }
 
