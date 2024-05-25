@@ -11190,9 +11190,9 @@ window.addEventListener("DOMContentLoaded", () => {
     Но можно вручную прописать совместимость с PHP в файле допишем строку 
 
         <?php echo 
-        $_POST = json_decode(file_get_contents("php://input), true);
-        var_dump($_POST); 
-    
+            $_POST = json_decode(file_get_contents("php://input"), true);
+            var_dump($_POST); 
+        ?>
     */
 
 
