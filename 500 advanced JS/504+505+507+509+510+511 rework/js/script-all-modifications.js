@@ -795,8 +795,190 @@
 }
 
 {// 509 Инициировали проект npm + установили json-server
+
     //=== 509
     fetch('http://localhost:3000/menu')
         .then(data => data.json())
         .then(data => console.log(data))
+
+}
+
+{// 510 Карточки из data с сервера, рефакторинг кода
+
+    // 510 Строим карточки на основе данных с сервера
+    const getResouce = async (url) => {
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
+
+        return await res.json();
+    };
+
+    getResouce("http://localhost:3000/menu").then((data) => {
+        data.forEach( ({img, altimg, title, descr, price}) => {
+            new MenuCard(img ,altimg, title, descr, price,
+                ".menu .container",
+                "menu__item"
+            ).render();
+        });
+    });
+
+    // 510 Второй вариант создания елементов на лету без калссов
+    // getResouce("http://localhost:3000/menu").then((data) => createCard(data));
+
+    // function createCard(data) {
+    //     data.forEach(({ img, altimg, title, descr, price }) => {
+    //         const element = document.createElement("div");
+    //         const usdCourse = 41
+
+    //         element.classList = "menu__item";
+
+    //         element.innerHTML = `
+    //         <img src=${img} alt=${altimg}>
+    //         <h3 class="menu__item-subtitle">${title}</h3>
+    //         <div class="menu__item-descr">${descr}</div>
+    //         <div class="menu__item-divider"></div>
+    //         <div class="menu__item-price">
+    //             <div class="menu__item-cost">Цена:</div>
+    //             <div class="menu__item-total"><span>${price*usdCourse}</span> грн/день</div>
+    //         </div>
+    //         `;
+    //         document.querySelector(".menu .container").append(element);
+    //     });
+    // }
+
+    // 510 заменили запросом на сервер getResouce
+    // new MenuCard(
+    //     "img/tabs/vegy.jpg",
+    //     "vegy",
+    //     'Меню "Фитнес"”',
+    //     'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов...',
+    //     9,
+    //     ".menu .container",
+    //     "menu__item",
+    //     "big"
+    // ).render();
+
+    // new MenuCard(
+    //     "img/tabs/elite.jpg",
+    //     "elite",
+    //     "меню “Премиум”",
+    //     "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное ...",
+    //     14,
+    //     ".menu .container",
+    //     "menu__item"
+    // ).render();
+
+    // new MenuCard(
+    //     "img/tabs/post.jpg",
+    //     "post",
+    //     'Меню "Постное"',
+    //     "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов ...",
+    //     12,
+    //     ".menu .container",
+    //     "menu__item"
+    // ).render();
+
+    //=== 504 POST запрос, собираем данные из полей Имя и Телефон в двух местах(на сайте и в модальном окне)
+    //=== + 507
+    const forms = document.querySelectorAll("form");
+
+    const message = {
+        // loading: "Загрузка", // 505 добавили путь к спиннеру вместо текста
+        loading: "img/form/spinner.svg",
+        success: "Спасибо! До связи",
+        failure: "Что-то пошло не так...",
+    };
+
+    forms.forEach((item) => {
+        bindPostData(item);
+    });
+
+    //=== 510 Оптимизируем ф-и
+    const postData = async (url, data) => {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: data,
+        });
+
+        return await res.json();
+    };
+
+    function bindPostData(form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // 505 изменяем для показа картинки и класс
+            const statusMessage = document.createElement("img");
+            statusMessage.src = message.loading;
+            statusMessage.style.cssText = `
+                    display: block;
+                    margin: 0 auto;
+                `;
+            form.insertAdjacentElement("afterend", statusMessage);
+
+            const formData = new FormData(form);
+
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+
+            // 510 заменен на json
+            // const object = {};
+            // formData.forEach(function (value, key) {
+            //     object[key] = value;
+            // });
+
+            // 510 заменена на PostData
+            // fetch("server.php", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-type": "application/json",
+            //     },
+            //     body: JSON.stringify(object),
+            // })
+            postData("http://localhost:3000/requests", json)
+                // 510 заменена на json() в PostData
+                // .then((data) => data.text())
+                .then((data) => {
+                    console.log(data);
+                    showThanksModal(message.success);
+                    statusMessage.remove();
+                })
+                .catch(() => {
+                    showThanksModal(message.failure);
+                })
+                .finally(() => {
+                    form.reset();
+                });
+        });
+    }
+
+}
+
+{// 511 Axios
+
+    // 511 заменили на axios
+    // getResouce("http://localhost:3000/menu")
+    // .then((data) => {
+    //     data.forEach( ({img, altimg, title, descr, price}) => {
+    //         new MenuCard(img ,altimg, title, descr, price,
+    //             ".menu .container",
+    //             "menu__item"
+    //         ).render();
+    //     });
+    // });
+
+    axios.get("http://localhost:3000/menu")
+        .then(data => data.data.forEach( ({img, altimg, title, descr, price}) => {
+            new MenuCard(img ,altimg, title, descr, price,
+                ".menu .container",
+                "menu__item"
+                ).render();
+            })
+        )
+
 }

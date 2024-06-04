@@ -235,36 +235,25 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    new MenuCard(
-        "img/tabs/vegy.jpg",
-        "vegy",
-        'Меню "Фитнес"”',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов...',
-        9,
-        ".menu .container",
-        "menu__item",
-        "big"
-    ).render();
+    // 510 Строим карточки на основе данных с сервера
+    const getResouce = async (url) => {
+        const res = await fetch(url);
 
-    new MenuCard(
-        "img/tabs/elite.jpg",
-        "elite",
-        "меню “Премиум”",
-        "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное ...",
-        14,
-        ".menu .container",
-        "menu__item"
-    ).render();
+        if (!res.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
 
-    new MenuCard(
-        "img/tabs/post.jpg",
-        "post",
-        'Меню "Постное"',
-        "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов ...",
-        12,
-        ".menu .container",
-        "menu__item"
-    ).render();
+        return await res.json();
+    };
+
+    axios.get("http://localhost:3000/menu")
+        .then(data => data.data.forEach( ({img, altimg, title, descr, price}) => {
+            new MenuCard(img ,altimg, title, descr, price,
+                ".menu .container",
+                "menu__item"
+                ).render();
+            })
+        )
 
     //=== 504 POST запрос, собираем данные из полей Имя и Телефон в двух местах(на сайте и в модальном окне)
     //=== + 507
@@ -278,14 +267,26 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     forms.forEach((item) => {
-        postData(item);
+        bindPostData(item);
     });
 
-    function postData(form) {
+    //=== 510 Оптимизируем ф-и
+    const postData = async (url, data) => {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: data,
+        });
+
+        return await res.json();
+    };
+
+    function bindPostData(form) {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            // 505 изменяем для показа картинки и класс
             const statusMessage = document.createElement("img");
             statusMessage.src = message.loading;
             statusMessage.style.cssText = `
@@ -296,28 +297,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
             const formData = new FormData(form);
 
-            const object = {};
-            formData.forEach(function (value, key) {
-              object[key] = value;
-            });
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            fetch("server.php", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify(object),
-            })
-            .then(data => data.text())
-            .then(data => { 
-                console.log(data);
-                showThanksModal(message.success);
-                statusMessage.remove(); 
-            }).catch(() => {
-                showThanksModal(message.failure);
-            }).finally(() => {
-                form.reset();
-            });
+            postData("http://localhost:3000/requests", json)
+                .then((data) => {
+                    console.log(data);
+                    showThanksModal(message.success);
+                    statusMessage.remove();
+                })
+                .catch(() => {
+                    showThanksModal(message.failure);
+                })
+                .finally(() => {
+                    form.reset();
+                });
         });
     }
 
@@ -346,8 +339,8 @@ window.addEventListener("DOMContentLoaded", () => {
         }, 4000);
     }
 
-//=== 509
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(data => console.log(data))
+    //=== 509
+    fetch("http://localhost:3000/menu")
+        .then((data) => data.json())
+        // .then((data) => console.log(data));
 });

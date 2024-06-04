@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/500 advanced JS/504+505+507+509 rework/node_modules
+/500 advanced JS/504+505+507+509+510+511 rework/node_modules
 /.pnp
 .pnp.js
 
