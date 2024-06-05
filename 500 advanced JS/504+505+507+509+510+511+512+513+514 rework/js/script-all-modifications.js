@@ -1,5 +1,5 @@
 "use strict";
-{//  403 Tabs
+{    //  403 Tabs
 
     window.addEventListener("DOMContentLoaded", () => {
         //получаем элементы в переменные
@@ -53,7 +53,7 @@
     });
 }
 
-{//  408 Timer обратного отсчета + 409 фикс прошедшей даты
+{    //  408 Timer обратного отсчета + 409 фикс прошедшей даты
 
     ("use strict");
     const deadLine = "2025-07-20"; //Строкой задаем время окончания, такие строки получают еще из
@@ -130,7 +130,7 @@
     // дату которую задаем или откуда то получаем (панель управления, сервер)
 }
 
-{// 411 Динамическое модально окно
+{    // 411 Динамическое модально окно
     ("use strict");
     /* По нажатии на одну из двух разных кнопок будет выскакивать пока еще скрытое модальное окно 
   <div class="modal">. Кнопки с разными аттрибутами и поэтому мы их объеденим одним дата аттрибутом 
@@ -220,7 +220,7 @@
     //что бы closeModal(); по Esc срабатывал только когда открыто окно modal.classList.contains("show")
 }
 
-{// 412 весь код вместе с предыдущими
+{    // 412 весь код вместе с предыдущими
 
     const modal = document.querySelector(".modal"),
         modalTrigger = document.querySelectorAll("[data-modal]"),
@@ -290,7 +290,7 @@
     window.addEventListener("scroll", showModalByScroll);
 }
 
-{//  418  карточки динамически при помощи классов.
+{    //  418  карточки динамически при помощи классов.
     class MenuCard {
         constructor(src, alt, title, descr, price, parentSelector) {
             this.src = src;
@@ -368,7 +368,7 @@
                 <div class="menu__item"></div> */
 }
 
-{//  419 используем rest оператор
+{    //  419 используем rest оператор
 
     //В методе render мы создаем лишний div, что бы от этого избавится нужно класс "menu__item" присвоить этому div
     //но что бы нам присвоить еще классы этому div которые могут появится в будущем, можно их задать через rest
@@ -456,7 +456,7 @@
     ).render();
 }
 
-{//  504 POST отправка данных на сервер
+{    //  504 POST отправка данных на сервер
 
     /* Задача собрать данные из форм Имя и Телефон в двух местах(на сайте и в модальном окне) и отправить
   на сервер при нажатии кнопки
@@ -595,7 +595,7 @@
   */
 }
 
-{//  505 Красивое оповещение пользователя
+{    //  505 Красивое оповещение пользователя
 
     // Изменения прошлого кода
 
@@ -691,16 +691,16 @@
     }
 }
 
-{//  507 Переписываем запросы с помощью fetch
+{    //  507 Переписываем запросы с помощью fetch
 
     // 1) отправим классическую формдейту 2) отправим JSON файл на наш сервер
 
-    function postData(form) { 
-        form.addEventListener('submit', (e) => {  
-            e.preventDefault(); 
-            
+    function postData(form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
             // 505 изменяем для показа картинки и класс
-            const statusMessage = document.createElement('img');
+            const statusMessage = document.createElement("img");
             statusMessage.src = message.loading;
             //записываем инлайн стили что бы картинка была по центру
             statusMessage.style.cssText = `
@@ -708,15 +708,15 @@
                 margin: 0 auto;
             `;
             //form.append(statusMessage);  - удалена в 005 что бы не сдвигалась форма
-            form.insertAdjacentElement('afterend', statusMessage);
+            form.insertAdjacentElement("afterend", statusMessage);
 
             // 507 Убираем, вместо него будет fetch - который перемещаем ниже под создание formData
-            // const req = new XMLHttpRequest(); 
-            // req.open('POST', 'server.php'); 
-            
+            // const req = new XMLHttpRequest();
+            // req.open('POST', 'server.php');
+
             // 507 из req.setRequestHeader берем headers только через двоеточие и удаляем строку
             //req.setRequestHeader('Content-type', 'application/json');
-        
+
             const formData = new FormData(form);
 
             // 507- пока закоментируем, отправляем первый вариант с FormData и превращать в json не нужно
@@ -726,7 +726,6 @@
             // });
             // const json = JSON.stringify(object);
 
-    
             // req.send(formData);  //507 убрано
 
             // 507  Раньше обрабатывали результат запроса так, теперь с помощью промисов
@@ -735,75 +734,79 @@
             //         console.log(req.response);
             //         showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
             //         form.reset(); //Удалили таймаут потому что она будет использоваться только для спинера
-            //         statusMessage.remove(); // удаляется спиннер   
+            //         statusMessage.remove(); // удаляется спиннер
             //     }else{
             //         showThanksModal(message.failure);
             //     }
             // });
 
-            fetch('server.php', {
-                method: 'POST',
+            fetch("server.php", {
+                method: "POST",
                 // headers: {      // заголовок раскоментируем когда будем отправлять json данные
                 //     'Content-type': 'application/json'
                 // },
-                body: formData
-            }).then(data => data.text()) // От сервера пришел ответ Responce объект, но не данные которые
-            // мы отправляли, что бы понимать какой ответ приходит нужно этот ответ модифицировать. В 
-            // данном случае в текст, потому что мы знаем что отправляли не json. ! Так же в server.php
-            //  закоментируем строку для работы с json пока работаем с formData
-            .then(data => { 
-                console.log(data);
-                showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
-                statusMessage.remove(); // удаляется спиннер  
-            }).catch(() => {
-                showThanksModal(message.failure); // Показываем ошибку если есть
-            }).finally(() => {
-                form.reset(); //очищаем форму в любом случае в конце этого кода
-            });
+                body: formData,
+            })
+                .then((data) => data.text()) // От сервера пришел ответ Responce объект, но не данные которые
+                // мы отправляли, что бы понимать какой ответ приходит нужно этот ответ модифицировать. В
+                // данном случае в текст, потому что мы знаем что отправляли не json. ! Так же в server.php
+                //  закоментируем строку для работы с json пока работаем с formData
+                .then((data) => {
+                    console.log(data);
+                    showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
+                    statusMessage.remove(); // удаляется спиннер
+                })
+                .catch(() => {
+                    showThanksModal(message.failure); // Показываем ошибку если есть
+                })
+                .finally(() => {
+                    form.reset(); //очищаем форму в любом случае в конце этого кода
+                });
         });
     }
 
-    
     // Вариант 2 чтобы передать JSON изменяем
 
-        const object = {};
-        formData.forEach(function(value, key){
-            object[key] = value;
-        });
+    const object = {};
+    formData.forEach(function (value, key) {
+        object[key] = value;
+    });
 
-        // const json = JSON.stringify(object); // - избавляемся от лишней переменной
+    // const json = JSON.stringify(object); // - избавляемся от лишней переменной
 
-        fetch('server.php', {
-            method: 'POST',
-            headers: {                // заголовок раскоментируем для отправки json данных 
-                'Content-type': 'application/json' 
-                //***Так же в Сервере .php  раскомментируем строку для работы с json
-            },
-            body: JSON.stringify(object)
-            //body: formData 
-        }).then(data => data.text()) 
-        .then(data => { 
+    fetch("server.php", {
+        method: "POST",
+        headers: {
+            // заголовок раскоментируем для отправки json данных
+            "Content-type": "application/json",
+            //***Так же в Сервере .php  раскомментируем строку для работы с json
+        },
+        body: JSON.stringify(object),
+        //body: formData
+    })
+        .then((data) => data.text())
+        .then((data) => {
             console.log(data);
             showThanksModal(message.success); // запускаем нашу функцию с аргументом сообщением
-            statusMessage.remove(); // удаляется спиннер  
-        }).catch(() => {
+            statusMessage.remove(); // удаляется спиннер
+        })
+        .catch(() => {
             showThanksModal(message.failure); // Показываем ошибку если есть
-        }).finally(() => {
+        })
+        .finally(() => {
             form.reset(); //очищаем форму в любом случае в конце этого кода
         });
-
 }
 
-{// 509 Инициировали проект npm + установили json-server
+{    // 509 Инициировали проект npm + установили json-server
 
     //=== 509
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(data => console.log(data))
-
+    fetch("http://localhost:3000/menu")
+        .then((data) => data.json())
+        .then((data) => console.log(data));
 }
 
-{// 510 Карточки из data с сервера, рефакторинг кода
+{    // 510 Карточки из data с сервера, рефакторинг кода
 
     // 510 Строим карточки на основе данных с сервера
     const getResouce = async (url) => {
@@ -817,8 +820,13 @@
     };
 
     getResouce("http://localhost:3000/menu").then((data) => {
-        data.forEach( ({img, altimg, title, descr, price}) => {
-            new MenuCard(img ,altimg, title, descr, price,
+        data.forEach(({ img, altimg, title, descr, price }) => {
+            new MenuCard(
+                img,
+                altimg,
+                title,
+                descr,
+                price,
                 ".menu .container",
                 "menu__item"
             ).render();
@@ -956,10 +964,9 @@
                 });
         });
     }
-
 }
 
-{// 511 Axios
+{    // 511 Axios
 
     // 511 заменили на axios
     // getResouce("http://localhost:3000/menu")
@@ -972,13 +979,159 @@
     //     });
     // });
 
-    axios.get("http://localhost:3000/menu")
-        .then(data => data.data.forEach( ({img, altimg, title, descr, price}) => {
-            new MenuCard(img ,altimg, title, descr, price,
+    axios.get("http://localhost:3000/menu").then((data) =>
+        data.data.forEach(({ img, altimg, title, descr, price }) => {
+            new MenuCard(
+                img,
+                altimg,
+                title,
+                descr,
+                price,
                 ".menu .container",
                 "menu__item"
-                ).render();
-            })
-        )
+            ).render();
+        })
+    );
+}
 
+{    // 512 Простой слайдер
+
+    // Дописываем ниже предыдущего кода
+
+    // Получаем эл. со страницы
+    const slides = document.querySelectorAll(".offer__slide"),
+        prev = document.querySelector(".offer__slider-prev"),
+        next = document.querySelector(".offer__slider-next"),
+        total = document.querySelector("#total"),
+        current = document.querySelector("#current");
+
+    // Начальный номер слайда, задаем 1, а не 0 для того чтобы адекватно показывало на странице, а для
+    // работы с массивом будем отнимать 1
+    let slideIndex = 1;
+
+    // Ф-я показа нужного слайда, скрывает все остальные. Проверяет границы при клике на кнопки
+    // устанавливая нужный индекс, делает проверку на подставление 0 к номеру слайдера если он меньше
+    // чем 10 каждый раз при клике, потому что ф-я вызывается каждый раз при клике на кнопку. В уроке
+    //! сравниваем с slides.length < 10 - но тогда если слайдов будет 11, то 0 не подставится, нужно
+    //! сравнивать с slideIndex
+    function showSlides(n) {
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach((item) => (item.style.display = "none"));
+
+        slides[slideIndex - 1].style.display = "block";
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    }
+
+    // Ф-я изменения индекса, если передают -1 тогда отнимает, если 1 добавляет, срабатывает при каждом
+    // клике и вызывает ф-ю показа слайдов
+    function plusSlides(n) {
+        showSlides((slideIndex += n));
+    }
+
+    prev.addEventListener("click", () => {
+        plusSlides(-1);
+    });
+
+    next.addEventListener("click", () => {
+        plusSlides(1);
+    });
+
+    // Инициализируем слайдер(запускаем один раз ф-ю при загрузке страницы с номером слайда по умолчанию)
+    showSlides(slideIndex);
+
+    // Проверка на подставление 0 в общее количество слайдов, запускается 1 раз при запуске страницы
+    // можно обернуть в ф-ю, но сейчас не критично
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else {
+        total.textContent = slides.length;
+    }
+}
+
+{    // 513 Красивый слайдер через смещение
+
+    // Заменили предыдущий код со слайдером
+    const slides = document.querySelectorAll(".offer__slide"),
+        prev = document.querySelector(".offer__slider-prev"),
+        next = document.querySelector(".offer__slider-next"),
+        total = document.querySelector("#total"),
+        current = document.querySelector("#current"),
+        slidesWrapper = document.querySelector(".offer__slider-wrapper"),
+        slidesField = document.querySelector(".offer__slider-inner"),
+        width = window.getComputedStyle(slidesWrapper).width;
+
+    let slideIndex = 1;
+    let offset = 0;
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+        current.textContent = `0${slideIndex}`;
+    } else {
+        total.textContent = slides.length;
+        current.textContent = slideIndex;
+    }
+
+    slidesField.style.width = 100 * slides.length + "%";
+    slidesField.style.display = "flex";
+    slidesField.style.transition = "0.5s all";
+
+    slidesWrapper.style.overflow = "hidden";
+
+    slides.forEach((slide) => (slide.style.width = width));
+
+    next.addEventListener("click", () => {
+        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length - 2);
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == slides.length) {
+            slideIndex = 1;
+        } else {
+            slideIndex++;
+        }
+
+        if (slideIndex < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    });
+
+    prev.addEventListener("click", () => {
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+
+        if (slideIndex < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    });
 }
