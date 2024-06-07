@@ -1136,18 +1136,18 @@
     });
 }
 
-{// 514 add dots to slider
+{   // 514 add dots to slider
 
-        //=== 513 slider carousel + 514 slider dots
-        const slides = document.querySelectorAll('.offer__slide'),
-        slider = document.querySelector('.offer__slider'),
-        prev = document.querySelector('.offer__slider-prev'),
-        next = document.querySelector('.offer__slider-next'),
-        total = document.querySelector('#total'),
-        current = document.querySelector('#current'),
-        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-        slidesField = document.querySelector('.offer__slider-inner'),
-        width = window.getComputedStyle(slidesWrapper).width
+//=== 513 slider carousel + 514 slider dots
+const slides = document.querySelectorAll('.offer__slide'),
+slider = document.querySelector('.offer__slider'),
+prev = document.querySelector('.offer__slider-prev'),
+next = document.querySelector('.offer__slider-next'),
+total = document.querySelector('#total'),
+current = document.querySelector('#current'),
+slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+slidesField = document.querySelector('.offer__slider-inner'),
+width = window.getComputedStyle(slidesWrapper).width
 
   let slideIndex = 1
   let offset = 0
@@ -1256,5 +1256,256 @@
       })
   })
 
+}
+
+{   // 516 use RegExp
+
+    function getNumberFromCss (str) {
+        return +str.replace(/\D/g, '')
+    }
+
+    next.addEventListener("click", () => {
+        if (offset == getNumberFromCss(width) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += getNumberFromCss(width)
+        }
+
+        shiftSlidesRow();
+
+        if (slideIndex == slides.length) {
+            slideIndex = 1;
+        } else {
+            slideIndex++;
+        }
+
+        addZeroToCurrentIndex();
+        setActiveDot();
+    });
+
+    prev.addEventListener("click", () => {
+        if (offset == 0) {
+            offset = getNumberFromCss(width) * (slides.length - 1);
+        } else {
+            offset -= getNumberFromCss(width)
+        }
+
+        shiftSlidesRow();
+
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+
+        addZeroToCurrentIndex();
+        setActiveDot();
+    });
+
+    dots.forEach((dot) => {
+        dot.addEventListener("click", (e) => {
+            const slideTo = e.target.getAttribute("data-slide-to");
+
+            slideIndex = slideTo;
+            offset = getNumberFromCss(width) * (slideTo - 1);
+
+            shiftSlidesRow();
+            addZeroToCurrentIndex();
+            setActiveDot();
+        });
+    });
+
+
+}
+
+{   // 517 calculator
+    // Пишем ниже предыдущего кода, были изменения в верстке(+id, +data-ratio)
+
+    // 517 Calculator
+    const result =document.querySelector('.calculating__result span')
+    let sex = 'female', 
+        height, weight, age, 
+        ratio = 1.375
+
+    function calcTotal() {
+        if(!sex || !height || !weight || !age || !ratio){
+            result.textContent = '____'
+            return
+        }
+
+        if(sex === 'female') {
+            result.textContent = Math.round((447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio)
+        } else {
+            result.textContent = Math.round((88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio)
+        }
+
+    }
+
+    calcTotal()
+
+    function getStaticInformatio(parentSelector, activeClass) {
+        const elements = document.querySelectorAll(`${parentSelector} div`)
+
+        elements.forEach(el =>{
+            el.addEventListener('click', (e) => {
+                if(e.target.getAttribute('data-ratio')) {
+                    ratio = e.target.getAttribute('data-ratio')
+                } else {
+                    sex = e.target.getAttribute('id')
+                }
+    
+                elements.forEach(el => {
+                    el.classList.remove(activeClass)
+                })
+    
+                e.target.classList.add(activeClass)
+    
+                calcTotal()
+            })
+        })
+    }
+
+    getStaticInformatio( '#gender', 'calculating__choose-item_active')
+    getStaticInformatio( '.calculating__choose_big', 'calculating__choose-item_active')
+
+    function getDymanicInformation(selector) {
+        const input = document.querySelector(selector)
+
+        input.addEventListener('input', (e) => {
+            switch (e.target.getAttribute('id')) {
+                case 'height':
+                    height = +input.value
+                    break;
+                case 'weight':
+                    weight = +input.value
+                    break;
+                case 'age' :
+                    age = +input.value
+                    break;
+            }
+
+            calcTotal()
+        })
+    }
+
+    getDymanicInformation('#height')
+    getDymanicInformation('#weight')
+    getDymanicInformation('#age')
+
+}
+
+{   // 518 enhanced calculator (RegExp & localStorage)
+
+    const result =document.querySelector('.calculating__result span')
+    let sex, height, weight, age, ratio
+
+    if (localStorage.getItem('sex'))  {
+        sex = localStorage.getItem('sex') 
+    } else {
+        sex = 'female'
+        localStorage.setItem('sex', 'female')
+    }
+
+    if (localStorage.getItem('ratio'))  {
+        ratio = localStorage.getItem('ratio') 
+    } else {
+        ratio = 1.375
+        localStorage.setItem('ratio', 1.375)
+    }
+
+    function initlocalSettings (selector, activeClass) {
+        const elements = document.querySelectorAll(selector)
+
+        elements.forEach(el => {
+            el.classList.remove(activeClass)
+            
+            if (el.getAttribute('id') === localStorage.getItem('sex')) {
+                el.classList.add(activeClass)
+            }
+
+            if (el.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
+                el.classList.add(activeClass)
+            }
+        })
+    }
+
+    initlocalSettings('#gender div', 'calculating__choose-item_active')
+    initlocalSettings( '.calculating__choose_big div', 'calculating__choose-item_active')
+
+    function calcTotal() {
+        if(!sex || !height || !weight || !age || !ratio){
+            result.textContent = '____'
+            return
+        }
+
+        if(sex === 'female') {
+            result.textContent = Math.round((447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio)
+        } else {
+            result.textContent = Math.round((88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio)
+        }
+
+    }
+
+    calcTotal()
+
+    function getStaticInformation(selector, activeClass) {
+        const elements = document.querySelectorAll(selector)
+
+        elements.forEach(el =>{
+            el.addEventListener('click', (e) => {
+                if(e.target.getAttribute('data-ratio')) {
+                    ratio = e.target.getAttribute('data-ratio')
+                    localStorage.setItem('ratio', ratio)
+                } else {
+                    sex = e.target.getAttribute('id')
+                    localStorage.setItem('sex', sex)
+                }
+    
+                elements.forEach(el => {
+                    el.classList.remove(activeClass)
+                })
+    
+                e.target.classList.add(activeClass)
+    
+                calcTotal()
+            })
+        })
+    }
+
+    getStaticInformation( '#gender div', 'calculating__choose-item_active')
+    getStaticInformation( '.calculating__choose_big div', 'calculating__choose-item_active')
+
+    function getDymanicInformation(selector) {
+        const input = document.querySelector(selector)
+
+        input.addEventListener('input', (e) => {
+
+            if (input.value.match(/\D/g)) {
+                input.style.border = `1px red solid`
+            } else {
+                input.style.border = `none`
+            }
+
+            switch (e.target.getAttribute('id')) {
+                case 'height':
+                    height = +input.value
+                    break;
+                case 'weight':
+                    weight = +input.value
+                    break;
+                case 'age' :
+                    age = +input.value
+                    break;
+            }
+
+            calcTotal()
+        })
+    }
+
+    getDymanicInformation('#height')
+    getDymanicInformation('#weight')
+    getDymanicInformation('#age')
+
+    
 
 }

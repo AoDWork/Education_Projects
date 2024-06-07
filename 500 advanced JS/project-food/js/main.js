@@ -246,14 +246,19 @@ window.addEventListener("DOMContentLoaded", () => {
         return await res.json();
     };
 
-    axios.get("http://localhost:3000/menu")
-        .then(data => data.data.forEach( ({img, altimg, title, descr, price}) => {
-            new MenuCard(img ,altimg, title, descr, price,
+    axios.get("http://localhost:3000/menu").then((data) =>
+        data.data.forEach(({ img, altimg, title, descr, price }) => {
+            new MenuCard(
+                img,
+                altimg,
+                title,
+                descr,
+                price,
                 ".menu .container",
                 "menu__item"
-                ).render();
-            })
-        )
+            ).render();
+        })
+    );
 
     //=== 504 POST запрос, собираем данные из полей Имя и Телефон в двух местах(на сайте и в модальном окне)
     //=== + 507
@@ -339,124 +344,236 @@ window.addEventListener("DOMContentLoaded", () => {
         }, 4000);
     }
 
-    //=== 513 slider carousel + 514 slider dots
-    const slides = document.querySelectorAll('.offer__slide'),
-          slider = document.querySelector('.offer__slider'),
-          prev = document.querySelector('.offer__slider-prev'),
-          next = document.querySelector('.offer__slider-next'),
-          total = document.querySelector('#total'),
-          current = document.querySelector('#current'),
-          slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-          slidesField = document.querySelector('.offer__slider-inner'),
-          width = window.getComputedStyle(slidesWrapper).width
+    //=== 513 slider carousel + 514 slider dots + 516 use RegExp
+    const slides = document.querySelectorAll(".offer__slide"),
+        slider = document.querySelector(".offer__slider"),
+        prev = document.querySelector(".offer__slider-prev"),
+        next = document.querySelector(".offer__slider-next"),
+        total = document.querySelector("#total"),
+        current = document.querySelector("#current"),
+        slidesWrapper = document.querySelector(".offer__slider-wrapper"),
+        slidesField = document.querySelector(".offer__slider-inner"),
+        width = window.getComputedStyle(slidesWrapper).width;
 
-    let slideIndex = 1
-    let offset = 0
+    let slideIndex = 1;
+    let offset = 0;
 
     if (slides.length < 10) {
-        total.textContent = `0${slides.length}`
-        current.textContent = `0${slideIndex}`
+        total.textContent = `0${slides.length}`;
+        current.textContent = `0${slideIndex}`;
     } else {
-        total.textContent = slides.length
-        current.textContent = slideIndex
+        total.textContent = slides.length;
+        current.textContent = slideIndex;
     }
 
-    slidesField.style.width = 100 * slides.length + "%"
-    slidesField.style.display = 'flex'
-    slidesField.style.transition = '0.5s all'
+    slidesField.style.width = 100 * slides.length + "%";
+    slidesField.style.display = "flex";
+    slidesField.style.transition = "0.5s all";
 
-    slidesWrapper.style.overflow = 'hidden'
-    
-    slides.forEach( slide => slide.style.width = width )
+    slidesWrapper.style.overflow = "hidden";
 
-    slider.style.position = 'relative'
+    slides.forEach((slide) => (slide.style.width = width));
 
-    const indicators = document.createElement('ol'),
-          dots = []
+    slider.style.position = "relative";
 
-    indicators.classList.add('carousel-indicators')
-    slider.append(indicators)
+    const indicators = document.createElement("ol"),
+        dots = [];
+
+    indicators.classList.add("carousel-indicators");
+    slider.append(indicators);
 
     for (let i = 0; i < slides.length; i++) {
-        const dot = document.createElement('li')
-        dot.classList.add('dot')
-        dot.setAttribute('data-slide-to', i + 1)
+        const dot = document.createElement("li");
+        dot.classList.add("dot");
+        dot.setAttribute("data-slide-to", i + 1);
         if (i == 0) {
-            dot.style.opacity = 1
+            dot.style.opacity = 1;
         }
-        document.querySelector('.carousel-indicators').append(dot)
-        dots.push(dot)
+        document.querySelector(".carousel-indicators").append(dot);
+        dots.push(dot);
     }
 
-    next.addEventListener('click', () => {
-        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1) ) {
-            offset = 0
+    function setActiveDot() {
+        dots.forEach((dot) => (dot.style.opacity = ".5"));
+        dots[slideIndex - 1].style.opacity = 1;
+    }
+
+    function addZeroToCurrentIndex() {
+        if (slideIndex < 10) {
+            current.textContent = `0${slideIndex}`;
         } else {
-            offset += +width.slice(0, width.length - 2)
+            current.textContent = slideIndex;
+        }
+    }
+
+    function shiftSlidesRow() {
+        slidesField.style.transform = `translateX(-${offset}px)`;
+    }
+
+    function getNumberFromCss (str) {
+        return +str.replace(/\D/g, '')
+    }
+
+    next.addEventListener("click", () => {
+        if (offset == getNumberFromCss(width) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += getNumberFromCss(width)
         }
 
-        slidesField.style.transform = `translateX(-${offset}px)`
+        shiftSlidesRow();
 
         if (slideIndex == slides.length) {
-            slideIndex = 1
+            slideIndex = 1;
         } else {
-            slideIndex++
-        }
-        
-        if (slideIndex < 10) {
-            current.textContent = `0${slideIndex}`
-        } else {
-            current.textContent = slideIndex
+            slideIndex++;
         }
 
-        dots.forEach( dot => dot.style.opacity = '.5')
-        dots[slideIndex - 1].style.opacity = 1
-    })
+        addZeroToCurrentIndex();
+        setActiveDot();
+    });
 
-    prev.addEventListener('click', () => {
-        if (offset == 0 ) {
-            offset = +width.slice(0, width.length - 2) * (slides.length - 1)
+    prev.addEventListener("click", () => {
+        if (offset == 0) {
+            offset = getNumberFromCss(width) * (slides.length - 1);
         } else {
-            offset -= +width.slice(0, width.length - 2)
+            offset -= getNumberFromCss(width)
         }
 
-        slidesField.style.transform = `translateX(-${offset}px)`
+        shiftSlidesRow();
 
         if (slideIndex == 1) {
-            slideIndex = slides.length
+            slideIndex = slides.length;
         } else {
-            slideIndex--
+            slideIndex--;
         }
 
-        if (slideIndex < 10) {
-            current.textContent = `0${slideIndex}`
-        } else {
-            current.textContent = slideIndex
-        }
+        addZeroToCurrentIndex();
+        setActiveDot();
+    });
 
-        dots.forEach( dot => dot.style.opacity = '.5')
-        dots[slideIndex - 1].style.opacity = 1
-    })
+    dots.forEach((dot) => {
+        dot.addEventListener("click", (e) => {
+            const slideTo = e.target.getAttribute("data-slide-to");
 
-    dots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
-            const slideTo = e.target.getAttribute('data-slide-to')
+            slideIndex = slideTo;
+            offset = getNumberFromCss(width) * (slideTo - 1);
 
-            slideIndex = slideTo
-            offset = +width.slice(0, width.length - 2) * (slideTo - 1)
+            shiftSlidesRow();
+            addZeroToCurrentIndex();
+            setActiveDot();
+        });
+    });
 
-            slidesField.style.transform = `translateX(-${offset}px)`
+    // 517 Calculator + 518 enhanced
+    const result =document.querySelector('.calculating__result span')
+    let sex, height, weight, age, ratio
 
-            if (slideIndex < 10) {
-                current.textContent = `0${slideIndex}`
-            } else {
-                current.textContent = slideIndex
+    if (localStorage.getItem('sex'))  {
+        sex = localStorage.getItem('sex') 
+    } else {
+        sex = 'female'
+        localStorage.setItem('sex', 'female')
+    }
+
+    if (localStorage.getItem('ratio'))  {
+        ratio = localStorage.getItem('ratio') 
+    } else {
+        ratio = 1.375
+        localStorage.setItem('ratio', 1.375)
+    }
+
+    function initlocalSettings (selector, activeClass) {
+        const elements = document.querySelectorAll(selector)
+
+        elements.forEach(el => {
+            el.classList.remove(activeClass)
+            
+            if (el.getAttribute('id') === localStorage.getItem('sex')) {
+                el.classList.add(activeClass)
             }
 
-            dots.forEach( dot => dot.style.opacity = '.5')
-            dots[slideIndex - 1].style.opacity = 1
+            if (el.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
+                el.classList.add(activeClass)
+            }
         })
-    })
+    }
 
+    initlocalSettings('#gender div', 'calculating__choose-item_active')
+    initlocalSettings( '.calculating__choose_big div', 'calculating__choose-item_active')
+
+    function calcTotal() {
+        if(!sex || !height || !weight || !age || !ratio){
+            result.textContent = '____'
+            return
+        }
+
+        if(sex === 'female') {
+            result.textContent = Math.round((447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio)
+        } else {
+            result.textContent = Math.round((88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio)
+        }
+
+    }
+
+    calcTotal()
+
+    function getStaticInformation(selector, activeClass) {
+        const elements = document.querySelectorAll(selector)
+
+        elements.forEach(el =>{
+            el.addEventListener('click', (e) => {
+                if(e.target.getAttribute('data-ratio')) {
+                    ratio = e.target.getAttribute('data-ratio')
+                    localStorage.setItem('ratio', ratio)
+                } else {
+                    sex = e.target.getAttribute('id')
+                    localStorage.setItem('sex', sex)
+                }
+    
+                elements.forEach(el => {
+                    el.classList.remove(activeClass)
+                })
+    
+                e.target.classList.add(activeClass)
+    
+                calcTotal()
+            })
+        })
+    }
+
+    getStaticInformation( '#gender div', 'calculating__choose-item_active')
+    getStaticInformation( '.calculating__choose_big div', 'calculating__choose-item_active')
+
+    function getDymanicInformation(selector) {
+        const input = document.querySelector(selector)
+
+        input.addEventListener('input', (e) => {
+
+            if (input.value.match(/\D/g)) {
+                input.style.border = `1px red solid`
+            } else {
+                input.style.border = `none`
+            }
+
+            switch (e.target.getAttribute('id')) {
+                case 'height':
+                    height = +input.value
+                    break;
+                case 'weight':
+                    weight = +input.value
+                    break;
+                case 'age' :
+                    age = +input.value
+                    break;
+            }
+
+            calcTotal()
+        })
+    }
+
+    getDymanicInformation('#height')
+    getDymanicInformation('#weight')
+    getDymanicInformation('#age')
 
 });
