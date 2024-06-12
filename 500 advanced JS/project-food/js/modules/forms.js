@@ -1,3 +1,5 @@
+import { openModal, closeModal } from "./modal";
+
 function forms() {
     //=== 504 POST запрос, собираем данные из полей Имя и Телефон в двух местах(на сайте и в модальном окне)
     //=== + 507
@@ -84,4 +86,4 @@ function forms() {
     }
 }
 
-module.exports = forms
+export default forms

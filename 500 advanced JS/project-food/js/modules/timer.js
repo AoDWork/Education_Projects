@@ -74,4 +74,4 @@ function timer() {
     // дату которую задаем или откуда то получаем (панель управления, сервер)
 }
 
-module.exports = timer
+export default timer
