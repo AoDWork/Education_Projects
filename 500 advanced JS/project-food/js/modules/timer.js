@@ -1,7 +1,4 @@
-function timer() {
-    //=== 408 Timer + 409 доработка
-    const deadLine = "2025-07-20"; //Строкой задаем время окончания, такие строки получают еще из
-    // инпута на сайтах
+function timer(id, deadLine) {
 
     function getTimeRemaining(endtime) {
         let days, hours, minutes, seconds;
@@ -43,7 +40,6 @@ function timer() {
 
     //функция Устанавливает время на страницу
     function setClock(selector, endtime) {
-        //получаем элементы со страницы
         const timer = document.querySelector(selector),
             days = timer.querySelector("#days"), //<span id="days">12</span>
             hours = timer.querySelector("#hours"),
@@ -70,8 +66,7 @@ function timer() {
         }
     }
 
-    setClock(".timer", deadLine); //Запускаем таймер в селектор подставляем класс элемента в ендтайм
-    // дату которую задаем или откуда то получаем (панель управления, сервер)
+    setClock(id, deadLine); 
 }
 
 export default timer

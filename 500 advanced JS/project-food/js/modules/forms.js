@@ -1,9 +1,9 @@
 import { openModal, closeModal } from "./modal";
+import { postData } from "../services/services";
 
-function forms() {
-    //=== 504 POST запрос, собираем данные из полей Имя и Телефон в двух местах(на сайте и в модальном окне)
-    //=== + 507
-    const forms = document.querySelectorAll("form");
+function forms(formSelector, modalTimerId) {
+
+    const forms = document.querySelectorAll(formSelector);
 
     const message = {
         // loading: "Загрузка", // 505 добавили путь к спиннеру вместо текста
@@ -17,18 +17,6 @@ function forms() {
     });
 
     //=== 510 Оптимизируем ф-и
-    const postData = async (url, data) => {
-        const res = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-            },
-            body: data,
-        });
-
-        return await res.json();
-    };
-
     function bindPostData(form) {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -65,7 +53,7 @@ function forms() {
         const prevModalDialog = document.querySelector(".modal__dialog");
 
         prevModalDialog.classList.add("hide");
-        openModal(); // открываем обертку модального окна
+        openModal('.modal', modalTimerId); 
 
         const thanksModal = document.createElement("div"); // Создаем елемент для нового модального окна
         thanksModal.classList.add("modal__dialog");
@@ -78,10 +66,10 @@ function forms() {
         document.querySelector(".modal").append(thanksModal);
 
         setTimeout(() => {
-            thanksModal.remove(); // удаляем наш новый блок
+            thanksModal.remove();
             prevModalDialog.classList.add("show");
             prevModalDialog.classList.remove("hide");
-            closeModal(); // закрываем окно
+            closeModal(".modal");
         }, 4000);
     }
 }
